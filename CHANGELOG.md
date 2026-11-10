@@ -7,6 +7,16 @@ still change, the protocol included.
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.1.0] - 2026-11-10
+
+The first public version: a Mac app signed and notarized by Apple
+([download](https://github.com/Synapsr/AgentOS/releases/tag/v0.1.0)), the relay
+image (`ghcr.io/synapsr/agentos-relay`), and the iPhone and Apple Watch apps, built
+from source for now. The README's [Status](README.md#status) says what has been
+tested, and how.
+
 A full design pass: every surface now follows one design system, written
 down in [DESIGN.md](docs/DESIGN.md).
 
@@ -57,11 +67,6 @@ down in [DESIGN.md](docs/DESIGN.md).
   signs the app and everything it carries, and `pnpm desktop:notarize` has
   Apple notarize the app and its disk image and staples both tickets.
   [CONTRIBUTING](CONTRIBUTING.md#releasing-the-desktop-app) has the steps.
-
-## [0.1.0] - not released yet
-
-The first public version. You build it from source; there are no downloads.
-The README's [Status](README.md#status) says what has been tested, and how.
 
 ### Added
 
@@ -125,5 +130,5 @@ What changed after the first independent security review:
 - On iPhone, the app asks you to confirm a computer before adding it, and
   every action on a notification needs the phone unlocked.
 
-[Unreleased]: https://github.com/Synapsr/AgentOS/commits/main
-[0.1.0]: https://github.com/Synapsr/AgentOS
+[Unreleased]: https://github.com/Synapsr/AgentOS/compare/v0.1.0...main
+[0.1.0]: https://github.com/Synapsr/AgentOS/releases/tag/v0.1.0
