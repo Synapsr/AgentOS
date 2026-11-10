@@ -137,9 +137,8 @@ documentation détaillée).
 [les versions publiées sur GitHub](https://github.com/Synapsr/AgentOS/releases/latest),
 ouvrez-la, et répondez à quelques questions : votre prénom, un nom pour
 votre agent, ce qu'il peut faire sans demander, et une clé Claude. C'est là
-que mène le bouton *Télécharger pour Mac* du site. Pour être clair : la
-première version n'est pas encore publiée, cette page est donc vide pour
-l'instant.
+que mène le bouton *Télécharger pour Mac* du site. Elle est faite pour les
+Mac à puce Apple (M1 ou plus récent), signée et notarisée par Apple.
 
 **Pour les développeurs**, et pour qui le veut dès aujourd'hui : compilez-le
 depuis les sources, avec le [démarrage rapide](#démarrage-rapide) ci-dessous.
@@ -221,13 +220,11 @@ Trois façons d'y arriver, au choix :
 | **Votre propre relais** | Un petit conteneur sur un serveur à vous | C'est votre ordinateur qui s'y connecte : rien ne s'ouvre sur votre réseau |
 
 Un relais est privé : il ne démarre pas sans un jeton, que votre ordinateur
-doit présenter. Tant qu'aucune image n'est publiée, construisez-la d'abord
-depuis votre clone
-(`docker build -f packages/relay/Dockerfile -t agentos-relay .`), puis :
+doit présenter. Une ligne, sur n'importe quel serveur avec Docker :
 
 ```sh
 RELAY_TOKEN=$(openssl rand -hex 32)
-docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" agentos-relay
+docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" ghcr.io/synapsr/agentos-relay
 ```
 
 Celui qui exploite un relais peut lire tout ce qui y passe, y compris les
@@ -371,11 +368,13 @@ qui a été prouvé, et comment.
 - Le cœur, avec le cerveau d'entraînement et avec le vrai Claude
 - Le contrôle de l'ordinateur, par agent-desktop
 - Le client web
-- Le relais, lancé comme un simple processus
+- Le relais, lancé comme un simple processus, et son image publiée, déployée
+  et testée de bout en bout à travers internet (appairage, une demande
+  approuvée de l'extérieur, les événements en direct)
 - La voix ElevenLabs, avec une vraie clé
-- L'app de bureau, mode OS compris, et une `AgentOS.app` autonome (signée
-  ad hoc, non notarisée ; il reste des vérifications visuelles à faire sur
-  l'app empaquetée)
+- L'app de bureau, mode OS compris, et une `AgentOS.app` autonome, signée
+  avec un Developer ID et notarisée par Apple (il reste des vérifications
+  visuelles à faire sur l'app empaquetée)
 - L'app iPhone, dans le simulateur, face au vrai cœur
 
 **Construit, pas encore vérifié en conditions réelles**
@@ -397,16 +396,15 @@ qui a été prouvé, et comment.
 - Le chiffrement de bout en bout à travers un relais
 
 AgentOS a fait l'objet d'une revue de sécurité indépendante, ce qui n'est
-pas un audit, et il n'existe pas encore de version signée. Voyez-le comme un
+pas un audit. Voyez-le comme un
 logiciel jeune, et confiez-lui un ordinateur en conséquence :
 [SECURITY.md](SECURITY.md).
 
 ## La suite
 
 Dans cet ordre, à peu près : vérifier la voix et les notifications sur du
-vrai matériel ; l'app compagnon sur une vraie Apple Watch ; des téléchargements signés pour macOS et
-des versions de l'app iPhone qu'on n'a pas à compiler ; une image publiée du
-relais ; le chiffrement de bout en bout à travers un relais ; Windows et
+vrai matériel ; l'app compagnon sur une vraie Apple Watch ; des versions de l'app iPhone
+qu'on n'a pas à compiler ; le chiffrement de bout en bout à travers un relais ; Windows et
 Linux ; Android. D'autres modèles peuvent déjà se brancher derrière
 l'interface du moteur, et sont les bienvenus.
 

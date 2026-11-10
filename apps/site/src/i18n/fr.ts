@@ -210,7 +210,7 @@ export const fr: Copy = {
 
   get: {
     title: "Confiez-lui un ordinateur. Puis allez courir.",
-    body: "AgentOS est une première version, pour le Mac. Téléchargez l’app, ouvrez-la, et répondez à quelques questions. Elle est libre et gratuite.",
+    body: "AgentOS est une première version, pour les Mac à puce Apple (M1 ou plus récent), signée et notarisée par Apple. Téléchargez l’app, ouvrez-la, et répondez à quelques questions. Elle est libre et gratuite.",
     primary: "Télécharger pour Mac",
     secondary: "Le compiler depuis les sources",
     key: "Nova réfléchit avec Claude : il vous faudra une clé Claude, ajoutée une fois. Vous l’obtenez chez Anthropic, qui facture ce que Nova utilise. AgentOS lui-même est gratuit.",

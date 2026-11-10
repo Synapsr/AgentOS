@@ -7,19 +7,16 @@ On the same network, your phone finds your computer by itself. With
 no server at all. The relay is the third way, for people who would rather
 run one small container on a server they own.
 
-The image is not published yet: build it from a clone of the repository, at
-its root, then run it with a token of its own:
+Run the published image (Linux, Intel and ARM) with a token of its own:
 
 ```sh
-docker build -f packages/relay/Dockerfile -t agentos-relay .
-
 RELAY_TOKEN=$(openssl rand -hex 32)
 echo "$RELAY_TOKEN"     # your computer will need it
-docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" agentos-relay
+docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" ghcr.io/synapsr/agentos-relay
 ```
 
-*The image has not been built or run yet. The relay itself has been tested
-as a plain process (see [Without Docker](#without-docker)).*
+To build it yourself instead, at the root of a clone:
+`docker build -f packages/relay/Dockerfile -t agentos-relay .`
 
 The relay is private: only computers that present its token may use it.
 Tell your computer where the relay is and what its token is — in Settings,

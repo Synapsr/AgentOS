@@ -35,15 +35,11 @@ export const REPO = "https://github.com/Synapsr/AgentOS";
 export const DOWNLOAD = `${REPO}/releases/latest`;
 
 /**
- * How to start your own relay, exactly as docs/connecting.md gives it. The
- * relay does not start without a token, and its image is not published yet,
- * so it is built from the clone. When an image is published, this becomes
- * one line: change it here, nowhere else.
+ * How to start your own relay, exactly as docs/connecting.md gives it: the
+ * published image, with a token of its own (it does not start without one).
  */
 export const RELAY_COMMAND = [
-  "docker build -f packages/relay/Dockerfile -t agentos-relay .",
-  "",
   "RELAY_TOKEN=$(openssl rand -hex 32)",
   'echo "$RELAY_TOKEN"     # your computer will need it',
-  'docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" agentos-relay',
+  'docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" ghcr.io/synapsr/agentos-relay',
 ].join("\n");

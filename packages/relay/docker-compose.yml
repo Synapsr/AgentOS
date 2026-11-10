@@ -1,9 +1,8 @@
 # The relay with HTTPS, on a server of your own.
 #
-#   0. Until an image is published, build it on the server from a clone of
-#      the repository, at its root, under the name this file uses:
+#   0. The image is published (ghcr.io/synapsr/agentos-relay); to build it
+#      yourself instead, at the root of a clone, under the name this file uses:
 #        docker build -f packages/relay/Dockerfile -t ghcr.io/synapsr/agentos-relay .
-#      Compose then uses that local image and pulls nothing.
 #   1. Point a domain at the server (an A record), and open ports 80 and 443.
 #   2. Make the relay's token, and keep it: computers need it to use the relay.
 #        echo "RELAY_TOKEN=$(openssl rand -hex 32)" > .env && cat .env

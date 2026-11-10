@@ -53,6 +53,10 @@ down in [DESIGN.md](docs/DESIGN.md).
   `-demo <scene>`, `-demo gallery` included, like the interface's `?demo`.
 - New screenshots and a new OS-mode recording in `docs/screenshots`, all
   taken from the demos.
+- **A notarized desktop app.** With a Developer ID, `pnpm desktop:bundle`
+  signs the app and everything it carries, and `pnpm desktop:notarize` has
+  Apple notarize the app and its disk image and staples both tickets.
+  [CONTRIBUTING](CONTRIBUTING.md#releasing-the-desktop-app) has the steps.
 
 ## [0.1.0] - not released yet
 

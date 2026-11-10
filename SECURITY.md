@@ -6,8 +6,7 @@ says how to report a problem, who is trusted with what, what the safety
 rules do and do not do, and where the limits are.
 
 AgentOS is at version 0.1. It has had one independent security review, which
-is not an audit. There are no signed or notarized builds yet. Treat it as
-early software.
+is not an audit. Treat it as early software.
 
 ## Reporting a problem
 
@@ -178,8 +177,10 @@ judgement, not something AgentOS enforces.
   what it sees goes to the model. The picture attached to a request is
   stored on the computer and shown on your devices, through the relay if you
   use one.
-- **No signed builds.** You build AgentOS from source. An app you build
-  yourself is signed ad hoc and not notarized by Apple.
+- **Builds.** The Mac app on GitHub Releases is signed with the Synapsr
+  Developer ID and notarized by Apple; check its SHA-256 against the
+  `.sha256` file next to it. An app you build yourself is signed ad hoc and
+  not notarized.
 - **Early software.** Version 0.1, one independent review, no audit. Parts
   of it have not yet run on real hardware: the README's
   [Status](README.md#status) lists them.

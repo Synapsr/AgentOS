@@ -210,7 +210,7 @@ export const en = {
 
   get: {
     title: "Give it a computer. Then go for a run.",
-    body: "AgentOS is an early version, for the Mac. Download the app, open it, and answer a few questions. It is free and open source.",
+    body: "AgentOS is an early version, for Macs with Apple silicon (M1 or later), signed and notarized by Apple. Download the app, open it, and answer a few questions. It is free and open source.",
     primary: "Download for Mac",
     secondary: "Build it from source",
     key: "Nova thinks with Claude, so you will need a Claude key, added once. You get it from Anthropic, who bill what Nova uses. AgentOS itself is free.",

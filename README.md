@@ -131,8 +131,8 @@ they finish. More in [Architecture](docs/ARCHITECTURE.md).
 [GitHub Releases](https://github.com/Synapsr/AgentOS/releases/latest), open
 it, and answer a few questions: your name, a name for your agent, how much
 it should ask, and a Claude key. That is where the website's *Download for
-Mac* leads. To be clear: the first version has not been published yet, so
-that page is still empty for now.
+Mac* leads. It is for Macs with Apple silicon (M1 or later), signed and
+notarized by Apple.
 
 **For developers**, and anyone who wants it today: build it from source,
 with the [quick start](#quick-start) below.
@@ -210,12 +210,11 @@ that work, your choice:
 | **Your own relay** | One small container on a server you own | Your computer connects out to it, so nothing opens on your home network |
 
 A relay is private: it does not start without a token, which your computer
-must present. Until an image is published, build it from your clone first
-(`docker build -f packages/relay/Dockerfile -t agentos-relay .`), then:
+must present. One line on any server with Docker:
 
 ```sh
 RELAY_TOKEN=$(openssl rand -hex 32)
-docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" agentos-relay
+docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" ghcr.io/synapsr/agentos-relay
 ```
 
 Whoever operates a relay can read everything that passes through it,
@@ -353,11 +352,13 @@ back, you answer. Here is what has been proven, and how.
 - The core, with the practice brain and with real Claude
 - Controlling the computer, through agent-desktop
 - The web client
-- The relay, run as a process
+- The relay, run as a process, and its published image, deployed and tested
+  end to end through the internet (pairing, a request answered from outside,
+  live events)
 - The ElevenLabs voice, with a real key
-- The desktop app, OS mode included, and a self-contained `AgentOS.app`
-  (signed ad hoc, not notarized; some visual checks of the bundled app are
-  still to do)
+- The desktop app, OS mode included, and a self-contained `AgentOS.app`,
+  signed with a Developer ID and notarized by Apple (some visual checks of the
+  bundled app are still to do)
 - The iPhone app, in the simulator, against the real core
 
 **Built, not yet verified in real conditions**
@@ -377,15 +378,15 @@ back, you answer. Here is what has been proven, and how.
 - Android: planned, nothing exists
 - End-to-end encryption through a relay
 
-AgentOS has had one independent security review, which is not an audit, and
-there are no signed builds yet. Treat it as early software, and give it a
-computer accordingly: [SECURITY.md](SECURITY.md).
+AgentOS has had one independent security review, which is not an audit.
+Treat it as early software, and give it a computer accordingly:
+[SECURITY.md](SECURITY.md).
 
 ## Roadmap
 
 In rough order: verifying voice and notifications on real hardware; the
-Apple Watch companion on a real watch; signed downloads for macOS and builds of the iPhone app
-you do not have to compile; a published relay image; end-to-end encryption
+Apple Watch companion on a real watch; builds of the iPhone app you do not
+have to compile; end-to-end encryption
 through a relay; Windows and Linux; Android. Other models can already plug
 in behind the engine interface, and are welcome.
 

@@ -131,6 +131,51 @@ change. CI fails when they are out of date. After changing the presence's
 model, export its reference frames for the Swift port again:
 `node apps/ios/Scripts/export-presence-reference.mjs`.
 
+## Releasing the desktop app
+
+A release is built on a Mac with an Apple Developer account. Once, before
+the first one:
+
+- Have a **Developer ID Application** certificate in your login keychain
+  (Xcode → Settings → Accounts → Manage Certificates).
+  `security find-identity -v -p codesigning` prints its full name.
+- Save what the notary service needs in a keychain profile. The command
+  asks for your Apple ID, your team ID and an app-specific password (or
+  takes an App Store Connect API key), and keeps them in the keychain:
+
+  ```sh
+  xcrun notarytool store-credentials <profile>
+  ```
+
+Then, for each release, from the repository:
+
+```sh
+export APPLE_SIGNING_IDENTITY="Developer ID Application: <Your Name> (<TEAMID>)"
+pnpm desktop:bundle
+AGENTOS_NOTARY_PROFILE=<profile> pnpm desktop:notarize
+```
+
+`pnpm desktop:bundle` signs every program the app carries with that
+identity, with the hardened runtime and a secure timestamp (Node.js,
+agent-desktop and its helper), then the app and the disk image. Claude Code
+keeps Anthropic's own signature: it ships exactly as published. What each
+program is allowed, and why, is written in the entitlements files in
+`apps/desktop/src-tauri/macos`. None of them turns off library validation:
+nothing in the app loads a library that is not Apple's or its own.
+
+`pnpm desktop:notarize` sends the app, then the disk image, to Apple (a few
+minutes each), staples both tickets so that they open offline too, checks
+them as Gatekeeper does, and writes the image's checksum next to it:
+
+```
+apps/desktop/src-tauri/target/release/bundle/dmg/AgentOS_<version>_<arch>.dmg
+apps/desktop/src-tauri/target/release/bundle/dmg/AgentOS_<version>_<arch>.dmg.sha256
+```
+
+If Apple refuses a submission, the script prints Apple's log, which names
+the file at fault. Anyone can check a download with
+`shasum -a 256 -c AgentOS_<version>_<arch>.dmg.sha256`.
+
 ## Commits and pull requests
 
 - **Open an issue first** for anything larger than a fix. It saves you from

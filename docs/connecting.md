@@ -84,21 +84,18 @@ A relay is private: it only accepts computers that present its token, and
 it does not start without one. Make a token, keep it, and give it to the
 relay.
 
-The image is not published yet, so build it from your clone, at the root of
-the repository:
+The image is published for Linux on Intel and ARM:
 
 ```sh
-docker build -f packages/relay/Dockerfile -t agentos-relay .
-
 RELAY_TOKEN=$(openssl rand -hex 32)
 echo "$RELAY_TOKEN"     # your computer will need it
-docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" agentos-relay
+docker run -d -p 8080:8080 -v agentos-relay:/data -e RELAY_TOKEN="$RELAY_TOKEN" ghcr.io/synapsr/agentos-relay
 ```
 
-*The Docker image has not been built or run yet: the Docker daemon was not
-available where this guide was written. The steps its Dockerfile runs were
-replayed by hand, with only the files its build is given, and the result
-starts and answers.*
+Put it behind your usual HTTPS proxy (Caddy, Traefik, Easypanel…) and add
+`-e RELAY_TRUST_PROXY=1`. To build the image yourself instead:
+`docker build -f packages/relay/Dockerfile -t agentos-relay .` at the root of
+a clone.
 
 Without Docker, the relay is one Node.js program:
 

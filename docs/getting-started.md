@@ -216,11 +216,10 @@ pnpm desktop:bundle
 
 It downloads Node.js once, checks it against a pinned checksum, and writes
 the app and a disk image to `apps/desktop/src-tauri/target/release/bundle/`
-(about 460 MB and 185 MB). The app is signed ad hoc and not notarized, so
-macOS asks you to confirm before opening it on another Mac. With a
-Developer ID in `APPLE_SIGNING_IDENTITY`, the app and the programs it
-carries are signed with it, and notarizing uses Tauri's own variables; that
-path has not been tried yet.
+(about 460 MB and 185 MB). Built this way, the app is signed ad hoc and not
+notarized, so macOS asks you to confirm before opening it on another Mac. To
+sign it with a Developer ID and have Apple notarize it, see
+[Releasing the desktop app](../CONTRIBUTING.md#releasing-the-desktop-app).
 
 *`pnpm desktop` and `pnpm desktop:bundle` open windows, so they were not run
 for this guide. The shell's own checks were: `cargo fmt --check`,

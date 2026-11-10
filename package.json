@@ -41,6 +41,7 @@
     "dev": "pnpm --filter @agentos/core dev",
     "desktop": "pnpm --filter @agentos/desktop tauri dev",
     "desktop:bundle": "pnpm --filter @agentos/desktop bundle",
+    "desktop:notarize": "pnpm --filter @agentos/desktop notarize",
     "site": "pnpm --filter @agentos/site dev",
     "site:build": "pnpm --filter @agentos/site build"
   }
