@@ -4,8 +4,8 @@ name: Images
 # Linux on Intel and ARM:
 #   ghcr.io/synapsr/agentos-relay   the relay (packages/relay/Dockerfile)
 #   ghcr.io/synapsr/agentos-site    the website (apps/site/Dockerfile)
-# On main they are tagged `main`; a version tag (v0.2.0) also tags `0.2.0`
-# and `latest`.
+# On main they are tagged `main` and `latest` (0.x: the newest build is the
+# one to run); a version tag (v0.2.0) also tags `0.2.0`.
 
 on:
   push:
@@ -55,7 +55,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
