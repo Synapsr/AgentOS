@@ -1,0 +1,244 @@
+/* Home: the presence on its stage, its line, and the conversation. How the
+   two share the window is decided in Home.tsx (`data-layout`, `data-low`,
+   `data-aside`, `--talk`, `--stage`). */
+.home {
+  --gutter: var(--space-16);
+  display: grid;
+  grid-template:
+    "computer actions" auto
+    "presence presence" auto
+    "talk talk" minmax(0, 1fr)
+    / minmax(0, 1fr) auto;
+  height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  overflow: hidden;
+  background: var(--surface-stage);
+}
+
+/* The computer this is: a quiet label with the glyph of what it is doing. */
+.home-computer {
+  grid-area: computer;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: var(--space-8);
+  min-width: 0;
+  height: var(--size-control-sm);
+  margin: var(--space-4) var(--space-12) 0;
+  padding: 0 var(--space-12) 0 var(--space-8);
+  color: var(--text);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+}
+.home-computer > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-actions {
+  grid-area: actions;
+  z-index: 1;
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8) 0;
+}
+
+/* ───────────── The presence, with its label and its light ───────────── */
+
+.home-presence {
+  grid-area: presence;
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  min-width: 0;
+  padding: 0 var(--space-20) var(--space-12);
+}
+.home-figure {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+}
+/* Centred on the drops rather than on the figure: below the name, half the stage down. */
+.home-figure > .stage-light {
+  top: calc(var(--space-24) + var(--stage) * 0.45);
+}
+.home-figure > .labelled-presence {
+  position: relative;
+}
+.home-line {
+  font: var(--type-display-s);
+  letter-spacing: var(--tracking-display-s);
+}
+.home[data-aside] :is(.presence-name, .jobs) {
+  display: none;
+}
+.home-retry {
+  margin-top: var(--space-24);
+}
+
+/* ───────────── Background jobs, as chips ───────────── */
+
+.jobs {
+  display: flex;
+  gap: var(--space-8);
+  overflow-x: auto;
+  max-width: 100%;
+  margin: var(--space-16) 0 0;
+  padding: var(--space-4);
+  list-style: none;
+  scrollbar-width: none;
+}
+.jobs::-webkit-scrollbar {
+  display: none;
+}
+.home[data-low] .jobs {
+  display: none;
+}
+.job {
+  max-width: calc(4 * var(--space-96));
+}
+.job-title {
+  flex: none;
+}
+.job-mark {
+  display: grid;
+  place-items: center;
+  width: var(--size-icon);
+}
+.job-mark[data-tone="go"] {
+  color: var(--go);
+}
+.job-mark[data-tone="careful"] {
+  color: var(--careful);
+}
+/* The job whose conversation is open. */
+.job[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
+}
+
+/* ───────────── The conversation ───────────── */
+
+.home-talk {
+  grid-area: talk;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.talk-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: calc(var(--size-measure) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: var(--space-12) calc(var(--gutter) - var(--space-12)) 0;
+  font: var(--type-body-strong);
+  letter-spacing: var(--tracking-body-strong);
+}
+.talk-head > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ───────────── Beside: the stage has its half, the conversation a column ───────────── */
+
+.home[data-layout="beside"] {
+  --gutter: var(--space-24);
+  grid-template:
+    "computer talk" auto
+    "presence talk" minmax(0, 1fr)
+    "actions talk" auto
+    / minmax(0, 1fr) var(--talk);
+}
+.home[data-layout="beside"] .home-computer {
+  justify-self: start;
+  margin: var(--space-20) var(--space-24) 0;
+}
+.home[data-layout="beside"] .home-actions {
+  padding: 0 var(--space-16) var(--space-20);
+}
+.home[data-layout="beside"] .home-presence {
+  padding: 0 var(--space-32) var(--space-32);
+}
+.home[data-layout="beside"]:not([data-low], [data-asking]) .home-line {
+  font: var(--type-display-l);
+  letter-spacing: var(--tracking-display-l);
+}
+.home[data-layout="beside"] .jobs {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-32);
+  overflow: visible;
+}
+/* A column of its own along the edge, the full height of the window: lifted off the stage by a hairline and a long, soft shadow. */
+.home[data-layout="beside"] .home-talk {
+  position: relative;
+  z-index: 2;
+  background: var(--surface);
+  box-shadow:
+    -1px 0 0 var(--line),
+    calc(-1 * var(--space-24)) 0 var(--space-44) calc(-1 * var(--space-32)) var(--scrim);
+}
+.home[data-layout="beside"] .composer {
+  padding-bottom: calc(var(--space-20) + env(safe-area-inset-bottom));
+}
+.home[data-layout="beside"][data-low] {
+  --gutter: var(--space-20);
+}
+
+/* ───────────── Stacked (a phone): the conversation is a sheet over the stage ───────────── */
+
+.home[data-layout="stacked"] .home-talk {
+  position: relative;
+  z-index: 2;
+  margin-top: var(--space-8);
+  border-radius: var(--radius-xxl) var(--radius-xxl) 0 0;
+  background: var(--surface);
+  box-shadow: var(--shadow-overlay);
+}
+.home[data-layout="stacked"] .conversation-content {
+  padding-top: var(--space-44);
+}
+/* The sheet's handle: a short capsule to look at, the whole width of the sheet's top to press or drag. */
+.grabber {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: calc(var(--space-96) + var(--space-32));
+  height: var(--size-control);
+  translate: -50% 0;
+  touch-action: none;
+}
+.grabber > span {
+  width: calc(var(--space-32) + var(--space-4));
+  height: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--fill-strong);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .grabber:hover > span {
+    background: var(--text-faint);
+  }
+}
+
+/* What the agent is doing, under its line: a few words, small. */
+.doing {
+  display: grid;
+  justify-items: center;
+  min-height: 1.45em;
+  margin-top: var(--space-8);
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-align: center;
+}

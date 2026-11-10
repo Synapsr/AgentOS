@@ -1,0 +1,102 @@
+name: Apps
+
+# The heavy checks: the desktop shell (Rust, Tauri) and the iPhone and Apple
+# Watch apps (Xcode). Started by hand, from the Actions tab, when one of them
+# changed.
+#
+# Why not on every pull request: both need a Mac runner, a cold Tauri build
+# and an Xcode test run take many minutes each, and most changes never touch
+# them. The iPhone app also targets iOS 26, so it only builds on a runner
+# whose Xcode is recent enough.
+#
+# Neither job builds something to hand out. A built desktop app carries the
+# Claude Code program, which is Anthropic's: see THIRD_PARTY_NOTICES.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      desktop:
+        description: Check the desktop shell (cargo fmt, clippy, test)
+        type: boolean
+        default: true
+      ios:
+        description: Build and test the iPhone and Apple Watch apps
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  desktop:
+    name: Desktop shell
+    if: ${{ inputs.desktop }}
+    runs-on: macos-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: apps/desktop/src-tauri
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt,clippy
+          rustup default stable
+
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: apps/desktop/src-tauri
+
+      # The shell embeds only its own "starting…" page (apps/desktop/splash),
+      # so nothing has to be built with pnpm first.
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+
+  ios:
+    name: iPhone and Apple Watch apps
+    if: ${{ inputs.ios }}
+    runs-on: macos-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/ios
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Which Xcode
+        run: xcodebuild -version
+
+      # The Xcode project is not checked in: XcodeGen writes it from project.yml.
+      - name: Generate the Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen
+
+      - name: Pick an iPhone simulator
+        id: simulator
+        run: |
+          udid=$(xcrun simctl list devices available --json | python3 -I -c '
+          import json, sys
+          runtimes = json.load(sys.stdin)["devices"]
+          ios = sorted((name for name in runtimes if "iOS" in name), reverse=True)
+          print(next(device["udid"] for name in ios for device in runtimes[name] if device["name"].startswith("iPhone")))
+          ')
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+
+      # The scheme builds the app with its notification extension and the watch app, then runs the tests.
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project AgentOS.xcodeproj \
+            -scheme AgentOS \
+            -destination "platform=iOS Simulator,id=${{ steps.simulator.outputs.udid }}" \
+            CODE_SIGNING_ALLOWED=NO

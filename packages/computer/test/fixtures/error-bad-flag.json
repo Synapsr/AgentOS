@@ -1,0 +1,1 @@
+{"version":"2.6","ok":false,"command":"snapshot","error":{"code":"INVALID_ARGS","message":"error: unexpected argument '--nope' found","disposition":{"delivery":"not_delivered","retry":"safe"}}}

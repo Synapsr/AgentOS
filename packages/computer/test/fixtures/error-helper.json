@@ -1,0 +1,1 @@
+{"version":"2.6","ok":false,"command":"clipboard-get","error":{"code":"ACTION_NOT_SUPPORTED","message":"The packaged macOS clipboard helper is missing or invalid","platform_detail":"Helper path has the wrong packaged basename","details":{"helper":"agent-desktop-macos-helper","kind":"clipboard_helper_invalid"},"disposition":{"delivery":"not_delivered","retry":"safe"}}}

@@ -1,0 +1,13 @@
+{
+  "bundle": {
+    "macOS": {
+      "minimumSystemVersion": "12.0",
+      "signingIdentity": "-",
+      "entitlements": "macos/AgentOS.entitlements"
+    },
+    "resources": {
+      "macos/en.lproj/InfoPlist.strings": "en.lproj/InfoPlist.strings",
+      "macos/fr.lproj/InfoPlist.strings": "fr.lproj/InfoPlist.strings"
+    }
+  }
+}

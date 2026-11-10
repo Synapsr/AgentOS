@@ -1,0 +1,1 @@
+{"version":"2.6","ok":false,"command":"snapshot","error":{"code":"INTERNAL","message":"private file parent is accessible by group or other users","disposition":{"delivery":"not_delivered","retry":"safe"}}}

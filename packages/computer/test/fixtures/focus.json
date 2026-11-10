@@ -1,0 +1,1 @@
+{"version":"2.6","ok":true,"command":"focus","data":{"action":"focus","details":{"auto_wait":{"lease_contention_count":0,"lease_hold_ms":14,"read_only_preflight_attempts":1,"read_only_resolve_attempts":1}},"disposition":{"delivery":"delivered_verified","retry":"unsafe"},"steps":[{"label":"AXFocused","mechanism":"semantic_api","outcome":"succeeded","verified":true}]}}

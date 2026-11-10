@@ -1,0 +1,26 @@
+{
+  "name": "@agentos/design",
+  "version": "0.1.0",
+  "description": "The AgentOS design system as code: one tokens.json for the web (CSS), TypeScript and the iPhone and watch (Swift), the brand font and the brand assets.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json",
+    "./fonts/*": "./fonts/*",
+    "./generated/*": "./generated/*",
+    "./brand/*": "./brand/*"
+  },
+  "files": ["dist", "tokens.css", "tokens.json", "fonts", "generated", "brand", "scripts"],
+  "sideEffects": ["*.css"],
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "build": "node scripts/generate.mjs && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": { "typescript": "^5.9.3", "@types/node": "^20.19.0", "vitest": "^3.2.4" }
+}

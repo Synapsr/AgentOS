@@ -1,0 +1,218 @@
+---
+/** The quick start, for developers: real commands, copyable, and where things live. */
+import Code from "./Code.astro";
+import Icon from "./Icon.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang].start;
+---
+
+<section class="section" id="start" aria-labelledby="start-title">
+  <div class="wrap">
+    <h2 class="heading" id="start-title">{t.title}</h2>
+    <p class="lead">{t.lead}</p>
+
+    <div class="grid">
+      <ol class="steps">
+        {
+          t.steps.map((step, i) => (
+            <li>
+              <p class="step">
+                <span class="n">{i + 1}</span>
+                {step.label}
+              </p>
+              <Code text={step.code} lang={lang} />
+              {step.note && <p class="note">{step.note}</p>}
+            </li>
+          ))
+        }
+        <li class="more">
+          {
+            t.more.map((item) => (
+              <p>
+                <span class="more-label">{item.label}</span>
+                <code>{item.text}</code>
+                <span class="dim">{item.note}</span>
+              </p>
+            ))
+          }
+        </li>
+      </ol>
+
+      <div class="side">
+        <div class="card files">
+          <h3 class="title">{t.files.title}</h3>
+          <p class="dim">{t.files.body}</p>
+          <ul class="tree">
+            <li class="root"><code>~/.agentos/</code></li>
+            {
+              t.files.tree.map(([name, what]) => (
+                <li>
+                  <code>{name}</code>
+                  <span class="dim">{what}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="card protocol">
+          <h3 class="title">{t.protocol.title}</h3>
+          <p class="dim">{t.protocol.body}</p>
+          <ul class="links">
+            {
+              t.links.map((link) => (
+                <li>
+                  <a class="btn secondary has-icon-end" href={link.href}>
+                    {link.label}
+                    <Icon name="chevron" class="dense" />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: var(--space-44) var(--space-64);
+    align-items: start;
+    margin-top: var(--space-64);
+  }
+
+  .steps {
+    display: grid;
+    gap: var(--space-32);
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-12);
+    font: var(--type-body-strong);
+  }
+
+  /* The steps are a real sequence, so they are numbered. */
+  .n {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--fill);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    font: var(--type-label);
+  }
+
+  .note {
+    margin-top: var(--space-8);
+    color: var(--text-dim);
+    font: var(--type-small);
+  }
+
+  .more {
+    display: grid;
+    gap: var(--space-12);
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--line);
+    font: var(--type-small);
+  }
+
+  .more p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4) var(--space-8);
+  }
+
+  .more-label {
+    font-weight: 600;
+  }
+
+  .more code,
+  .tree code {
+    font: var(--type-code);
+  }
+
+  .more code {
+    padding: 2px var(--space-8);
+    border-radius: var(--radius-s);
+    background: var(--fill);
+  }
+
+  .side {
+    display: grid;
+    gap: var(--space-20);
+  }
+
+  .side .card {
+    padding: var(--space-24);
+  }
+
+  .side .card .title {
+    font: var(--type-title);
+  }
+
+  .side .card > .dim {
+    margin-top: var(--space-8);
+    text-wrap: pretty;
+  }
+
+  /* Inset 12 from the card's edge and concentric with it: card 28 = 16 + 12. */
+  .tree {
+    margin: var(--space-20) calc(-1 * var(--space-12)) 0;
+    padding: var(--space-12) var(--space-16);
+    border-radius: var(--radius-m);
+    background: var(--fill);
+    font: var(--type-small);
+  }
+
+  .tree li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-12);
+    padding-block: var(--space-4);
+  }
+
+  .tree li:not(.root) {
+    padding-left: var(--space-20);
+  }
+
+  .tree li:not(.root) code {
+    min-width: 12ch;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: var(--space-20);
+  }
+
+  /* A trailing chevron: that side gets the 2 px less, for optical balance. */
+  .links .btn {
+    gap: var(--space-4);
+    padding-inline-end: calc(var(--space-20) - var(--space-4));
+  }
+
+  .links :global(svg) {
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

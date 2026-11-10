@@ -1,0 +1,37 @@
+{
+  "name": "@agentos/core",
+  "version": "0.1.0",
+  "description": "The AgentOS daemon: the agent, its conversations and the API clients talk to.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "agentos": "./dist/cli.js" },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/cli.ts start",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p test/tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@agentos/protocol": "workspace:*",
+    "@agentos/relay": "workspace:*",
+    "@agentos/voice": "workspace:*",
+    "@agentos/computer": "workspace:*",
+    "@anthropic-ai/claude-agent-sdk": "^0.3.321",
+    "@hono/node-server": "^1.19.0",
+    "hono": "^4.13.17",
+    "qrcode-terminal": "^0.12.0",
+    "ws": "^8.22.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/qrcode-terminal": "^0.12.2",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

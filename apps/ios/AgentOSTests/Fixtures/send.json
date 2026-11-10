@@ -1,0 +1,13 @@
+{
+  "item": {
+    "id": "msg_5e770f9487d52dc1",
+    "threadId": "main",
+    "at": 1794266722157,
+    "type": "message",
+    "role": "user",
+    "text": "Hello there",
+    "via": "text",
+    "deviceId": null,
+    "files": []
+  }
+}

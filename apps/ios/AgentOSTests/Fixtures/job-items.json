@@ -1,0 +1,71 @@
+{
+  "thread": {
+    "parentId": "main",
+    "cwd": null,
+    "id": "thr_e8f7ff2646baeab8",
+    "kind": "job",
+    "title": "Practice run",
+    "state": "idle",
+    "preview": "All 3 steps are done.",
+    "createdAt": 1794266737363,
+    "updatedAt": 1794266740585
+  },
+  "items": [
+    {
+      "id": "msg_d0dbaebed03306d3",
+      "threadId": "thr_e8f7ff2646baeab8",
+      "at": 1794266737364,
+      "type": "message",
+      "role": "user",
+      "text": "start a job please",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "act_13b26c4076ff5e70",
+      "threadId": "thr_e8f7ff2646baeab8",
+      "at": 1794266737365,
+      "type": "activity",
+      "label": "Step 1 of 3",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266738366
+    },
+    {
+      "id": "act_e8e298b9f8be83af",
+      "threadId": "thr_e8f7ff2646baeab8",
+      "at": 1794266738367,
+      "type": "activity",
+      "label": "Step 2 of 3",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266739369
+    },
+    {
+      "id": "act_633863d84fb8b376",
+      "threadId": "thr_e8f7ff2646baeab8",
+      "at": 1794266739369,
+      "type": "activity",
+      "label": "Step 3 of 3",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266740372
+    },
+    {
+      "id": "msg_6f79d0bfe8ff15ff",
+      "threadId": "thr_e8f7ff2646baeab8",
+      "at": 1794266740583,
+      "type": "message",
+      "role": "agent",
+      "text": "All 3 steps are done.",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    }
+  ],
+  "hasMore": false
+}

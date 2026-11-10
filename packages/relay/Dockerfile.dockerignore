@@ -1,0 +1,9 @@
+# The build takes four files from the root and the relay's sources. Nothing else needs to be sent.
+*
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!tsconfig.base.json
+!packages/relay/package.json
+!packages/relay/tsconfig.json
+!packages/relay/src

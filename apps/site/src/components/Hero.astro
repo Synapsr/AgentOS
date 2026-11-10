@@ -1,0 +1,226 @@
+---
+/**
+ * The first screen: one sentence, the way in, and Nova itself, alive on its
+ * stage and asking. The request beside it is the real card: answer it and
+ * Nova reacts (src/scripts/main.ts).
+ */
+import Icon from "./Icon.astro";
+import Request from "./Request.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang].hero;
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap grid">
+    <div class="copy">
+      <h1 id="hero-title">{t.title.map((sentence) => <span>{sentence} </span>)}</h1>
+      <p class="lead">{t.lead}</p>
+      <div class="actions">
+        <a class="btn lg primary" href="#get">{t.primary}</a>
+        <a class="btn lg secondary has-icon" href="#see"><Icon name="voice" />{t.secondary}</a>
+      </div>
+      <p class="facts">{t.facts}</p>
+    </div>
+
+    <div class="scene" data-scene-state="waiting">
+      <div class="light grain" aria-hidden="true"></div>
+      <div class="stage" id="hero-presence" data-presence="waiting"></div>
+      <div class="slot">
+        <Request lang={lang} id="hero-ask" question={t.question} detail={t.detail} heading="h2" presence="hero-presence" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* The stage light may spread up under the bar, never sideways off the page. */
+  .hero {
+    overflow-x: clip;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-44);
+    min-height: min(calc(100svh - 72px), 800px);
+    padding-block: var(--space-32);
+  }
+
+  .copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  /*
+   * The site's one place above display-l: display-xl, scaled with the window
+   * (docs/DESIGN.md allows up to 72 px; past 64 the column is full and the
+   * sentence would only break more).
+   */
+  h1 {
+    font: var(--type-display-xl);
+    font-size: clamp(32px, 2.8vw + 20px, 64px);
+    letter-spacing: var(--tracking-display-xl);
+    text-wrap: balance;
+  }
+
+  /* Each sentence starts its own line where there is room for it. */
+  h1 span {
+    display: block;
+  }
+
+  .lead {
+    margin-top: var(--space-24);
+    max-width: 31em;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    margin-top: var(--space-32);
+  }
+
+  .facts {
+    max-width: 34em;
+    margin-top: var(--space-24);
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-wrap: pretty;
+  }
+
+  /* ───── Nova on its stage, asking ───── */
+
+  .scene {
+    --stage: 340px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Room for the card as it first appears, so that answering it never moves the page. */
+    min-height: calc(var(--stage) + 260px);
+    --light: var(--presence-waiting);
+    transition: --light var(--spring-material-duration) var(--spring-material);
+  }
+
+  .scene[data-scene-state="working"] {
+    --light: var(--presence-working);
+  }
+
+  .scene[data-scene-state="idle"] {
+    --light: var(--presence-idle);
+  }
+
+  /* The presence's light falling on the stage: its state colour, very low, about 2.2 stages wide. */
+  /* Placed by offsets, not a transform, so that its grain blends with the page (see .grain). */
+  .light {
+    position: absolute;
+    top: calc(var(--stage) * -0.7);
+    left: calc(50% - var(--stage) * 1.2);
+    width: calc(var(--stage) * 2.4);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--light) calc(var(--stage-light) * 100%), transparent), transparent);
+    pointer-events: none;
+  }
+
+  .stage {
+    width: var(--stage);
+    height: var(--stage);
+    flex: none;
+  }
+
+  .slot {
+    position: relative;
+    width: min(420px, 100%);
+    margin-top: calc(-1 * var(--space-12));
+  }
+
+  .slot :global(.request) {
+    box-shadow: var(--shadow-overlay);
+  }
+
+  /* Arrive: once the page is there, Nova's question comes in, in chunks. */
+  @media (prefers-reduced-motion: no-preference) {
+    .slot :global(.request) {
+      animation: arrive-card var(--duration-slow) var(--ease-out) 360ms backwards;
+    }
+
+    .slot :global(.request > *) {
+      animation:
+        arrive-rise var(--spring-gesture-duration) var(--spring-gesture) backwards,
+        arrive-fade var(--duration-base) var(--ease-out) backwards;
+    }
+
+    .slot :global(.request > :nth-child(1)) {
+      animation-delay: 420ms;
+    }
+
+    .slot :global(.request > :nth-child(2)) {
+      animation-delay: calc(420ms + var(--stagger));
+    }
+
+    .slot :global(.request > :nth-child(3)) {
+      animation-delay: calc(420ms + 2 * var(--stagger));
+    }
+
+    .slot :global(.request > :nth-child(4)) {
+      animation-delay: calc(420ms + 3 * var(--stagger));
+    }
+
+    @keyframes arrive-card {
+      from {
+        opacity: 0;
+        translate: 0 var(--arrive-y);
+      }
+    }
+
+    @keyframes arrive-rise {
+      from {
+        translate: 0 var(--arrive-y);
+      }
+    }
+
+    @keyframes arrive-fade {
+      from {
+        opacity: 0;
+        filter: blur(var(--arrive-blur));
+      }
+    }
+  }
+
+  @media (max-width: 1080px) {
+    .scene {
+      --stage: 280px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-24);
+      min-height: 0;
+      padding-block: var(--space-24) var(--space-64);
+    }
+
+    .scene {
+      --stage: 240px;
+    }
+
+    .slot {
+      width: min(460px, 100%);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .actions .btn {
+      width: 100%;
+    }
+  }
+</style>

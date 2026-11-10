@@ -1,0 +1,118 @@
+name: CI
+
+# What every pull request must pass: the TypeScript packages build, typecheck
+# and test on Linux and macOS, the website builds, and the relay's image
+# builds (it is never pushed from here).
+#
+# The desktop shell (Rust) and the iPhone app (Xcode) are not here on purpose:
+# they need a Mac runner for many minutes and change far less often. They have
+# their own workflow, started by hand: apps.yml.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer commit on the same pull request cancels the run in progress.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Read the code, nothing else. No job here needs more.
+permissions:
+  contents: read
+
+jobs:
+  packages:
+    name: Packages (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The oldest Node.js the packages support (see "engines" in package.json).
+          - os: ubuntu-latest
+            node: 20
+          # The Node.js the desktop app carries (apps/desktop/scripts/assemble-runtime.mjs).
+          - os: ubuntu-latest
+            node: 24
+          - os: macos-latest
+            node: 24
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # No version given: it installs the pnpm pinned by "packageManager" in package.json.
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          # Keeps pnpm's store between runs, keyed on the lockfile.
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # In this order: packages see each other through their built output.
+      - run: pnpm build
+      - run: pnpm typecheck
+      - run: pnpm test
+
+      # The protocol's JSON Schema and the design tokens are written by the
+      # build and kept in the repository, for clients that are not TypeScript.
+      - name: Generated files are up to date
+        run: git diff --exit-code -- packages/protocol/schema packages/design/tokens.css packages/design/tokens.json
+
+  site:
+    name: Website
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # The three dots build what the site depends on first: the design tokens and the presence.
+      - run: pnpm --filter "@agentos/site..." build
+
+  relay-image:
+    name: Relay image
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      # Built from the repository root, where the lockfile is. Loaded into the
+      # runner's Docker so that the next step can start it; never pushed.
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          file: packages/relay/Dockerfile
+          tags: agentos-relay:ci
+          push: false
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # A relay does not start without a token of its own (or RELAY_OPEN=1).
+      - name: The relay starts and answers
+        run: |
+          docker run -d --name relay -p 8080:8080 -e RELAY_TOKEN="$(openssl rand -hex 32)" agentos-relay:ci
+          for attempt in $(seq 1 20); do
+            if [ "$(curl -fsS http://127.0.0.1:8080/healthz 2>/dev/null)" = "ok" ]; then exit 0; fi
+            sleep 1
+          done
+          docker logs relay
+          exit 1

@@ -1,0 +1,11 @@
+{
+  "app": "agentos",
+  "version": "0.1.0",
+  "protocol": 1,
+  "node": {
+    "id": "node_edf38b5bcc8dbd71",
+    "name": "Mac mini",
+    "agentName": "Nova"
+  },
+  "onboarded": true
+}

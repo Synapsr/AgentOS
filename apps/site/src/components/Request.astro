@@ -1,0 +1,277 @@
+---
+/**
+ * "Nova is asking": the product's request card, with the anatomy, styles
+ * and words of docs/DESIGN.md ("The request"). Its buttons work: answering
+ * plays the Resolve choreography and folds the card into its receipt
+ * (src/scripts/main.ts), and "Ask again" brings it back.
+ */
+import { glyph, toSVG } from "@agentos/presence";
+import Icon from "./Icon.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+  /** Unique on the page: prefixes the ids the card needs. */
+  id: string;
+  question: string;
+  /** The plain detail under the question. */
+  detail?: string;
+  /** High risk: the "Worth a careful look" banner. */
+  risk?: boolean;
+  /** Show what Nova sees: the bank's transfer form, with "Look closer". */
+  shot?: boolean;
+  /** The raw input, behind "Details". */
+  raw?: string;
+  /** The question's type: `title` in narrow cards, `title-l` in wide ones. */
+  size?: "title" | "title-l";
+  heading?: "h2" | "h3";
+  /** The id of the presence that asks, so that it reacts to the answer. */
+  presence?: string;
+}
+
+const { lang, id, question, detail, risk = false, shot = false, raw, size = "title", heading: Heading = "h3", presence } = Astro.props;
+const t = copy[lang];
+const r = t.request;
+const s = t.charge.shot;
+
+// The waiting glyph, drawn once at build time by the presence package itself, in the label's colour.
+const asking = toSVG(glyph("waiting", 20), { fill: "currentColor", glow: false });
+
+const said = (answer: string) => r.youSaid.replace("{answer}", answer);
+const escape = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/** A stand-in for what Nova sees: a bank's transfer page on a desktop. Another app's colours, not ours. */
+function bank(key: string) {
+  const rows = s.rows
+    .map(([term, value], i) => {
+      const y = 196 + i * 30;
+      return `<line x1="206" x2="556" y1="${y - 18}" y2="${y - 18}" stroke="#E6E2DC"/><text x="206" y="${y}" font-size="12" fill="#77716A">${escape(term!)}</text><text x="556" y="${y}" font-size="12" text-anchor="end" fill="#23201D">${escape(value!)}</text>`;
+    })
+    .join("");
+  return `<svg viewBox="0 0 640 380" font-family="Figtree, system-ui, sans-serif" aria-hidden="true">
+    <defs><linearGradient id="${key}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B4A6B"/><stop offset="1" stop-color="#6B4B63"/></linearGradient></defs>
+    <rect width="640" height="380" fill="url(#${key})"/>
+    <rect x="60" y="34" width="520" height="320" rx="10" fill="#FBFAF8"/>
+    <path d="M60 62V44a10 10 0 0 1 10-10h500a10 10 0 0 1 10 10v18Z" fill="#ECEAE6"/>
+    <circle cx="78" cy="48" r="4.5" fill="#F26B5B"/><circle cx="93" cy="48" r="4.5" fill="#F2BE4B"/><circle cx="108" cy="48" r="4.5" fill="#5CC46B"/>
+    <text x="320" y="52" text-anchor="middle" font-size="11" fill="#77716A">${escape(s.bank)}</text>
+    <path d="M60 62h120v292H70a10 10 0 0 1-10-10Z" fill="#F2F0EC"/>
+    <rect x="78" y="86" width="70" height="7" rx="3.5" fill="#D9D5CF"/><rect x="78" y="104" width="56" height="7" rx="3.5" fill="#3B3632"/><rect x="78" y="122" width="76" height="7" rx="3.5" fill="#D9D5CF"/><rect x="78" y="140" width="48" height="7" rx="3.5" fill="#D9D5CF"/>
+    <text x="206" y="98" font-size="17" font-weight="600" fill="#23201D">${escape(s.title)}</text>
+    <text x="206" y="128" font-size="11" fill="#77716A">${escape(s.amountLabel)}</text>
+    <text x="206" y="160" font-size="30" font-weight="500" fill="#23201D">${escape(s.amount)}</text>
+    ${rows}
+    <rect x="300" y="296" width="110" height="34" rx="8" fill="#ECEAE6"/><text x="355" y="318" font-size="12" text-anchor="middle" fill="#3B3632">${escape(s.cancel)}</text>
+    <rect x="420" y="296" width="136" height="34" rx="8" fill="#2E6BE6"/><text x="488" y="318" font-size="12" font-weight="600" text-anchor="middle" fill="#fff">${escape(s.confirm)}</text>
+  </svg>`;
+}
+---
+
+<div class="ask" data-request data-state="pending" data-presence-of={presence}>
+  <section class="request" aria-labelledby={`${id}-asking ${id}-q`} tabindex="-1" data-card>
+    <div class="head">
+      <span class="asking" id={`${id}-asking`}><span class="glyph" aria-hidden="true" set:html={asking} />{r.asking}</span>
+      <span class="when">{r.now}</span>
+    </div>
+    <Heading class:list={["question", size]} id={`${id}-q`}>{question}</Heading>
+    {detail && <p class="detail">{detail}</p>}
+    {
+      risk && (
+        <p class="careful-banner">
+          <Icon name="alert" />
+          {r.risk}
+        </p>
+      )
+    }
+    {
+      shot && (
+        <div class="shot">
+          <div role="img" aria-label={s.label} set:html={bank(`${id}-sky`)} />
+          <button class="closer glass" type="button" data-closer={`${id}-view`}>
+            <Icon name="zoom" class="dense" />
+            {r.lookCloser}
+          </button>
+        </div>
+      )
+    }
+    {
+      raw && (
+        <details>
+          <summary>
+            {r.details}
+            <Icon name="down" class="dense" />
+          </summary>
+          <div class="raw">
+            <pre><code>{raw}</code></pre>
+            <button class="btn sm secondary has-icon" type="button" data-copy-text={raw} data-copy={t.start.copy} data-copied={t.start.copied} hidden>
+              <span class="swap">
+                <Icon name="copy" class="dense first" />
+                <Icon name="check" class="dense off" />
+              </span>
+              <span data-label aria-live="polite">{t.start.copy}</span>
+            </button>
+          </div>
+        </details>
+      )
+    }
+    <div class="tray" data-tray>
+      <button class="btn lg secondary in-card has-icon" type="button" data-answer="stop" data-outcome={said(r.stop)} aria-describedby={`${id}-q`}>
+        <span class="swap">
+          <Icon name="hand" class="first" />
+          <Icon name="check" class="off" />
+        </span>
+        {r.stop}
+      </button>
+      <button class="btn lg primary in-card has-icon" type="button" data-answer="go" data-outcome={said(r.go)} aria-describedby={`${id}-q`}>
+        <span class="check"><Icon name="check" /></span>
+        {r.go}
+      </button>
+    </div>
+  </section>
+
+  <div class="after" data-after>
+    <div class="receipt" data-receipt>
+      <span class="mark" aria-hidden="true">
+        <Icon name="check" class="for-go" />
+        <Icon name="hand" class="for-stop" />
+      </span>
+      <div class="words">
+        <p class="said" data-said aria-live="polite"></p>
+        <p class="what">{question}</p>
+      </div>
+      <span class="meta">{r.now}</span>
+    </div>
+    <button class="btn sm quiet again" type="button" data-again>{r.again}</button>
+  </div>
+
+  {
+    shot && (
+      <dialog class="view" id={`${id}-view`} aria-label={s.label}>
+        <div class="big" set:html={bank(`${id}-sky-big`)} />
+        <form method="dialog">
+          <button class="icon-btn glass" aria-label={r.close}>
+            <Icon name="close" />
+          </button>
+        </form>
+      </dialog>
+    )
+  }
+</div>
+
+<style>
+  .ask {
+    position: relative;
+  }
+
+  /*
+   * The card and its receipt take turns. The one leaving is lifted out of the
+   * flow while it fades, so that the height can move to the one arriving
+   * (main.ts animates it on the layout spring).
+   */
+  .request,
+  .after {
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      filter var(--duration-base) var(--ease-out),
+      translate var(--duration-base) var(--ease-out),
+      visibility 0s;
+  }
+
+  .after {
+    position: absolute;
+    inset: 0 0 auto;
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    opacity: 0;
+    filter: blur(var(--arrive-blur));
+    visibility: hidden;
+  }
+
+  .ask[data-state="answered"] .after {
+    position: static;
+    opacity: 1;
+    filter: none;
+    visibility: visible;
+  }
+
+  .ask[data-state="answered"] .request {
+    position: absolute;
+    inset: 0 0 auto;
+    opacity: 0;
+    translate: 0 var(--leave-y);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity var(--duration-exit) var(--ease-in),
+      translate var(--duration-exit) var(--ease-in),
+      visibility 0s linear var(--duration-exit);
+  }
+
+  .request:focus-visible {
+    outline-offset: 4px;
+  }
+
+  .request .careful-banner :global(.icon) {
+    flex: none;
+  }
+
+  .receipt {
+    width: 100%;
+  }
+
+  .receipt .words {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .receipt[data-answer="go"] :global(.for-stop),
+  .receipt[data-answer="stop"] :global(.for-go) {
+    display: none;
+  }
+
+  .again {
+    margin-inline-start: var(--space-4);
+  }
+
+  /* Look closer: the same picture, as large as the window allows. */
+  .view {
+    width: min(1100px, 100% - 2 * var(--space-16));
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-xxl);
+    background: var(--surface-overlay);
+    box-shadow: var(--shadow-overlay);
+    overflow: hidden;
+  }
+
+  .view::backdrop {
+    background: var(--scrim);
+  }
+
+  .view .big :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  .view form {
+    position: absolute;
+    top: var(--space-16);
+    right: var(--space-16);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .view[open] {
+      animation: sheet var(--spring-layout-duration) var(--spring-layout);
+    }
+
+    @keyframes sheet {
+      from {
+        translate: 0 var(--arrive-y);
+        opacity: 0;
+      }
+    }
+  }
+</style>

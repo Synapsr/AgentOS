@@ -1,0 +1,240 @@
+---
+/**
+ * Self-hosting: the three ways a phone reaches a computer, and what it
+ * looks like with more than one computer.
+ */
+import { glyph, toSVG, type GlyphState } from "@agentos/presence";
+import Icon from "./Icon.astro";
+import Code from "./Code.astro";
+import { copy, RELAY_COMMAND, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang].connect;
+const c = t.computers;
+---
+
+<section class="section" id="connect" aria-labelledby="connect-title">
+  <div class="wrap">
+    <h2 class="heading" id="connect-title">{t.title}</h2>
+    <p class="lead">{t.lead}</p>
+
+    <ol class="ways">
+      {
+        t.ways.map((way, i) => (
+          <li class="card way">
+            <div class="sketch" aria-hidden="true">
+              <Icon name="phone" />
+              {i === 0 && <span class="link solid" />}
+              {i === 1 && <span class="link dashed" />}
+              {i === 2 && (
+                <>
+                  <span class="link solid short" />
+                  <Icon name="server" />
+                  <span class="link solid short" />
+                </>
+              )}
+              <Icon name="laptop" />
+            </div>
+            <h3 class="title">{way.title}</h3>
+            <p>{way.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="relay">
+      <p class="relay-label"><strong>{t.relayLabel}</strong> {t.relayBuild}</p>
+      <Code text={RELAY_COMMAND} lang={lang} />
+      <p class="note">{t.relayNote}</p>
+    </div>
+
+    <div class="many">
+      <div>
+        <h3 class="title">{c.title}</h3>
+        <p class="dim">{c.body}</p>
+        <p class="dim jobs">{c.jobs}</p>
+      </div>
+      <ul class="computers card" aria-label={c.label}>
+        {
+          c.rows.map((row) => (
+            <li>
+              <span class="small-presence" data-presence={row.state} set:html={toSVG(glyph(row.state as GlyphState, 32), { fill: "currentColor", glow: false })} />
+              <span class="who">
+                <span class="name">{row.name}</span>
+                <span class="where">
+                  {row.where} · {row.line}
+                </span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ways {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-20);
+    margin-top: var(--space-64);
+  }
+
+  .way {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-24);
+    min-width: 0;
+  }
+
+  .way .title,
+  .many .title {
+    font: var(--type-title);
+  }
+
+  .sketch {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    height: 44px;
+    margin-bottom: var(--space-24);
+    color: var(--text-dim);
+  }
+
+  .sketch :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+
+  .link {
+    flex: 1;
+    max-width: 120px;
+    height: 0;
+    border-top: 1.5px solid currentColor;
+    opacity: 0.6;
+  }
+
+  .link.dashed {
+    border-top-style: dashed;
+  }
+
+  .link.short {
+    max-width: 44px;
+  }
+
+  .way p {
+    margin-top: var(--space-8);
+    color: var(--text-dim);
+    text-wrap: pretty;
+  }
+
+  .relay {
+    max-width: 860px;
+    margin-top: var(--space-32);
+  }
+
+  .relay-label {
+    margin-bottom: var(--space-12);
+    color: var(--text-dim);
+    text-wrap: pretty;
+  }
+
+  .relay-label strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .note {
+    margin-top: var(--space-12);
+    color: var(--text-dim);
+    font: var(--type-small);
+  }
+
+  .many {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-44) var(--space-64);
+    align-items: center;
+    margin-top: var(--space-96);
+  }
+
+  .many .dim {
+    margin-top: var(--space-8);
+    max-width: 30em;
+  }
+
+  .many .jobs {
+    margin-top: var(--space-16);
+    font: var(--type-small);
+  }
+
+  .computers {
+    padding-block: var(--space-4);
+    border-radius: var(--radius-l);
+  }
+
+  .computers li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    min-height: var(--size-row);
+    padding: var(--space-8) var(--space-16);
+  }
+
+  .computers li + li .who {
+    box-shadow: 0 -1px 0 var(--line);
+  }
+
+  .small-presence {
+    width: 32px;
+    height: 32px;
+    flex: none;
+    color: var(--text-dim);
+  }
+
+  /* The still glyph holds the place, without JavaScript or until the live presence wakes. */
+  .small-presence :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .small-presence:has(canvas) :global(svg) {
+    display: none;
+  }
+
+  .who {
+    display: grid;
+    flex: 1;
+    align-self: stretch;
+    align-content: center;
+    min-width: 0;
+    padding-block: var(--space-8);
+    margin-block: calc(-1 * var(--space-8));
+  }
+
+  .name {
+    font: var(--type-body-strong);
+  }
+
+  .where {
+    color: var(--text-dim);
+    font: var(--type-small);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 960px) {
+    .ways {
+      grid-template-columns: 1fr;
+    }
+
+    .many {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+/** Commands to type, with a button that copies them (shown once scripts run). */
+import Icon from "./Icon.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  text: string;
+  lang: Lang;
+}
+
+const { text, lang } = Astro.props;
+const t = copy[lang].start;
+// A command wraps between its words, never after the hyphen of a flag; only long words (URLs, paths) may break inside.
+const escape = (word: string) => word.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const html = text
+  .split("\n")
+  .map((line) => line.split(" ").map((word) => `<span class="${word.length > 24 ? "long" : "word"}">${escape(word)}</span>`).join(" "))
+  .join("\n");
+---
+
+<div class="code">
+  <pre><code set:html={html} /></pre>
+  <button class="btn sm secondary has-icon" type="button" data-copy-text={text} data-copy={t.copy} data-copied={t.copied} hidden>
+    <span class="swap">
+      <Icon name="copy" class="dense first" />
+      <Icon name="check" class="dense off" />
+    </span>
+    <span data-label aria-live="polite">{t.copy}</span>
+  </button>
+</div>
+
+<style>
+  /* A command, on the page's own surface: monospace only here and in Details. */
+  .code {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-8);
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--ring);
+  }
+
+  pre {
+    flex: 1;
+    min-width: 0;
+    /* The first line sits level with the button. */
+    padding-block: 7px;
+    font: var(--type-code);
+    white-space: pre-wrap;
+  }
+
+  pre :global(.word) {
+    white-space: nowrap;
+  }
+
+  pre :global(.long) {
+    overflow-wrap: anywhere;
+  }
+</style>

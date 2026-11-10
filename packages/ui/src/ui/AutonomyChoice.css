@@ -1,0 +1,92 @@
+/* Option cards (docs/DESIGN.md, "Surfaces"): a choice among a few. The
+   selected one is ringed and its radio filled: never colour alone. */
+.choices {
+  display: grid;
+  gap: var(--space-12);
+  width: 100%;
+  text-align: left;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  min-height: var(--size-row);
+  padding: var(--space-16);
+  border-radius: var(--radius-l);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+  cursor: pointer;
+  transition: box-shadow var(--duration-base) var(--ease-out);
+}
+.choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.choice:has(input:checked) {
+  box-shadow:
+    var(--shadow-raised),
+    0 0 0 1.5px var(--line-strong);
+}
+/* The keyboard's ring sits a little further out than the selection's, so that the two never merge. */
+.choice:has(input:focus-visible) {
+  outline: var(--space-2) solid var(--focus);
+  outline-offset: var(--space-4);
+}
+
+/* A 40 px tile with the level's picture. */
+.choice-tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(var(--space-32) + var(--space-8));
+  height: calc(var(--space-32) + var(--space-8));
+  border-radius: var(--radius-s);
+  background: var(--fill);
+}
+.choice-text {
+  display: grid;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 0;
+}
+.choice-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-8);
+  font: var(--type-body-strong);
+  letter-spacing: var(--tracking-body-strong);
+}
+.choice-tag {
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-full);
+  background: var(--fill);
+  color: var(--text-dim);
+  font: var(--type-caption);
+  letter-spacing: var(--tracking-caption);
+}
+.choice-help {
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-wrap: pretty;
+}
+
+/* The radio, on the right: a ring, filled when chosen. */
+.choice-mark {
+  flex: none;
+  width: var(--size-icon-large);
+  height: var(--size-icon-large);
+  border-radius: var(--radius-full);
+  box-shadow: inset 0 0 0 1.5px var(--text-faint);
+  transition: box-shadow var(--spring-snappy-duration) var(--spring-snappy);
+}
+.choice input:checked ~ .choice-mark {
+  box-shadow:
+    inset 0 0 0 1.5px var(--text),
+    inset 0 0 0 calc(var(--space-4) + 1.5px) var(--surface-raised),
+    inset 0 0 0 var(--size-icon-large) var(--text);
+}

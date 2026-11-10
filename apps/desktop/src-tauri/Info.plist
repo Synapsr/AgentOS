@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Merged into the Info.plist Tauri generates for the app.
+
+  macOS holds the app that started a process responsible for what that
+  process asks for. The agent's eyes and hands (agent-desktop), the engine and
+  every command the agent runs are started by the core, which this app
+  starts: their permission prompts are shown in AgentOS's name, with the
+  sentences below. Without a sentence, macOS refuses the request silently.
+  Accessibility and Screen Recording have no sentence of their own: the
+  system writes those prompts itself.
+
+  French is in macos/fr.lproj/InfoPlist.strings.
+-->
+<plist version="1.0">
+<dict>
+  <key>CFBundleDevelopmentRegion</key>
+  <string>en</string>
+  <key>CFBundleLocalizations</key>
+  <array>
+    <string>en</string>
+    <string>fr</string>
+  </array>
+  <key>NSAppleEventsUsageDescription</key>
+  <string>Your agent uses this to work in your apps for you.</string>
+  <key>NSDesktopFolderUsageDescription</key>
+  <string>Your agent works with the files on your Desktop when you ask it to.</string>
+  <key>NSDocumentsFolderUsageDescription</key>
+  <string>Your agent works with the files in your Documents when you ask it to.</string>
+  <key>NSDownloadsFolderUsageDescription</key>
+  <string>Your agent works with the files in your Downloads when you ask it to.</string>
+  <key>NSLocalNetworkUsageDescription</key>
+  <string>Your agent uses your network to reach your phone and the devices you ask it to work with.</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>So that you can talk to your agent out loud.</string>
+</dict>
+</plist>

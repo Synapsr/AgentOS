@@ -1,0 +1,84 @@
+---
+/**
+ * The developers' page, in either language: everything technical the home
+ * page leaves out (the quick start, how the parts fit, self-hosting), one
+ * click away from it.
+ */
+import Base from "../layouts/Base.astro";
+import Header from "./Header.astro";
+import Icon from "./Icon.astro";
+import Start from "./Start.astro";
+import How from "./How.astro";
+import Connect from "./Connect.astro";
+import Footer from "./Footer.astro";
+import { copy, REPO, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang];
+const d = t.developers;
+---
+
+<Base lang={lang} title={t.meta.devTitle} description={t.meta.devDescription} paths={{ en: copy.en.devPath, fr: copy.fr.devPath }}>
+  <Header lang={lang} page="developers" />
+  <main id="main">
+    <section class="intro" aria-labelledby="dev-title">
+      <div class="wrap">
+        <a class="btn sm quiet has-icon back" href={t.path}><Icon name="back" class="dense" />{d.back}</a>
+        <h1 id="dev-title">{d.title}</h1>
+        <p class="lead">{d.lead}</p>
+        <ul class="jump">
+          {
+            d.jump.map((link) => (
+              <li>
+                <a class="btn secondary" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a class="btn secondary has-icon" href={REPO}><Icon name="github" />{t.nav.github}</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <Start lang={lang} />
+    <How lang={lang} />
+    <Connect lang={lang} />
+  </main>
+  <Footer lang={lang} page="developers" />
+</Base>
+
+<style>
+  .intro {
+    padding-block: var(--space-44) var(--space-32);
+  }
+
+  .back {
+    margin-inline-start: calc(-1 * var(--space-12));
+    margin-bottom: var(--space-24);
+  }
+
+  h1 {
+    max-width: 16em;
+    font: var(--type-display-l);
+    font-size: clamp(34px, 2vw + 22px, 52px);
+    letter-spacing: var(--tracking-display-l);
+    text-wrap: balance;
+  }
+
+  .lead {
+    margin-top: var(--space-20);
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: var(--space-32);
+  }
+</style>

@@ -1,0 +1,404 @@
+<!doctype html>
+<!--
+  Concept exploration for the presence — kept for the record, not shipped.
+  Six directions, drawn with the same harness: a state switcher, a simulated
+  voice level, sizes from 16 px to full screen, black and light backgrounds.
+  The direction that was kept ("Drops") lives in ../src, much refined since
+  this first sketch; the verdict on each concept says why it was kept or
+  killed. Open this file directly in a browser.
+
+  ?sheet=concepts            one still per concept and state
+  ?sheet=motion&concept=X    eight frames per state, 120 ms apart
+  ?sheet=sizes               every concept at 16–96 px, on black and on light
+-->
+<html lang="en">
+<meta charset="utf-8" />
+<title>Presence — concept exploration</title>
+<style>
+  :root { color-scheme: dark; --bg: #000; --fg: #f5f5f7; --dim: rgba(245, 245, 247, 0.5); }
+  body[data-theme="light"] { --bg: #f5f5f7; --fg: #1d1d1f; --dim: rgba(29, 29, 31, 0.55); }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 13px/1.4 -apple-system, system-ui, sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 14px 18px; }
+  header span { color: var(--dim); }
+  button { font: inherit; color: inherit; background: none; border: 1px solid var(--dim); border-radius: 99px; padding: 4px 12px; cursor: pointer; }
+  button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  main { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1px; }
+  figure { margin: 0; padding: 12px 12px 18px; display: grid; justify-items: center; gap: 6px; }
+  figcaption { text-align: center; max-width: 320px; }
+  figcaption b { display: block; font-weight: 600; }
+  figcaption small { color: var(--dim); }
+  .row { display: flex; align-items: center; gap: 14px; }
+  table { border-collapse: collapse; margin: 16px; }
+  td, th { padding: 4px 6px; text-align: center; color: var(--dim); font-weight: 400; }
+  th.name { text-align: left; color: var(--fg); font-weight: 600; min-width: 150px; }
+  th.name { vertical-align: middle; padding-right: 24px; }
+  th.name small { display: block; font-weight: 400; color: var(--dim); max-width: 330px; margin-top: 4px; }
+  th.name small.killed { color: var(--fg); opacity: 0.78; }
+  th.name small.kept { color: #34d399; }
+  canvas { display: block; }
+</style>
+<body>
+<script>
+const STATES = ["idle", "working", "waiting", "listening", "speaking", "offline"];
+const TAU = Math.PI * 2;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+
+/* Colours of each state, as [primary, secondary, glow strength]. */
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+const PAL = {
+  dark: {
+    idle: [hex("#f4f4f7"), hex("#c9cbe0"), 0.3], working: [hex("#7c93ff"), hex("#b684ff"), 0.5],
+    waiting: [hex("#ffb84d"), hex("#ff9440"), 0.55], listening: [hex("#ffffff"), hex("#cfdcff"), 0.4],
+    speaking: [hex("#ffffff"), hex("#dccfff"), 0.4], offline: [hex("#56565e"), hex("#45454c"), 0],
+  },
+  light: {
+    idle: [hex("#16161a"), hex("#3a3b4a"), 0], working: [hex("#4c63f2"), hex("#8f58ee"), 0],
+    waiting: [hex("#e58a00"), hex("#e06a00"), 0], listening: [hex("#16161a"), hex("#33406e"), 0],
+    speaking: [hex("#16161a"), hex("#43366e"), 0], offline: [hex("#b4b4be"), hex("#c4c4cc"), 0],
+  },
+};
+const rgba = (c, a = 1) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`;
+
+/** Weighted mix of one numeric array per state. */
+function mix(w, pose) {
+  let out;
+  for (const s of STATES) {
+    const p = pose(s);
+    out ??= p.map(() => 0);
+    for (let i = 0; i < p.length; i++) out[i] += w[s] * p[i];
+  }
+  return out;
+}
+function palette(w, theme) {
+  const a = mix(w, (s) => PAL[theme][s][0]), b = mix(w, (s) => PAL[theme][s][1]);
+  const glow = STATES.reduce((g, s) => g + w[s] * PAL[theme][s][2], 0);
+  return { a, b, glow };
+}
+
+function glow(ctx, x, y, r, c, a) {
+  if (a <= 0.003) return;
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, rgba(c, a)); g.addColorStop(0.5, rgba(c, a * 0.32)); g.addColorStop(1, rgba(c, 0));
+  ctx.fillStyle = g; ctx.fillRect(x - r, y - r, 2 * r, 2 * r);
+}
+function pill(path, x, y, w, h, hole = 0) {
+  const r = Math.min(w, h) / 2;
+  path.roundRect(x - w / 2, y - h / 2, w, h, r);
+  if (hole > 0.01) {
+    const t = r * (1 - hole), iw = w - 2 * t, ih = h - 2 * t, ir = Math.min(iw, ih) / 2;
+    // Wound the other way, so that a non-zero fill leaves the hole open.
+    path.moveTo(x - iw / 2 + ir, y - ih / 2);
+    path.arcTo(x - iw / 2, y - ih / 2, x - iw / 2, y + ih / 2, ir); path.arcTo(x - iw / 2, y + ih / 2, x + iw / 2, y + ih / 2, ir);
+    path.arcTo(x + iw / 2, y + ih / 2, x + iw / 2, y - ih / 2, ir); path.arcTo(x + iw / 2, y - ih / 2, x - iw / 2, y - ih / 2, ir);
+    path.closePath();
+  }
+}
+
+/* ───────────── 1. Constellation: five dots that take formations ───────────── */
+const constellation = {
+  name: "Constellation",
+  note: "Five dots take formations: ring, chase, wave, row of bars.",
+  verdict: "Killed. It reads as a loading spinner and an audio meter: a row of equal dots is what voice products already ship. And it has no body — at rest it is a pattern, not someone.",
+  draw(ctx, S, w, t, lvl, pal, mem, dt) {
+    const N = 5, u = S / 2;
+    mem.spin = (mem.spin ?? 0) + dt * (w.idle * 0.25 + w.working * 3.2 + w.listening * 0.4);
+    const p = [];
+    for (let k = 0; k < N; k++) {
+      p.push(mix(w, (s) => {
+        const a = mem.spin + (k / N) * TAU - Math.PI / 2;
+        if (s === "idle") { const r = 0.3 * (1 + 0.05 * Math.sin(t * TAU / 5)); return [r * Math.cos(a), r * Math.sin(a), 0.13, 0.13]; }
+        if (s === "working") { const b = mem.spin - k * 0.62; return [0.52 * Math.cos(b), 0.52 * Math.sin(b), 0.15 - k * 0.022, 0.15 - k * 0.022]; }
+        if (s === "waiting") { const ph = (t * 0.9 - k * 0.09) % 1.6, hop = ph < 0.5 ? Math.sin(ph / 0.5 * Math.PI) : 0; return [(k - 2) * 0.33, -0.3 * hop, 0.12, 0.12]; }
+        if (s === "listening") { const r = 0.32 + 0.4 * lvl; return [r * Math.cos(a), r * Math.sin(a), 0.1 + 0.07 * lvl, 0.1 + 0.07 * lvl]; }
+        if (s === "speaking") { const v = lvl * (0.55 + 0.45 * Math.sin(t * 9 + k * 1.9)); return [(k - 2) * 0.33, 0, 0.12, 0.12 + 0.62 * v]; }
+        return [(k - 2) * 0.27 + (k % 2) * 0.02, 0.62, 0.075, 0.075];
+      }));
+    }
+    for (const [x, y, r] of p) glow(ctx, x * u, y * u, r * u * 4, pal.a, pal.glow * 0.5);
+    const path = new Path2D();
+    for (const [x, y, r, h] of p) pill(path, x * u, y * u, 2 * r * u, 2 * h * u);
+    ctx.fillStyle = rgba(pal.a); ctx.fill(path);
+  },
+};
+
+/* ───────────── 2. Aperture: a ring and what it looks at ───────────── */
+const aperture = {
+  name: "Aperture",
+  note: "A ring with a pupil: a lens that opens, scans and looks back.",
+  verdict: "Killed. The clearest of the rejected at 16 px, but it is an eye. On a product that sees your screen it says surveillance — the red light in a ring of science fiction.",
+  draw(ctx, S, w, t, lvl, pal, mem, dt) {
+    const u = S / 2;
+    mem.spin = (mem.spin ?? 0) + dt * (w.working * 2.6 + w.idle * 0.1);
+    const breath = 0.5 - 0.5 * Math.cos(t * TAU / 5);
+    // [ring radius, stroke, arc coverage 0..1, pupil r, pupil x, pupil y, pupil squash]
+    const [R, sw, cover, pr, px, py, sq] = mix(w, (s) => {
+      if (s === "idle") return [0.62 + 0.02 * breath, 0.07, 1, 0.17, 0, 0, 1];
+      if (s === "working") return [0.62, 0.085, 0.62, 0.13, 0.2 * Math.cos(t * 1.7), 0.12 * Math.sin(t * 2.3), 1];
+      if (s === "waiting") { const b = Math.pow(Math.max(0, Math.sin(t * TAU / 1.8)), 2); return [0.6 + 0.05 * b, 0.08, 1, 0.24 + 0.05 * b, 0, -0.12, 1]; }
+      if (s === "listening") return [0.5 + 0.3 * lvl, 0.07 + 0.05 * lvl, 1, 0.12 + 0.2 * lvl, 0, 0, 1];
+      if (s === "speaking") return [0.62 + 0.1 * lvl * Math.sin(t * 11), 0.07, 1, 0.2, 0, 0, 0.35 + 1.2 * lvl];
+      return [0.6, 0.035, 1, 0.16, 0, 0.1, 0.18];
+    });
+    glow(ctx, 0, 0, R * u * 2, pal.a, pal.glow * 0.35);
+    ctx.strokeStyle = rgba(pal.a); ctx.lineWidth = sw * u; ctx.lineCap = "round";
+    for (let k = 0; k < 3; k++) {
+      const a0 = mem.spin * (1 + k * 0.35) + (k * TAU) / 3, len = (TAU / 3) * lerp(0.42, 1.001, smooth(0.6, 1, cover));
+      ctx.beginPath(); ctx.arc(0, 0, R * u, a0, a0 + len); ctx.stroke();
+    }
+    const path = new Path2D();
+    pill(path, px * u, py * u, 2 * pr * u, 2 * pr * u * clamp(sq, 0.1, 1.6));
+    ctx.fillStyle = rgba(pal.b); ctx.fill(path);
+  },
+};
+
+/* ───────────── 3. Point cloud: a sphere of particles ───────────── */
+const cloud = {
+  name: "Point cloud",
+  note: "A sphere of ninety particles that turns, swells and ripples.",
+  verdict: "Killed. Impressive at 600 px, mush at 24. Its states differ by degree, not by shape: it is the blurry ball again, in dots — and ninety particles to port.",
+  draw(ctx, S, w, t, lvl, pal, mem, dt) {
+    const u = S / 2, N = 90;
+    mem.spin = (mem.spin ?? 0) + dt * (w.idle * 0.25 + w.working * 1.3 + w.waiting * 0.3 + w.listening * 0.4 + w.speaking * 0.5);
+    const breath = 0.5 - 0.5 * Math.cos(t * TAU / 5);
+    const pts = [];
+    for (let i = 0; i < N; i++) {
+      const y0 = 1 - (2 * (i + 0.5)) / N, rad = Math.sqrt(1 - y0 * y0), a = i * 2.399963 + mem.spin;
+      let x = rad * Math.cos(a), y = y0, z = rad * Math.sin(a);
+      const [R, flat, dot] = mix(w, (s) => {
+        if (s === "idle") return [0.56 + 0.025 * breath, 1, 0.03];
+        if (s === "working") return [0.56 + 0.1 * Math.sin(y0 * 5 - t * 3.4), 1, 0.034];
+        if (s === "waiting") return [0.5 + 0.12 * Math.pow(Math.max(0, Math.sin(t * TAU / 1.8)), 2), 1, 0.04];
+        if (s === "listening") return [0.5 + lvl * (0.24 + 0.14 * Math.sin(i * 12.9898 + t * 6)), 1, 0.03 + 0.012 * lvl];
+        if (s === "speaking") return [0.52 + lvl * 0.22 * Math.sin(y0 * 7 - t * 12), 1, 0.034];
+        return [0.5, 0.08, 0.022];
+      });
+      y = y * flat + (1 - flat) * 0.5;
+      pts.push([x * R, y * R, z, dot]);
+    }
+    pts.sort((p, q) => p[2] - q[2]);
+    glow(ctx, 0, 0, u * 1.25, pal.a, pal.glow * 0.3);
+    for (const [x, y, z, d] of pts) {
+      ctx.fillStyle = rgba(z > 0 ? pal.a : pal.b, 0.3 + 0.7 * (z * 0.5 + 0.5));
+      ctx.beginPath(); ctx.arc(x * u, y * u, d * u * (0.7 + 0.5 * (z * 0.5 + 0.5)), 0, TAU); ctx.fill();
+    }
+  },
+};
+
+/* ───────────── 4. Ribbon: one closed line ───────────── */
+const ribbon = {
+  name: "Ribbon",
+  note: "A single closed line: a circle that knots, flattens and vibrates.",
+  verdict: "Killed. A thin line has no weight on a black screen and vanishes when small. Every state is a wobbly circle: an audio visualiser, not a being.",
+  draw(ctx, S, w, t, lvl, pal, mem, dt) {
+    const u = S / 2, N = 160;
+    mem.spin = (mem.spin ?? 0) + dt * (w.working * 1.5 + w.idle * 0.15);
+    // [radius, lobes amplitude, voice amplitude, flatten, stroke]
+    const [R, lobes, voice, flat, sw] = mix(w, (s) => {
+      if (s === "idle") return [0.6 + 0.02 * Math.sin(t * TAU / 5), 0.012, 0, 1, 0.05];
+      if (s === "working") return [0.52, 0.24, 0, 1, 0.055];
+      if (s === "waiting") return [0.56 + 0.07 * Math.pow(Math.max(0, Math.sin(t * TAU / 1.8)), 2), 0.03, 0, 1, 0.075];
+      if (s === "listening") return [0.5 + 0.12 * lvl, 0, 0.6 * lvl, 1, 0.05 + 0.03 * lvl];
+      if (s === "speaking") return [0.54, 0, 1.0 * lvl, 1, 0.055];
+      return [0.5, 0, 0, 0.04, 0.035];
+    });
+    glow(ctx, 0, 0, u * 1.3, pal.a, pal.glow * 0.3);
+    const g = ctx.createLinearGradient(-u, -u, u, u); g.addColorStop(0, rgba(pal.a)); g.addColorStop(1, rgba(pal.b));
+    ctx.strokeStyle = g; ctx.lineWidth = sw * u; ctx.lineJoin = "round";
+    ctx.beginPath();
+    for (let i = 0; i <= N; i++) {
+      const a = (i / N) * TAU;
+      const r = R * (1 + lobes * Math.sin(3 * a + mem.spin * 2) + lobes * 0.5 * Math.sin(2 * a - mem.spin * 3)
+        + voice * (0.1 * Math.sin(7 * a + t * 9) + 0.07 * Math.sin(11 * a - t * 13) + 0.05 * Math.sin(5 * a + t * 5)));
+      const x = r * Math.cos(a + mem.spin * 0.3), y = r * Math.sin(a + mem.spin * 0.3) * flat + (1 - flat) * 0.3;
+      i ? ctx.lineTo(x * u, y * u) : ctx.moveTo(x * u, y * u);
+    }
+    ctx.closePath(); ctx.stroke();
+  },
+};
+
+/* ───────────── 5. Matrix: nine dots as a tiny display ───────────── */
+const matrix = {
+  name: "Matrix",
+  note: "A 3 × 3 dot display: each state is a pattern that plays.",
+  verdict: "Killed. Charming, and fine when tiny, but it is a display: it shows icons of states instead of behaving. Mechanical where the product must feel warm.",
+  draw(ctx, S, w, t, lvl, pal, mem, dt) {
+    const u = S / 2, ring = [0, 1, 2, 5, 8, 7, 6, 3];
+    const path = new Path2D(), dim = new Path2D();
+    for (let i = 0; i < 9; i++) {
+      const cx = (i % 3) - 1, cy = Math.floor(i / 3) - 1, k = ring.indexOf(i);
+      const [v] = mix(w, (s) => {
+        if (s === "idle") return [i === 4 ? 0.85 + 0.15 * Math.sin(t * TAU / 5) : 0.12];
+        if (s === "working") return [i === 4 ? 0.2 : Math.pow(Math.max(0, Math.cos((k / 8) * TAU - t * 4)), 3) * 0.9 + 0.1];
+        if (s === "waiting") { const b = 0.75 + 0.25 * Math.sin(t * TAU / 1.6); return [cx === 0 && cy !== 0 ? b : 0.1]; }
+        if (s === "listening") return [clamp(lvl * 3.4 * (cx === 0 ? 1 : 0.7) - (1 - cy) * 0.9 + 0.5 * Math.sin(t * 7 + cx)) * 0.9 + 0.1];
+        if (s === "speaking") return [clamp(1.1 - Math.abs(cy) * 0.9 + (lvl * 2 - 0.6) * (1 + 0.4 * Math.sin(t * 10 + cx * 2))) * (cy === 0 ? 1 : lvl * 1.4) * 0.9 + 0.08];
+        return [cy === 1 ? 0.3 : 0.06];
+      });
+      const r = (0.07 + 0.19 * clamp(v)) * u;
+      (v > 0.2 ? path : dim).moveTo(cx * 0.6 * u + r, cy * 0.6 * u);
+      (v > 0.2 ? path : dim).arc(cx * 0.6 * u, cy * 0.6 * u, r, 0, TAU);
+      if (v > 0.5) glow(ctx, cx * 0.6 * u, cy * 0.6 * u, r * 3.5, pal.a, pal.glow * 0.5 * v);
+    }
+    ctx.fillStyle = rgba(pal.a, 0.28); ctx.fill(dim);
+    ctx.fillStyle = rgba(pal.a); ctx.fill(path);
+  },
+};
+
+/* ───────────── 6. Drops: three drops, one liquid body ───────────── */
+/** The membrane that joins two circles when they come close (after Hiroyuki Sato's metaballs). */
+function bridge(path, x1, y1, r1, x2, y2, r2) {
+  const d = Math.hypot(x2 - x1, y2 - y1), reach = r1 + r2 + 0.9 * Math.min(r1, r2);
+  if (r1 <= 0 || r2 <= 0 || d >= reach || d <= Math.abs(r1 - r2) + 1e-6) return;
+  const v = 0.5 * smooth(reach, r1 + r2, d);
+  const ac = (x) => Math.acos(clamp(x, -1, 1));
+  const u1 = d < r1 + r2 ? ac((r1 * r1 + d * d - r2 * r2) / (2 * r1 * d)) : 0;
+  const u2 = d < r1 + r2 ? ac((r2 * r2 + d * d - r1 * r1) / (2 * r2 * d)) : 0;
+  const a = Math.atan2(y2 - y1, x2 - x1), spread = ac((r1 - r2) / d);
+  const a1 = a + u1 + (spread - u1) * v, a2 = a - u1 - (spread - u1) * v;
+  const a3 = a + Math.PI - u2 - (Math.PI - u2 - spread) * v, a4 = a - Math.PI + u2 + (Math.PI - u2 - spread) * v;
+  const P = (x, y, ang, r) => [x + r * Math.cos(ang), y + r * Math.sin(ang)];
+  const p1 = P(x1, y1, a1, r1), p2 = P(x1, y1, a2, r1), p3 = P(x2, y2, a3, r2), p4 = P(x2, y2, a4, r2);
+  const k = Math.min(v * 2.4, Math.hypot(p1[0] - p3[0], p1[1] - p3[1]) / (r1 + r2)) * Math.min(1, (d * 2) / (r1 + r2));
+  const h1 = P(...p1, a1 - Math.PI / 2, r1 * k), h2 = P(...p2, a2 + Math.PI / 2, r1 * k);
+  const h3 = P(...p3, a3 + Math.PI / 2, r2 * k), h4 = P(...p4, a4 - Math.PI / 2, r2 * k);
+  path.moveTo(...p1); path.bezierCurveTo(...h1, ...h3, ...p3); path.lineTo(...p4); path.bezierCurveTo(...h4, ...h2, ...p2); path.closePath();
+}
+const drops = {
+  name: "Drops",
+  note: "Three drops of light that are one liquid body: they part, rise, open, stretch, lie flat.",
+  verdict: "Kept. Six silhouettes that cannot be confused, even in one colour at 16 px. A body with weight that splits and merges like liquid: morphs come for free, and it is three pills and three curves to draw anywhere.",
+  draw(ctx, S, w, t, lvl, pal, mem, dt) {
+    const u = S / 2;
+    mem.spin = (mem.spin ?? 0) + dt * w.working * (1.5 + 0.7 * Math.sin(t * 1.3));
+    const breath = 0.5 - 0.5 * Math.cos(t * TAU / 5);
+    const hopT = (t % 2.6) / 2.6;
+    const hop = hopT < 0.1 ? -0.5 * Math.sin((hopT / 0.1) * Math.PI) : hopT < 0.34 ? Math.sin(((hopT - 0.1) / 0.24) * Math.PI) : 0;
+    const peek = Math.pow(Math.max(0, Math.sin(t * TAU / 9)), 12);
+    const size = [0.3, 0.23, 0.17];
+    const L = [0, 1, 2].map((k) => mix(w, (s) => {
+      // [x, y, w, h, hole]
+      if (s === "idle") {
+        const R = 0.5 * (1 + 0.045 * breath);
+        if (k === 0) return [0, 0, 2 * R, 2 * R, 0];
+        if (k === 1) return [0, 0, 0.5, 0.5, 0];
+        const d = R - 0.19 + 0.2 * peek; return [d * 0.74, -d * 0.67, 0.36, 0.36, 0];
+      }
+      if (s === "working") { const a = mem.spin + (k * TAU) / 3 + 0.25 * Math.sin(t * 1.1 + k * 2), r = 0.47 + 0.07 * Math.sin(t * 0.7 + k * 2.1); return [r * Math.cos(a), r * Math.sin(a), 2 * size[k], 2 * size[k], 0]; }
+      if (s === "waiting") {
+        if (k === 0) return [0, 0.24 - 0.07 * hop, 0.84 * (1 - 0.06 * hop), 0.84 * (1 + 0.08 * hop), 0];
+        if (k === 1) return [0, 0.24, 0.5, 0.5, 0];
+        return [0, -0.5 - 0.2 * Math.max(0, hop) - 0.015 * Math.sin(t * 2.2), 0.3, 0.3, 0];
+      }
+      if (s === "listening") { const R = 0.46 + 0.26 * lvl + 0.012 * breath; return [0, 0, 2 * R, 2 * R, 0.74 - 0.3 * lvl]; }
+      if (s === "speaking") { const v = lvl * (0.6 + 0.4 * Math.sin(t * 8.5 + k * 2.2)) * (k === 0 ? 1.15 : 0.85); return [[0, -0.37, 0.37][k], 0, 0.27, 0.27 + 1.0 * v, 0]; }
+      return [0, 0.3, 0.62, 0.085, 0];
+    }));
+    for (const [x, y, lw, lh] of L) glow(ctx, x * u, y * u, Math.min(Math.max(lw, lh) * u * 1.5, u * 1.4 - Math.hypot(x, y) * u), pal.a, pal.glow * 0.42);
+    const path = new Path2D(), joins = new Path2D();
+    for (const [x, y, lw, lh, hole] of L) pill(path, x * u, y * u, lw * u, lh * u, hole);
+    const holed = Math.max(...L.map((l) => l[4]));
+    if (holed < 0.05) for (const [i, j] of [[0, 1], [0, 2], [1, 2]]) bridge(joins, L[i][0] * u, L[i][1] * u, (Math.min(L[i][2], L[i][3]) * u) / 2, L[j][0] * u, L[j][1] * u, (Math.min(L[j][2], L[j][3]) * u) / 2);
+    const g = ctx.createLinearGradient(-u * 0.7, -u * 0.7, u * 0.7, u * 0.7); g.addColorStop(0, rgba(pal.a)); g.addColorStop(1, rgba(pal.b));
+    ctx.fillStyle = g; ctx.fill(path, "nonzero"); ctx.fill(joins, "nonzero");
+  },
+};
+
+const CONCEPTS = { constellation, aperture, cloud, ribbon, matrix, drops };
+
+/** A voice-like level: syllables in bursts, with pauses. */
+const voice = (t) => clamp(Math.pow(Math.abs(Math.sin(t * 2.9) * Math.sin(t * 7.3 + 1)), 0.7) * (0.55 + 0.45 * Math.sin(t * 0.9)) * (Math.sin(t * 0.55) > -0.6 ? 1 : 0));
+
+/** One presence on one canvas, advanced by hand so that sheets are deterministic. */
+function instance(canvas, concept, size, theme) {
+  const dpr = window.devicePixelRatio || 1, ctx = canvas.getContext("2d");
+  canvas.width = canvas.height = Math.round(size * dpr); canvas.style.width = canvas.style.height = size + "px";
+  const sim = { w: Object.fromEntries(STATES.map((s) => [s, +(s === "idle")])), t: 0, lvl: 0, mem: {}, state: "idle" };
+  return {
+    sim,
+    step(dt, state, level) {
+      sim.state = state; sim.t += dt;
+      const k = 1 - Math.exp(-dt * 7);
+      for (const s of STATES) sim.w[s] += ((s === state ? 1 : 0) - sim.w[s]) * k;
+      sim.lvl += (level - sim.lvl) * (1 - Math.exp(-dt * (level > sim.lvl ? 22 : 8)));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, size, size);
+      ctx.translate(size / 2, size / 2);
+      // The figure lives in the inner 70 %: the rest is room for the glow.
+      CONCEPTS[concept].draw(ctx, size * 0.7, sim.w, sim.t, sim.lvl, palette(sim.w, theme), sim.mem, dt);
+    },
+    run(seconds, state, level = voice) { for (let i = 0; i < seconds * 60; i++) this.step(1 / 60, state, level(sim.t)); },
+  };
+}
+
+const q = new URLSearchParams(location.search);
+const theme = q.get("theme") ?? "dark";
+document.body.dataset.theme = theme;
+const el = (tag, props = {}, ...kids) => { const n = Object.assign(document.createElement(tag), props); n.append(...kids); return n; };
+
+if (q.get("sheet") === "concepts") {
+  const size = +(q.get("size") ?? 150), table = el("table");
+  table.append(el("tr", {}, el("th"), ...STATES.map((s) => el("th", {}, s))));
+  for (const [id, c] of Object.entries(CONCEPTS)) {
+    const row = el("tr", {}, el("th", { className: "name" }, c.name, el("small", {}, c.note), el("small", { className: c.verdict.startsWith("Kept") ? "kept" : "killed" }, c.verdict)));
+    for (const s of STATES) { const cv = el("canvas"); row.append(el("td", {}, cv)); const p = instance(cv, id, size, theme); p.run(0.4, "idle"); p.run(2.25, s); }
+    table.append(row);
+  }
+  document.body.append(table);
+} else if (q.get("sheet") === "motion") {
+  const id = q.get("concept"), size = +(q.get("size") ?? 150), table = el("table");
+  for (const s of STATES) {
+    const row = el("tr", {}, el("th", { className: "name" }, s));
+    for (let f = 0; f < 9; f++) { const cv = el("canvas"); row.append(el("td", {}, cv)); const p = instance(cv, id, size, theme); p.run(0.3, "idle"); p.run(1.6 + f * 0.12, s); }
+    table.append(row);
+  }
+  document.body.append(table);
+} else if (q.get("sheet") === "sizes") {
+  const table = el("table");
+  for (const [id, c] of Object.entries(CONCEPTS)) {
+    const row = el("tr", {}, el("th", { className: "name" }, c.name));
+    for (const s of STATES) {
+      const cell = el("div", { className: "row" });
+      for (const size of [16, 24, 48]) { const cv = el("canvas"); cell.append(cv); const p = instance(cv, id, size / 0.7, theme); p.run(0.4, "idle"); p.run(2.25, s); }
+      row.append(el("td", {}, cell));
+    }
+    table.append(row);
+  }
+  document.body.append(table);
+} else {
+  let state = "idle", size = 300, auto = true, manual = 0.5;
+  const header = el("header");
+  const group = (label, values, get, set) => {
+    const box = el("div", { className: "row" }, el("span", {}, label));
+    const sync = () => [...box.querySelectorAll("button")].forEach((b) => b.setAttribute("aria-pressed", String(b.value === String(get()))));
+    for (const v of values) box.append(el("button", { value: v, textContent: v, onclick: () => { set(v); sync(); } }));
+    sync(); header.append(box);
+  };
+  const main = el("main");
+  let items = [];
+  const build = () => {
+    main.replaceChildren(); items = [];
+    for (const [id, c] of Object.entries(CONCEPTS)) {
+      const cv = el("canvas");
+      main.append(el("figure", {}, cv, el("figcaption", {}, el("b", {}, c.name), el("small", {}, c.note + " " + c.verdict))));
+      items.push(instance(cv, id, size, theme));
+    }
+  };
+  group("State", STATES, () => state, (v) => (state = v));
+  group("Size", ["16", "24", "48", "120", "300", "600"], () => size, (v) => { size = +v; build(); });
+  group("Surface", ["dark", "light"], () => theme, (v) => { q.set("theme", v); location.search = q; });
+  const slider = el("input", { type: "range", min: 0, max: 1, step: 0.01, value: manual, oninput: () => { auto = false; manual = +slider.value; } });
+  header.append(el("div", { className: "row" }, el("span", {}, "Voice level"), slider, el("button", { textContent: "simulate", onclick: () => (auto = true) })));
+  document.body.append(header, main);
+  build();
+  let last = performance.now();
+  const frame = (now) => {
+    const dt = Math.min((now - last) / 1000, 0.05); last = now;
+    for (const p of items) p.step(dt, state, auto ? voice(p.sim.t) : manual);
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
+</script>
+</body>
+</html>

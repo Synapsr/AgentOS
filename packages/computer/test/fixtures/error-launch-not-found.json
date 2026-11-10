@@ -1,0 +1,1 @@
+{"version":"2.6","ok":false,"command":"launch","error":{"code":"APP_NOT_FOUND","message":"NSWorkspace failed to launch the requested application","suggestion":"Verify the app name or bundle identifier and retry","platform_detail":"Application bundle was not found","disposition":{"delivery":"not_delivered","retry":"safe"}}}

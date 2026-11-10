@@ -1,0 +1,46 @@
+[package]
+name = "agentos-desktop"
+version = "0.1.0"
+description = "The AgentOS desktop shell: it starts the core, opens windows onto its interface, lives in the menu bar and hands the screen to the agent."
+license = "MIT"
+repository = "https://github.com/Synapsr/AgentOS"
+edition = "2021"
+rust-version = "1.90"
+publish = false
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+# Shortcuts that work while another app has the keyboard.
+tauri-plugin-global-shortcut = "2"
+# Links in a conversation open in the owner's browser.
+tauri-plugin-opener = "2"
+tauri-plugin-single-instance = "2"
+# Remembers where the main window was.
+tauri-plugin-window-state = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# The local token: made from the system's randomness, and never sent to a core
+# that has not proved (HMAC-SHA256) that it holds the same one.
+base64 = "0.23"
+getrandom = "0.3"
+hex = "0.4"
+hmac = "0.12"
+sha2 = "0.10"
+# The core is on this computer, over plain HTTP: no TLS needed.
+tungstenite = { version = "0.28", default-features = false, features = ["handshake"] }
+ureq = { version = "3", default-features = false, features = ["json"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "NSResponder", "NSWindow"] }
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSString"] }
+
+[profile.release]
+lto = true
+opt-level = "s"
+strip = true

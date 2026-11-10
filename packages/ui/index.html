@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- The owner's appearance from the first frame, so that a window never
+         flashes the wrong one (the stage is #0C0B0A in the dark, #EEECE8 in
+         the light). Nothing is inline in this page: the computer serves it
+         under a strict Content-Security-Policy (scripts and styles from its
+         own files only). -->
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0C0B0A" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#EEECE8" media="(prefers-color-scheme: light)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>AgentOS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

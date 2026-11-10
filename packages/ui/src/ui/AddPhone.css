@@ -1,0 +1,79 @@
+.add-phone {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-16);
+}
+
+/* A QR code wants dark on white, whatever surrounds it: the tile is a small
+   light surface of its own (`data-appearance="light"`), a white card. */
+.qr-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* Large enough for any camera at arm's length, and a little smaller on a short screen so the step still fits. */
+  width: clamp(calc(2 * var(--space-96) + var(--space-64)), 34dvh, calc(3 * var(--space-96) + var(--space-32)));
+  aspect-ratio: 1;
+  padding: var(--space-20);
+  border-radius: var(--radius-l);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+  color: var(--text);
+  transition: scale var(--spring-gesture-duration) var(--spring-gesture);
+}
+.qr {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  shape-rendering: crispEdges;
+  transition-property: opacity, scale, filter;
+  transition-duration: var(--duration-base), var(--spring-layout-duration), var(--duration-base);
+  transition-timing-function: var(--ease-in), var(--spring-layout), var(--ease-in);
+}
+
+/* A phone showed up: the code folds into a check, in a green circle. */
+.qr-added {
+  display: grid;
+  place-items: center;
+  grid-area: 1 / 1;
+  width: var(--space-96);
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background: var(--go-fill);
+  color: var(--go);
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--arrive-blur));
+  transition-property: opacity, scale, filter;
+  transition-duration: var(--duration-base), var(--spring-gesture-duration), var(--duration-base);
+  transition-timing-function: var(--ease-out), var(--spring-gesture), var(--ease-out);
+  transition-delay: 120ms;
+}
+.qr-added .icon {
+  width: var(--space-44);
+  height: var(--space-44);
+}
+.qr-tile[data-added] .qr {
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--arrive-blur));
+}
+.qr-tile[data-added] .qr-added {
+  opacity: 1;
+  scale: 1;
+  filter: none;
+}
+
+.add-phone-note {
+  min-height: 1.45em;
+  max-width: 30em;
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-align: center;
+  text-wrap: balance;
+}
+.add-phone[data-added] .add-phone-note {
+  color: var(--text);
+  font: var(--type-body-strong);
+  letter-spacing: var(--tracking-body-strong);
+}

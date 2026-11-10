@@ -1,0 +1,749 @@
+/* The design system (docs/DESIGN.md) comes from @agentos/design as custom
+   properties, with the Figtree font. This file adds the primitives every
+   view shares: buttons, fields, icons, chips, toasts and the motion helpers.
+   No colour, radius, space or duration is written here that is not a token. */
+@import "@agentos/design/tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* The page under everything: the presence's stage or a utility surface (`useSurface`). */
+html {
+  background: var(--surface-stage);
+  -webkit-text-size-adjust: 100%;
+}
+html[data-surface="utility"] {
+  background: var(--surface);
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font: var(--type-body);
+  letter-spacing: var(--tracking-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+button {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+button:disabled {
+  cursor: default;
+}
+
+/* The keyboard's place, as on every Mac: a 2 px ring, 2 px away, following the corners. */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: var(--space-2) solid var(--focus);
+  outline-offset: var(--space-2);
+}
+
+::selection {
+  background: var(--working-fill);
+}
+::placeholder {
+  color: var(--text-faint);
+  opacity: 1;
+}
+
+/* ───────────── Text ───────────── */
+
+.type-title-l {
+  font: var(--type-title-l);
+  letter-spacing: var(--tracking-title-l);
+  text-wrap: balance;
+}
+.type-title {
+  font: var(--type-title);
+  letter-spacing: var(--tracking-title);
+  text-wrap: balance;
+}
+
+/* ───────────── Buttons: capsules, one line, a verb ───────────── */
+
+/*
+ * Four looks (primary, secondary, quiet, careful) and five sizes (sm, md,
+ * lg, big, xl). Hover lays the label's colour over the fill at 6 %; a press
+ * scales to 0.96 at once with a darker overlay, and comes back on the
+ * `press` spring. The overlay sits under the label (`isolation`, z-index -1).
+ */
+.button {
+  --height: var(--size-control);
+  --pad: var(--space-20);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  height: var(--height);
+  min-width: var(--size-control);
+  padding: 0 var(--pad);
+  border-radius: var(--radius-full);
+  background: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  color: var(--text);
+  font: var(--type-button);
+  letter-spacing: var(--tracking-button);
+  text-decoration: none;
+  white-space: nowrap;
+  transition-property: scale, opacity, background-color, box-shadow, color;
+  transition-duration: var(--spring-press-duration), var(--duration-fast), var(--duration-fast), var(--duration-fast), var(--duration-fast);
+  transition-timing-function: var(--spring-press), var(--ease-out), var(--ease-out), var(--ease-out), var(--ease-out);
+}
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+/* Under a finger: at once. */
+.button:active:not(:disabled, [aria-disabled="true"]) {
+  scale: var(--press);
+  transition-duration: var(--duration-instant);
+  transition-timing-function: var(--ease-out);
+}
+.button:active:not(:disabled, [aria-disabled="true"])::after {
+  background: var(--black);
+  opacity: var(--press-overlay);
+  transition-duration: var(--duration-instant);
+}
+@media (hover: hover) {
+  .button:hover:not(:disabled, [aria-disabled="true"])::after {
+    opacity: var(--hover-overlay);
+  }
+}
+
+/* A leading icon takes 2 px of its side's padding, so that the button looks centred. */
+.button:has(> .icon:first-child, > .swap:first-child) {
+  padding-inline-start: calc(var(--pad) - var(--space-2));
+}
+
+/* The one way forward on a screen: the presence's own pearl (ink in the light), lit from above. */
+.button.primary {
+  background: var(--primary-gradient);
+  box-shadow: var(--shadow-button);
+  color: var(--on-primary);
+}
+/* Everything else that matters: a solid fill with an edge, the label at full contrast. */
+.button.secondary {
+  background: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  color: var(--text);
+}
+/* Things one rarely needs. */
+.button.quiet {
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-dim);
+}
+/* An option the agent marks as dangerous. Never the default. */
+.button.careful {
+  background: var(--careful-fill);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--careful) 24%, transparent);
+  color: var(--careful);
+}
+@media (hover: hover) {
+  .button.secondary:hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--fill-strong);
+  }
+  .button.secondary:hover:not(:disabled, [aria-disabled="true"])::after,
+  .button.quiet:hover:not(:disabled, [aria-disabled="true"])::after {
+    opacity: 0;
+  }
+  .button.quiet:hover:not(:disabled, [aria-disabled="true"]) {
+    background: var(--fill);
+    color: var(--text);
+  }
+}
+
+/* Disabled: a neutral fill and a faint label, no shadow. Prefer a button that says what is missing. */
+.button:disabled:not([data-pending]),
+.button[aria-disabled="true"]:not([data-pending]) {
+  background: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  color: var(--text-faint);
+}
+
+.button.quiet:disabled {
+  background: transparent;
+  box-shadow: none;
+}
+
+.button.sm {
+  --height: var(--size-control-sm);
+  --pad: var(--space-16);
+}
+/* A small button is still a place 44 px high to press. */
+.button.sm::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--size-control-sm) - var(--size-control)) / 2) 0;
+}
+.button.lg {
+  --height: var(--size-control-lg);
+  font: var(--type-button-big);
+  letter-spacing: var(--tracking-button-big);
+}
+.button.big {
+  --height: var(--size-control-big);
+  --pad: var(--space-24);
+  font: var(--type-button-big);
+  letter-spacing: var(--tracking-button-big);
+}
+.button.xl {
+  --height: var(--size-control-xl);
+  --pad: var(--space-24);
+  font: var(--type-button-big);
+  letter-spacing: var(--tracking-button-big);
+}
+.button.block {
+  width: 100%;
+}
+/* Inside a card a button is concentric with it: card 28 = button 16 + inset 12. */
+.button.in-card {
+  border-radius: var(--radius-m);
+}
+
+/* Glass: only for a control that floats over content (docs/DESIGN.md, "Materials"). */
+.glass,
+.button.glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .button.glass {
+    background: var(--surface-overlay);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* A round control that holds one icon, and has an accessible name. As large as anything a finger can hit. */
+.icon-button {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--size-control);
+  height: var(--size-control);
+  border-radius: var(--radius-full);
+  color: var(--text-dim);
+  transition-property: scale, background-color, color;
+  transition-duration: var(--spring-press-duration), var(--duration-fast), var(--duration-fast);
+  transition-timing-function: var(--spring-press), var(--ease-out), var(--ease-out);
+}
+.icon-button:active:not(:disabled) {
+  scale: var(--press);
+  transition-duration: var(--duration-instant);
+  transition-timing-function: var(--ease-out);
+}
+.icon-button:disabled {
+  color: var(--text-faint);
+}
+.icon-button.filled {
+  background: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  color: var(--text);
+}
+@media (hover: hover) {
+  .icon-button:hover:not(:disabled) {
+    background: var(--fill);
+    color: var(--text);
+  }
+  .icon-button.filled:hover:not(:disabled) {
+    background: var(--fill-strong);
+  }
+}
+
+/* A quiet way to something optional: text, underlined. */
+.link {
+  position: relative;
+  color: var(--text-dim);
+  font: var(--type-small);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: var(--space-4);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.link::before {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--space-12)) calc(-1 * var(--space-8));
+}
+@media (hover: hover) {
+  .link:hover {
+    color: var(--text);
+  }
+}
+
+/* Line icons, in the colour of the text around them: 24-unit grid, round, 1.75. */
+.icon {
+  display: block;
+  flex: none;
+  width: var(--size-icon);
+  height: var(--size-icon);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon.dense {
+  width: var(--size-icon-dense);
+  height: var(--size-icon-dense);
+}
+.icon.large {
+  width: var(--size-icon-large);
+  height: var(--size-icon-large);
+}
+/* A still glyph of the presence's state, beside words. */
+.glyph {
+  display: block;
+  flex: none;
+  width: var(--stage-label);
+  height: var(--stage-label);
+}
+.glyph[data-glyph="idle"] {
+  fill: var(--presence-idle);
+}
+.glyph[data-glyph="working"] {
+  fill: var(--presence-working);
+}
+.glyph[data-glyph="waiting"] {
+  fill: var(--presence-waiting);
+}
+.glyph[data-glyph="offline"] {
+  fill: var(--presence-offline);
+}
+
+/* Two icons in one place: the old one shrinks into a blur while the new one comes out of it (Icon swap). */
+.swap {
+  display: grid;
+  flex: none;
+}
+.swap > * {
+  grid-area: 1 / 1;
+  transition-property: scale, opacity, filter;
+  transition-duration: var(--spring-snappy-duration);
+  transition-timing-function: var(--spring-snappy);
+}
+.swap > [data-off] {
+  scale: 0.25;
+  opacity: 0;
+  filter: blur(var(--arrive-blur));
+}
+
+/* The 32 px square behind an icon in a row or a choice. */
+.tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--size-icon-tile);
+  height: var(--size-icon-tile);
+  border-radius: var(--radius-s);
+  background: var(--fill);
+  color: var(--text);
+}
+
+/* ───────────── Fields ───────────── */
+
+.field {
+  width: 100%;
+  min-height: var(--size-control-lg);
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-m);
+  background: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  color: var(--text);
+  font: var(--type-body);
+  letter-spacing: var(--tracking-body);
+  transition: box-shadow var(--duration-fast) var(--ease-out);
+}
+.field:focus {
+  outline: var(--space-2) solid var(--focus);
+  outline-offset: var(--space-2);
+}
+.field[aria-invalid="true"] {
+  box-shadow: inset 0 0 0 1px var(--careful);
+}
+/* The label of a field sits above it, never inside as its only label. */
+.field-label {
+  display: grid;
+  gap: var(--space-8);
+  width: 100%;
+  color: var(--text-dim);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  text-align: left;
+}
+/* One line under something that went wrong, or that is missing. */
+.field-error {
+  color: var(--careful);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-wrap: pretty;
+}
+
+/* ───────────── Groups of rows (docs/DESIGN.md, "Settings rows") ───────────── */
+
+.group {
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+}
+/* Rows are separated by a line that starts where the text starts. */
+.group > *,
+.group > .permissions > * {
+  position: relative;
+}
+.group > * + *::before,
+.group > .permissions > * + *::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--space-12) + var(--size-icon-tile) + var(--space-12));
+  height: 1px;
+  background: var(--line);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  width: 100%;
+  min-height: var(--size-row-single);
+  padding: var(--space-8) var(--space-16) var(--space-8) var(--space-12);
+  text-align: left;
+}
+/* With a subtitle. */
+.row-tall,
+.row[data-tall] {
+  min-height: var(--size-row);
+}
+.row > .tile {
+  align-self: center;
+}
+.tile[data-tone="careful"] {
+  background: var(--careful-fill);
+  color: var(--careful);
+}
+.row-text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.row-title {
+  font: var(--type-body-strong);
+  letter-spacing: var(--tracking-body-strong);
+}
+.row > .row-title {
+  flex: none;
+}
+.row-sub {
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-wrap: pretty;
+}
+.row-sub[data-missing] {
+  color: var(--careful);
+}
+.row-value {
+  margin-left: auto;
+  color: var(--text-dim);
+}
+/* A sentence in place of a row. */
+.row-note {
+  padding: var(--space-16);
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-wrap: pretty;
+}
+.row-note[data-wrong] {
+  color: var(--careful);
+}
+
+/* ───────────── Chips: a background job, a suggestion ───────────── */
+
+.chip {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  max-width: 100%;
+  height: var(--size-control-sm);
+  padding: 0 var(--space-16) 0 var(--space-12);
+  border-radius: var(--radius-full);
+  background: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  color: var(--text);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  white-space: nowrap;
+  transition-property: scale, background-color, box-shadow;
+  transition-duration: var(--spring-press-duration), var(--duration-fast), var(--duration-fast);
+  transition-timing-function: var(--spring-press), var(--ease-out), var(--ease-out);
+}
+/* A chip is 36 high; the place to press is 44. */
+.chip::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--size-control-sm) - var(--size-control)) / 2) 0;
+}
+button.chip:active {
+  scale: var(--press);
+  transition-duration: var(--duration-instant);
+  transition-timing-function: var(--ease-out);
+}
+@media (hover: hover) {
+  button.chip:hover {
+    background: var(--fill-strong);
+  }
+}
+.chip-status {
+  overflow: hidden;
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-overflow: ellipsis;
+}
+.chip.working {
+  background: var(--working-fill);
+  box-shadow: none;
+}
+.chip.waiting {
+  background: var(--waiting-fill);
+  box-shadow: none;
+}
+/* Amber, pulled a little toward the text so that it reads on its own amber fill in both appearances. */
+.chip.waiting .chip-status {
+  color: color-mix(in srgb, var(--waiting), var(--text) 12%);
+}
+.chip .dot {
+  flex: none;
+  width: var(--space-8);
+  height: var(--space-8);
+  margin: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--working);
+}
+
+/* ───────────── Toasts ───────────── */
+
+.toasts {
+  position: fixed;
+  inset: auto 0 calc(var(--space-24) + env(safe-area-inset-bottom));
+  z-index: 10;
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+}
+.toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-12);
+  height: var(--size-control-lg);
+  padding: 0 var(--space-20) 0 var(--space-16);
+  border-radius: var(--radius-full);
+  background: var(--surface-overlay);
+  box-shadow: var(--shadow-overlay);
+  font: var(--type-body-strong);
+  letter-spacing: var(--tracking-body-strong);
+}
+.toast [data-tone="go"] {
+  color: var(--go);
+}
+.toast [data-tone="careful"] {
+  color: var(--careful);
+}
+
+/* ───────────── Before the first answer from the computer ───────────── */
+
+.connecting {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-24);
+  height: 100dvh;
+  padding: 0 var(--space-24);
+  text-align: center;
+}
+.connecting-line {
+  min-height: 2.32em;
+  font: var(--type-display-s);
+  letter-spacing: var(--tracking-display-s);
+}
+
+/* ───────────── The stage light ───────────── */
+
+/* The presence's light falling on its stage: its state's colour at 10 %, about
+   2.2 times the stage wide. It follows the state on the `material` spring. */
+@property --light {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+.stage-light {
+  --light: transparent;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--stage) * 2.2);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: var(--radius-full);
+  background: radial-gradient(closest-side in oklab, color-mix(in srgb, var(--light) calc(var(--stage-light) * 100%), transparent), transparent);
+  pointer-events: none;
+  transition: --light var(--spring-material-duration) var(--spring-material);
+}
+/* A light this faint has only a few shades to go through: a fine grain over it hides the steps between them. */
+.stage-light::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("./ui/noise.svg");
+  -webkit-mask-image: radial-gradient(closest-side, black, transparent);
+  mask-image: radial-gradient(closest-side, black, transparent);
+  mix-blend-mode: overlay;
+  opacity: 0.12;
+}
+.stage-light[data-state="idle"] {
+  --light: var(--presence-idle);
+}
+.stage-light[data-state="working"] {
+  --light: var(--presence-working);
+}
+.stage-light[data-state="waiting"] {
+  --light: var(--presence-waiting);
+}
+.stage-light[data-state="listening"] {
+  --light: var(--presence-listening);
+}
+.stage-light[data-state="speaking"] {
+  --light: var(--presence-speaking);
+}
+/* In daylight only the coloured states throw light: an ink one would read as a stain. No light, no grain. */
+html[data-appearance="light"] .stage-light:not([data-state="working"], [data-state="waiting"]) {
+  --light: transparent;
+}
+html[data-appearance="light"] .stage-light:not([data-state="working"], [data-state="waiting"])::after,
+.stage-light[data-state="offline"]::after {
+  display: none;
+}
+@media (prefers-color-scheme: light) {
+  html[data-appearance="system"] .stage-light:not([data-state="working"], [data-state="waiting"]) {
+    --light: transparent;
+  }
+  html[data-appearance="system"] .stage-light:not([data-state="working"], [data-state="waiting"])::after {
+    display: none;
+  }
+}
+
+/* ───────────── Motion ───────────── */
+
+/* Arrive (docs/DESIGN.md): a chunk rises 12 px out of a 4 px blur, `--i`
+   stagger steps after the first. Movement on the `gesture` spring, opacity
+   and blur over `base`. One-shot, so keyframes. */
+.arrive {
+  animation:
+    arrive-move var(--spring-gesture-duration) var(--spring-gesture) both,
+    arrive-fade var(--duration-base) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger));
+}
+@keyframes arrive-move {
+  from {
+    translate: 0 var(--arrive-y);
+  }
+}
+@keyframes arrive-fade {
+  from {
+    opacity: 0;
+    filter: blur(var(--arrive-blur));
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Less motion: nothing travels, nothing loops; every change is a fade of at most 150 ms. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --press: 1;
+    --duration-base: var(--duration-exit);
+    --duration-slow: var(--duration-exit);
+    --spring-snappy-duration: var(--duration-exit);
+    --spring-press-duration: var(--duration-exit);
+    --spring-layout-duration: var(--duration-exit);
+    --spring-gesture-duration: var(--duration-exit);
+    --spring-material-duration: var(--duration-exit);
+    --stagger: 0ms;
+    --arrive-y: 0px;
+    --arrive-blur: 0px;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+  }
+  .arrive {
+    animation: fade var(--duration-exit) var(--ease-out) both;
+  }
+  .swap > [data-off] {
+    scale: 1;
+    filter: none;
+  }
+}

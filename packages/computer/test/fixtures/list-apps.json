@@ -1,0 +1,1 @@
+{"version":"2.6","ok":true,"command":"list-apps","data":{"apps":[{"bundle_id":"com.apple.calculator","name":"Calculatrice","pid":32910,"presentation":"foreground","process_instance":"macos-proc-v1:1794261575:544550"}]}}

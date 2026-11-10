@@ -1,0 +1,6157 @@
+{
+  "$comment": "Generated from packages/protocol/src — do not edit.",
+  "protocol": 1,
+  "definitions": {
+    "ActivityItem": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "threadId": {
+          "type": "string"
+        },
+        "at": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "type": {
+          "type": "string",
+          "const": "activity"
+        },
+        "label": {
+          "type": "string"
+        },
+        "tool": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "running",
+            "done",
+            "failed"
+          ]
+        },
+        "endedAt": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "threadId",
+        "at",
+        "type",
+        "label",
+        "tool",
+        "detail",
+        "state",
+        "endedAt"
+      ]
+    },
+    "ApiError": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "unauthorized",
+                "forbidden",
+                "not_found",
+                "invalid",
+                "conflict",
+                "rate_limited",
+                "unavailable",
+                "internal"
+              ]
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ]
+        }
+      },
+      "required": [
+        "error"
+      ]
+    },
+    "Autonomy": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "supervised",
+        "balanced",
+        "autonomous"
+      ]
+    },
+    "ClientFrame": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ping"
+            }
+          },
+          "required": [
+            "type"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "presence"
+            },
+            "active": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "active"
+          ]
+        }
+      ]
+    },
+    "ClientPlatform": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "ios",
+        "watchos",
+        "android",
+        "web",
+        "desktop",
+        "cli",
+        "node"
+      ]
+    },
+    "Device": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string",
+          "enum": [
+            "ios",
+            "watchos",
+            "android",
+            "web",
+            "desktop",
+            "cli",
+            "node"
+          ]
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "lastSeenAt": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "platform",
+        "createdAt",
+        "lastSeenAt"
+      ]
+    },
+    "DevicesResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "platform": {
+                "type": "string",
+                "enum": [
+                  "ios",
+                  "watchos",
+                  "android",
+                  "web",
+                  "desktop",
+                  "cli",
+                  "node"
+                ]
+              },
+              "createdAt": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "lastSeenAt": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "platform",
+              "createdAt",
+              "lastSeenAt"
+            ]
+          }
+        }
+      },
+      "required": [
+        "devices"
+      ]
+    },
+    "Empty": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {}
+    },
+    "ErrorCode": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "unauthorized",
+        "forbidden",
+        "not_found",
+        "invalid",
+        "conflict",
+        "rate_limited",
+        "unavailable",
+        "internal"
+      ]
+    },
+    "Event": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "node.status"
+            },
+            "status": {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "idle",
+                    "working",
+                    "waiting"
+                  ]
+                },
+                "activity": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "desktop",
+                    "os"
+                  ]
+                },
+                "pendingRequests": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "workingThreads": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "state",
+                "activity",
+                "mode",
+                "pendingRequests",
+                "workingThreads"
+              ]
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "status"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "node.updated"
+            },
+            "node": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "platform": {
+                  "type": "string",
+                  "enum": [
+                    "macos",
+                    "windows",
+                    "linux"
+                  ]
+                },
+                "version": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "agent": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "language": {
+                  "type": "string"
+                },
+                "autonomy": {
+                  "type": "string",
+                  "enum": [
+                    "supervised",
+                    "balanced",
+                    "autonomous"
+                  ]
+                },
+                "onboarded": {
+                  "type": "boolean"
+                },
+                "capabilities": {
+                  "type": "object",
+                  "properties": {
+                    "computer": {
+                      "type": "boolean"
+                    },
+                    "engine": {
+                      "type": "string"
+                    },
+                    "engineReady": {
+                      "type": "boolean"
+                    },
+                    "voice": {
+                      "type": "object",
+                      "properties": {
+                        "provider": {
+                          "type": "string"
+                        },
+                        "stt": {
+                          "type": "string",
+                          "enum": [
+                            "device",
+                            "server"
+                          ]
+                        },
+                        "tts": {
+                          "type": "string",
+                          "enum": [
+                            "device",
+                            "server"
+                          ]
+                        },
+                        "ttsMime": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "provider",
+                        "stt",
+                        "tts",
+                        "ttsMime"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "computer",
+                    "engine",
+                    "engineReady",
+                    "voice"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "platform",
+                "version",
+                "protocol",
+                "agent",
+                "owner",
+                "language",
+                "autonomy",
+                "onboarded",
+                "capabilities"
+              ]
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "node"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "thread.updated"
+            },
+            "thread": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "main",
+                    "job"
+                  ]
+                },
+                "title": {
+                  "type": "string"
+                },
+                "parentId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "cwd": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "idle",
+                    "working",
+                    "waiting",
+                    "error"
+                  ]
+                },
+                "preview": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "createdAt": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "updatedAt": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "title",
+                "parentId",
+                "cwd",
+                "state",
+                "preview",
+                "createdAt",
+                "updatedAt"
+              ]
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "thread"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "thread.deleted"
+            },
+            "threadId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "threadId"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "item.added"
+            },
+            "item": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "message"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "agent"
+                      ]
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "via": {
+                      "type": "string",
+                      "enum": [
+                        "text",
+                        "voice"
+                      ]
+                    },
+                    "deviceId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "mime": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "height": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "mime",
+                          "width",
+                          "height"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "threadId",
+                    "at",
+                    "type",
+                    "role",
+                    "text",
+                    "via",
+                    "deviceId",
+                    "files"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "activity"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "tool": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "detail": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "running",
+                        "done",
+                        "failed"
+                      ]
+                    },
+                    "endedAt": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "threadId",
+                    "at",
+                    "type",
+                    "label",
+                    "tool",
+                    "detail",
+                    "state",
+                    "endedAt"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "request"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "approval",
+                        "question"
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "spoken": {
+                      "type": "string"
+                    },
+                    "risk": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "medium",
+                        "high"
+                      ]
+                    },
+                    "screenshot": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "mime": {
+                              "type": "string"
+                            },
+                            "width": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "height": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "mime",
+                            "width",
+                            "height"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "options": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "style": {
+                            "type": "string",
+                            "enum": [
+                              "primary",
+                              "danger",
+                              "default"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label",
+                          "style"
+                        ]
+                      }
+                    },
+                    "allowText": {
+                      "type": "boolean"
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "resolved",
+                        "cancelled"
+                      ]
+                    },
+                    "resolution": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "optionId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "text": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "deviceId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            }
+                          },
+                          "required": [
+                            "optionId",
+                            "text",
+                            "deviceId",
+                            "at"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "threadId",
+                    "at",
+                    "type",
+                    "kind",
+                    "title",
+                    "body",
+                    "spoken",
+                    "risk",
+                    "screenshot",
+                    "options",
+                    "allowText",
+                    "state",
+                    "resolution"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "item"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "item.updated"
+            },
+            "item": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "message"
+                    },
+                    "role": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "agent"
+                      ]
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "via": {
+                      "type": "string",
+                      "enum": [
+                        "text",
+                        "voice"
+                      ]
+                    },
+                    "deviceId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "mime": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "height": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "mime",
+                          "width",
+                          "height"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "threadId",
+                    "at",
+                    "type",
+                    "role",
+                    "text",
+                    "via",
+                    "deviceId",
+                    "files"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "activity"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "tool": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "detail": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "running",
+                        "done",
+                        "failed"
+                      ]
+                    },
+                    "endedAt": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "threadId",
+                    "at",
+                    "type",
+                    "label",
+                    "tool",
+                    "detail",
+                    "state",
+                    "endedAt"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "request"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "approval",
+                        "question"
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "spoken": {
+                      "type": "string"
+                    },
+                    "risk": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "medium",
+                        "high"
+                      ]
+                    },
+                    "screenshot": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "mime": {
+                              "type": "string"
+                            },
+                            "width": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "height": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": -9007199254740991,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "mime",
+                            "width",
+                            "height"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "options": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "style": {
+                            "type": "string",
+                            "enum": [
+                              "primary",
+                              "danger",
+                              "default"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label",
+                          "style"
+                        ]
+                      }
+                    },
+                    "allowText": {
+                      "type": "boolean"
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "resolved",
+                        "cancelled"
+                      ]
+                    },
+                    "resolution": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "optionId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "text": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "deviceId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            }
+                          },
+                          "required": [
+                            "optionId",
+                            "text",
+                            "deviceId",
+                            "at"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "threadId",
+                    "at",
+                    "type",
+                    "kind",
+                    "title",
+                    "body",
+                    "spoken",
+                    "risk",
+                    "screenshot",
+                    "options",
+                    "allowText",
+                    "state",
+                    "resolution"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "item"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "message.delta"
+            },
+            "threadId": {
+              "type": "string"
+            },
+            "messageId": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "threadId",
+            "messageId",
+            "text"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "turn.completed"
+            },
+            "threadId": {
+              "type": "string"
+            },
+            "ok": {
+              "type": "boolean"
+            },
+            "text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "seq",
+            "at",
+            "type",
+            "threadId",
+            "ok",
+            "text"
+          ]
+        }
+      ]
+    },
+    "FileRef": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "mime": {
+          "type": "string"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "mime",
+        "width",
+        "height"
+      ]
+    },
+    "HelloResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "app": {
+          "type": "string",
+          "const": "agentos"
+        },
+        "version": {
+          "type": "string"
+        },
+        "protocol": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "node": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "agentName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "agentName"
+          ]
+        },
+        "onboarded": {
+          "type": "boolean"
+        },
+        "proof": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "app",
+        "version",
+        "protocol",
+        "node",
+        "onboarded",
+        "proof"
+      ]
+    },
+    "Item": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "threadId": {
+              "type": "string"
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "message"
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "user",
+                "agent"
+              ]
+            },
+            "text": {
+              "type": "string"
+            },
+            "via": {
+              "type": "string",
+              "enum": [
+                "text",
+                "voice"
+              ]
+            },
+            "deviceId": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "mime": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "height": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "mime",
+                  "width",
+                  "height"
+                ]
+              }
+            }
+          },
+          "required": [
+            "id",
+            "threadId",
+            "at",
+            "type",
+            "role",
+            "text",
+            "via",
+            "deviceId",
+            "files"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "threadId": {
+              "type": "string"
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "activity"
+            },
+            "label": {
+              "type": "string"
+            },
+            "tool": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "detail": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "running",
+                "done",
+                "failed"
+              ]
+            },
+            "endedAt": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "threadId",
+            "at",
+            "type",
+            "label",
+            "tool",
+            "detail",
+            "state",
+            "endedAt"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "threadId": {
+              "type": "string"
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "request"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "approval",
+                "question"
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "spoken": {
+              "type": "string"
+            },
+            "risk": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            "screenshot": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "mime": {
+                      "type": "string"
+                    },
+                    "width": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "height": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "mime",
+                    "width",
+                    "height"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "style": {
+                    "type": "string",
+                    "enum": [
+                      "primary",
+                      "danger",
+                      "default"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "style"
+                ]
+              }
+            },
+            "allowText": {
+              "type": "boolean"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "resolved",
+                "cancelled"
+              ]
+            },
+            "resolution": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "optionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "text": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "deviceId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "optionId",
+                    "text",
+                    "deviceId",
+                    "at"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "threadId",
+            "at",
+            "type",
+            "kind",
+            "title",
+            "body",
+            "spoken",
+            "risk",
+            "screenshot",
+            "options",
+            "allowText",
+            "state",
+            "resolution"
+          ]
+        }
+      ]
+    },
+    "ItemsResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "thread": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "main",
+                "job"
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "parentId": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "cwd": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "idle",
+                "working",
+                "waiting",
+                "error"
+              ]
+            },
+            "preview": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "createdAt": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "updatedAt": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "id",
+            "kind",
+            "title",
+            "parentId",
+            "cwd",
+            "state",
+            "preview",
+            "createdAt",
+            "updatedAt"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "threadId": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "message"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "user",
+                      "agent"
+                    ]
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "via": {
+                    "type": "string",
+                    "enum": [
+                      "text",
+                      "voice"
+                    ]
+                  },
+                  "deviceId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "mime": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "height": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "mime",
+                        "width",
+                        "height"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "threadId",
+                  "at",
+                  "type",
+                  "role",
+                  "text",
+                  "via",
+                  "deviceId",
+                  "files"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "threadId": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "activity"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "tool": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "detail": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "running",
+                      "done",
+                      "failed"
+                    ]
+                  },
+                  "endedAt": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "threadId",
+                  "at",
+                  "type",
+                  "label",
+                  "tool",
+                  "detail",
+                  "state",
+                  "endedAt"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "threadId": {
+                    "type": "string"
+                  },
+                  "at": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "type": {
+                    "type": "string",
+                    "const": "request"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "approval",
+                      "question"
+                    ]
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "spoken": {
+                    "type": "string"
+                  },
+                  "risk": {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high"
+                    ]
+                  },
+                  "screenshot": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "mime": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "height": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "mime",
+                          "width",
+                          "height"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "style": {
+                          "type": "string",
+                          "enum": [
+                            "primary",
+                            "danger",
+                            "default"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label",
+                        "style"
+                      ]
+                    }
+                  },
+                  "allowText": {
+                    "type": "boolean"
+                  },
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "resolved",
+                      "cancelled"
+                    ]
+                  },
+                  "resolution": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "optionId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "text": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "deviceId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "at": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "optionId",
+                          "text",
+                          "deviceId",
+                          "at"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "threadId",
+                  "at",
+                  "type",
+                  "kind",
+                  "title",
+                  "body",
+                  "spoken",
+                  "risk",
+                  "screenshot",
+                  "options",
+                  "allowText",
+                  "state",
+                  "resolution"
+                ]
+              }
+            ]
+          }
+        },
+        "hasMore": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "thread",
+        "items",
+        "hasMore"
+      ]
+    },
+    "MessageItem": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "threadId": {
+          "type": "string"
+        },
+        "at": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "type": {
+          "type": "string",
+          "const": "message"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "user",
+            "agent"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "via": {
+          "type": "string",
+          "enum": [
+            "text",
+            "voice"
+          ]
+        },
+        "deviceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "width": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "height": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "mime",
+              "width",
+              "height"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "threadId",
+        "at",
+        "type",
+        "role",
+        "text",
+        "via",
+        "deviceId",
+        "files"
+      ]
+    },
+    "ModeRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "desktop",
+            "os"
+          ]
+        }
+      },
+      "required": [
+        "mode"
+      ]
+    },
+    "NodeInfo": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string",
+          "enum": [
+            "macos",
+            "windows",
+            "linux"
+          ]
+        },
+        "version": {
+          "type": "string"
+        },
+        "protocol": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "agent": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "owner": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "language": {
+          "type": "string"
+        },
+        "autonomy": {
+          "type": "string",
+          "enum": [
+            "supervised",
+            "balanced",
+            "autonomous"
+          ]
+        },
+        "onboarded": {
+          "type": "boolean"
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "computer": {
+              "type": "boolean"
+            },
+            "engine": {
+              "type": "string"
+            },
+            "engineReady": {
+              "type": "boolean"
+            },
+            "voice": {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "string"
+                },
+                "stt": {
+                  "type": "string",
+                  "enum": [
+                    "device",
+                    "server"
+                  ]
+                },
+                "tts": {
+                  "type": "string",
+                  "enum": [
+                    "device",
+                    "server"
+                  ]
+                },
+                "ttsMime": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "provider",
+                "stt",
+                "tts",
+                "ttsMime"
+              ]
+            }
+          },
+          "required": [
+            "computer",
+            "engine",
+            "engineReady",
+            "voice"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "platform",
+        "version",
+        "protocol",
+        "agent",
+        "owner",
+        "language",
+        "autonomy",
+        "onboarded",
+        "capabilities"
+      ]
+    },
+    "NodeMode": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "desktop",
+        "os"
+      ]
+    },
+    "NodePatch": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "agentName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "ownerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 12
+        },
+        "autonomy": {
+          "type": "string",
+          "enum": [
+            "supervised",
+            "balanced",
+            "autonomous"
+          ]
+        },
+        "onboarded": {
+          "type": "boolean"
+        }
+      }
+    },
+    "NodeResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "platform": {
+              "type": "string",
+              "enum": [
+                "macos",
+                "windows",
+                "linux"
+              ]
+            },
+            "version": {
+              "type": "string"
+            },
+            "protocol": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "agent": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "owner": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "language": {
+              "type": "string"
+            },
+            "autonomy": {
+              "type": "string",
+              "enum": [
+                "supervised",
+                "balanced",
+                "autonomous"
+              ]
+            },
+            "onboarded": {
+              "type": "boolean"
+            },
+            "capabilities": {
+              "type": "object",
+              "properties": {
+                "computer": {
+                  "type": "boolean"
+                },
+                "engine": {
+                  "type": "string"
+                },
+                "engineReady": {
+                  "type": "boolean"
+                },
+                "voice": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string"
+                    },
+                    "stt": {
+                      "type": "string",
+                      "enum": [
+                        "device",
+                        "server"
+                      ]
+                    },
+                    "tts": {
+                      "type": "string",
+                      "enum": [
+                        "device",
+                        "server"
+                      ]
+                    },
+                    "ttsMime": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "provider",
+                    "stt",
+                    "tts",
+                    "ttsMime"
+                  ]
+                }
+              },
+              "required": [
+                "computer",
+                "engine",
+                "engineReady",
+                "voice"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "platform",
+            "version",
+            "protocol",
+            "agent",
+            "owner",
+            "language",
+            "autonomy",
+            "onboarded",
+            "capabilities"
+          ]
+        },
+        "status": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "idle",
+                "working",
+                "waiting"
+              ]
+            },
+            "activity": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "desktop",
+                "os"
+              ]
+            },
+            "pendingRequests": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "workingThreads": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "state",
+            "activity",
+            "mode",
+            "pendingRequests",
+            "workingThreads"
+          ]
+        },
+        "local": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "node",
+        "status",
+        "local"
+      ]
+    },
+    "NodeState": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "idle",
+        "working",
+        "waiting"
+      ]
+    },
+    "NodeStatus": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "idle",
+            "working",
+            "waiting"
+          ]
+        },
+        "activity": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "desktop",
+            "os"
+          ]
+        },
+        "pendingRequests": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "workingThreads": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "state",
+        "activity",
+        "mode",
+        "pendingRequests",
+        "workingThreads"
+      ]
+    },
+    "PairRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "device": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "platform": {
+              "type": "string",
+              "enum": [
+                "ios",
+                "watchos",
+                "android",
+                "web",
+                "desktop",
+                "cli",
+                "node"
+              ]
+            }
+          },
+          "required": [
+            "name",
+            "platform"
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "device"
+      ]
+    },
+    "PairResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "device": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "platform": {
+              "type": "string",
+              "enum": [
+                "ios",
+                "watchos",
+                "android",
+                "web",
+                "desktop",
+                "cli",
+                "node"
+              ]
+            },
+            "createdAt": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "lastSeenAt": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "platform",
+            "createdAt",
+            "lastSeenAt"
+          ]
+        },
+        "node": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "platform": {
+              "type": "string",
+              "enum": [
+                "macos",
+                "windows",
+                "linux"
+              ]
+            },
+            "version": {
+              "type": "string"
+            },
+            "protocol": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "agent": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "owner": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "language": {
+              "type": "string"
+            },
+            "autonomy": {
+              "type": "string",
+              "enum": [
+                "supervised",
+                "balanced",
+                "autonomous"
+              ]
+            },
+            "onboarded": {
+              "type": "boolean"
+            },
+            "capabilities": {
+              "type": "object",
+              "properties": {
+                "computer": {
+                  "type": "boolean"
+                },
+                "engine": {
+                  "type": "string"
+                },
+                "engineReady": {
+                  "type": "boolean"
+                },
+                "voice": {
+                  "type": "object",
+                  "properties": {
+                    "provider": {
+                      "type": "string"
+                    },
+                    "stt": {
+                      "type": "string",
+                      "enum": [
+                        "device",
+                        "server"
+                      ]
+                    },
+                    "tts": {
+                      "type": "string",
+                      "enum": [
+                        "device",
+                        "server"
+                      ]
+                    },
+                    "ttsMime": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "provider",
+                    "stt",
+                    "tts",
+                    "ttsMime"
+                  ]
+                }
+              },
+              "required": [
+                "computer",
+                "engine",
+                "engineReady",
+                "voice"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "platform",
+            "version",
+            "protocol",
+            "agent",
+            "owner",
+            "language",
+            "autonomy",
+            "onboarded",
+            "capabilities"
+          ]
+        }
+      },
+      "required": [
+        "token",
+        "device",
+        "node"
+      ]
+    },
+    "PairingCode": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "link": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "expiresAt",
+        "link"
+      ]
+    },
+    "PermissionsResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "accessibility": {
+          "type": "boolean"
+        },
+        "screenRecording": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "accessibility",
+        "screenRecording"
+      ]
+    },
+    "Platform": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "macos",
+        "windows",
+        "linux"
+      ]
+    },
+    "PushPayload": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "nodeId": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "request",
+            "turn",
+            "resolved"
+          ]
+        },
+        "threadId": {
+          "type": "string"
+        },
+        "requestId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "screenshotId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "risk": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "nodeId",
+        "kind",
+        "threadId",
+        "requestId",
+        "screenshotId",
+        "risk"
+      ]
+    },
+    "PushRegistration": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "apns",
+            "fcm",
+            "none"
+          ]
+        },
+        "token": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sandbox": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "token",
+        "sandbox"
+      ]
+    },
+    "RequestItem": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "threadId": {
+          "type": "string"
+        },
+        "at": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "type": {
+          "type": "string",
+          "const": "request"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "approval",
+            "question"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "spoken": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "screenshot": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "mime": {
+                  "type": "string"
+                },
+                "width": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "height": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "mime",
+                "width",
+                "height"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "style": {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "danger",
+                  "default"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "style"
+            ]
+          }
+        },
+        "allowText": {
+          "type": "boolean"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "resolved",
+            "cancelled"
+          ]
+        },
+        "resolution": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "optionId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "text": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "deviceId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "at": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "optionId",
+                "text",
+                "deviceId",
+                "at"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "threadId",
+        "at",
+        "type",
+        "kind",
+        "title",
+        "body",
+        "spoken",
+        "risk",
+        "screenshot",
+        "options",
+        "allowText",
+        "state",
+        "resolution"
+      ]
+    },
+    "RequestOption": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "danger",
+            "default"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "style"
+      ]
+    },
+    "RequestResolution": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "optionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "deviceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "at": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "optionId",
+        "text",
+        "deviceId",
+        "at"
+      ]
+    },
+    "RequestsResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "requests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "threadId": {
+                "type": "string"
+              },
+              "at": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "type": {
+                "type": "string",
+                "const": "request"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "approval",
+                  "question"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "spoken": {
+                "type": "string"
+              },
+              "risk": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "screenshot": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "mime": {
+                        "type": "string"
+                      },
+                      "width": {
+                        "anyOf": [
+                          {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "height": {
+                        "anyOf": [
+                          {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "mime",
+                      "width",
+                      "height"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string",
+                      "enum": [
+                        "primary",
+                        "danger",
+                        "default"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label",
+                    "style"
+                  ]
+                }
+              },
+              "allowText": {
+                "type": "boolean"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "resolved",
+                  "cancelled"
+                ]
+              },
+              "resolution": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "optionId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "text": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "deviceId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "at": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      }
+                    },
+                    "required": [
+                      "optionId",
+                      "text",
+                      "deviceId",
+                      "at"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "threadId",
+              "at",
+              "type",
+              "kind",
+              "title",
+              "body",
+              "spoken",
+              "risk",
+              "screenshot",
+              "options",
+              "allowText",
+              "state",
+              "resolution"
+            ]
+          }
+        }
+      },
+      "required": [
+        "requests"
+      ]
+    },
+    "ResolveRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "optionId": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ResolveResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "threadId": {
+              "type": "string"
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "request"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "approval",
+                "question"
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "spoken": {
+              "type": "string"
+            },
+            "risk": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            "screenshot": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "mime": {
+                      "type": "string"
+                    },
+                    "width": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "height": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "mime",
+                    "width",
+                    "height"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "style": {
+                    "type": "string",
+                    "enum": [
+                      "primary",
+                      "danger",
+                      "default"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "style"
+                ]
+              }
+            },
+            "allowText": {
+              "type": "boolean"
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "resolved",
+                "cancelled"
+              ]
+            },
+            "resolution": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "optionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "text": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "deviceId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "optionId",
+                    "text",
+                    "deviceId",
+                    "at"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "threadId",
+            "at",
+            "type",
+            "kind",
+            "title",
+            "body",
+            "spoken",
+            "risk",
+            "screenshot",
+            "options",
+            "allowText",
+            "state",
+            "resolution"
+          ]
+        }
+      },
+      "required": [
+        "request"
+      ]
+    },
+    "Risk": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "SendMessageRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "via": {
+          "default": "text",
+          "type": "string",
+          "enum": [
+            "text",
+            "voice"
+          ]
+        },
+        "requestId": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "SendMessageResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "item": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "threadId": {
+              "type": "string"
+            },
+            "at": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "type": {
+              "type": "string",
+              "const": "message"
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "user",
+                "agent"
+              ]
+            },
+            "text": {
+              "type": "string"
+            },
+            "via": {
+              "type": "string",
+              "enum": [
+                "text",
+                "voice"
+              ]
+            },
+            "deviceId": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "mime": {
+                    "type": "string"
+                  },
+                  "width": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "height": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": -9007199254740991,
+                        "maximum": 9007199254740991
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "mime",
+                  "width",
+                  "height"
+                ]
+              }
+            }
+          },
+          "required": [
+            "id",
+            "threadId",
+            "at",
+            "type",
+            "role",
+            "text",
+            "via",
+            "deviceId",
+            "files"
+          ]
+        },
+        "request": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "threadId": {
+                  "type": "string"
+                },
+                "at": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "type": {
+                  "type": "string",
+                  "const": "request"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "approval",
+                    "question"
+                  ]
+                },
+                "title": {
+                  "type": "string"
+                },
+                "body": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "spoken": {
+                  "type": "string"
+                },
+                "risk": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                },
+                "screenshot": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "mime": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "height": {
+                          "anyOf": [
+                            {
+                              "type": "integer",
+                              "minimum": -9007199254740991,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "mime",
+                        "width",
+                        "height"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "style": {
+                        "type": "string",
+                        "enum": [
+                          "primary",
+                          "danger",
+                          "default"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "label",
+                      "style"
+                    ]
+                  }
+                },
+                "allowText": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "resolved",
+                    "cancelled"
+                  ]
+                },
+                "resolution": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "optionId": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "text": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "deviceId": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "at": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "optionId",
+                        "text",
+                        "deviceId",
+                        "at"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "threadId",
+                "at",
+                "type",
+                "kind",
+                "title",
+                "body",
+                "spoken",
+                "risk",
+                "screenshot",
+                "options",
+                "allowText",
+                "state",
+                "resolution"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "item",
+        "request"
+      ]
+    },
+    "ServerFrame": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ready"
+            },
+            "seq": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "reset": {
+              "type": "boolean"
+            },
+            "node": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "platform": {
+                  "type": "string",
+                  "enum": [
+                    "macos",
+                    "windows",
+                    "linux"
+                  ]
+                },
+                "version": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "agent": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "language": {
+                  "type": "string"
+                },
+                "autonomy": {
+                  "type": "string",
+                  "enum": [
+                    "supervised",
+                    "balanced",
+                    "autonomous"
+                  ]
+                },
+                "onboarded": {
+                  "type": "boolean"
+                },
+                "capabilities": {
+                  "type": "object",
+                  "properties": {
+                    "computer": {
+                      "type": "boolean"
+                    },
+                    "engine": {
+                      "type": "string"
+                    },
+                    "engineReady": {
+                      "type": "boolean"
+                    },
+                    "voice": {
+                      "type": "object",
+                      "properties": {
+                        "provider": {
+                          "type": "string"
+                        },
+                        "stt": {
+                          "type": "string",
+                          "enum": [
+                            "device",
+                            "server"
+                          ]
+                        },
+                        "tts": {
+                          "type": "string",
+                          "enum": [
+                            "device",
+                            "server"
+                          ]
+                        },
+                        "ttsMime": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "provider",
+                        "stt",
+                        "tts",
+                        "ttsMime"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "computer",
+                    "engine",
+                    "engineReady",
+                    "voice"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "platform",
+                "version",
+                "protocol",
+                "agent",
+                "owner",
+                "language",
+                "autonomy",
+                "onboarded",
+                "capabilities"
+              ]
+            },
+            "status": {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "idle",
+                    "working",
+                    "waiting"
+                  ]
+                },
+                "activity": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "desktop",
+                    "os"
+                  ]
+                },
+                "pendingRequests": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "workingThreads": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "state",
+                "activity",
+                "mode",
+                "pendingRequests",
+                "workingThreads"
+              ]
+            },
+            "local": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "seq",
+            "reset",
+            "node",
+            "status",
+            "local"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "event"
+            },
+            "event": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "node.status"
+                    },
+                    "status": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "type": "string",
+                          "enum": [
+                            "idle",
+                            "working",
+                            "waiting"
+                          ]
+                        },
+                        "activity": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "mode": {
+                          "type": "string",
+                          "enum": [
+                            "desktop",
+                            "os"
+                          ]
+                        },
+                        "pendingRequests": {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        "workingThreads": {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "activity",
+                        "mode",
+                        "pendingRequests",
+                        "workingThreads"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "status"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "node.updated"
+                    },
+                    "node": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "platform": {
+                          "type": "string",
+                          "enum": [
+                            "macos",
+                            "windows",
+                            "linux"
+                          ]
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "protocol": {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        "agent": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "owner": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "language": {
+                          "type": "string"
+                        },
+                        "autonomy": {
+                          "type": "string",
+                          "enum": [
+                            "supervised",
+                            "balanced",
+                            "autonomous"
+                          ]
+                        },
+                        "onboarded": {
+                          "type": "boolean"
+                        },
+                        "capabilities": {
+                          "type": "object",
+                          "properties": {
+                            "computer": {
+                              "type": "boolean"
+                            },
+                            "engine": {
+                              "type": "string"
+                            },
+                            "engineReady": {
+                              "type": "boolean"
+                            },
+                            "voice": {
+                              "type": "object",
+                              "properties": {
+                                "provider": {
+                                  "type": "string"
+                                },
+                                "stt": {
+                                  "type": "string",
+                                  "enum": [
+                                    "device",
+                                    "server"
+                                  ]
+                                },
+                                "tts": {
+                                  "type": "string",
+                                  "enum": [
+                                    "device",
+                                    "server"
+                                  ]
+                                },
+                                "ttsMime": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "provider",
+                                "stt",
+                                "tts",
+                                "ttsMime"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "computer",
+                            "engine",
+                            "engineReady",
+                            "voice"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "platform",
+                        "version",
+                        "protocol",
+                        "agent",
+                        "owner",
+                        "language",
+                        "autonomy",
+                        "onboarded",
+                        "capabilities"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "node"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "thread.updated"
+                    },
+                    "thread": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "main",
+                            "job"
+                          ]
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "parentId": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "cwd": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "state": {
+                          "type": "string",
+                          "enum": [
+                            "idle",
+                            "working",
+                            "waiting",
+                            "error"
+                          ]
+                        },
+                        "preview": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "createdAt": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "updatedAt": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "kind",
+                        "title",
+                        "parentId",
+                        "cwd",
+                        "state",
+                        "preview",
+                        "createdAt",
+                        "updatedAt"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "thread"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "thread.deleted"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "threadId"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "item.added"
+                    },
+                    "item": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "threadId": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "type": {
+                              "type": "string",
+                              "const": "message"
+                            },
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "agent"
+                              ]
+                            },
+                            "text": {
+                              "type": "string"
+                            },
+                            "via": {
+                              "type": "string",
+                              "enum": [
+                                "text",
+                                "voice"
+                              ]
+                            },
+                            "deviceId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "files": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "mime": {
+                                    "type": "string"
+                                  },
+                                  "width": {
+                                    "anyOf": [
+                                      {
+                                        "type": "integer",
+                                        "minimum": -9007199254740991,
+                                        "maximum": 9007199254740991
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "height": {
+                                    "anyOf": [
+                                      {
+                                        "type": "integer",
+                                        "minimum": -9007199254740991,
+                                        "maximum": 9007199254740991
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "mime",
+                                  "width",
+                                  "height"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "threadId",
+                            "at",
+                            "type",
+                            "role",
+                            "text",
+                            "via",
+                            "deviceId",
+                            "files"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "threadId": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "type": {
+                              "type": "string",
+                              "const": "activity"
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "tool": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "detail": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "state": {
+                              "type": "string",
+                              "enum": [
+                                "running",
+                                "done",
+                                "failed"
+                              ]
+                            },
+                            "endedAt": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "threadId",
+                            "at",
+                            "type",
+                            "label",
+                            "tool",
+                            "detail",
+                            "state",
+                            "endedAt"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "threadId": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "type": {
+                              "type": "string",
+                              "const": "request"
+                            },
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "approval",
+                                "question"
+                              ]
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "body": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "spoken": {
+                              "type": "string"
+                            },
+                            "risk": {
+                              "type": "string",
+                              "enum": [
+                                "low",
+                                "medium",
+                                "high"
+                              ]
+                            },
+                            "screenshot": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "mime": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "anyOf": [
+                                        {
+                                          "type": "integer",
+                                          "minimum": -9007199254740991,
+                                          "maximum": 9007199254740991
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    },
+                                    "height": {
+                                      "anyOf": [
+                                        {
+                                          "type": "integer",
+                                          "minimum": -9007199254740991,
+                                          "maximum": 9007199254740991
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "mime",
+                                    "width",
+                                    "height"
+                                  ]
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "options": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "style": {
+                                    "type": "string",
+                                    "enum": [
+                                      "primary",
+                                      "danger",
+                                      "default"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "label",
+                                  "style"
+                                ]
+                              }
+                            },
+                            "allowText": {
+                              "type": "boolean"
+                            },
+                            "state": {
+                              "type": "string",
+                              "enum": [
+                                "pending",
+                                "resolved",
+                                "cancelled"
+                              ]
+                            },
+                            "resolution": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "optionId": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "text": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "deviceId": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "at": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "maximum": 9007199254740991
+                                    }
+                                  },
+                                  "required": [
+                                    "optionId",
+                                    "text",
+                                    "deviceId",
+                                    "at"
+                                  ]
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "threadId",
+                            "at",
+                            "type",
+                            "kind",
+                            "title",
+                            "body",
+                            "spoken",
+                            "risk",
+                            "screenshot",
+                            "options",
+                            "allowText",
+                            "state",
+                            "resolution"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "item"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "item.updated"
+                    },
+                    "item": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "threadId": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "type": {
+                              "type": "string",
+                              "const": "message"
+                            },
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "agent"
+                              ]
+                            },
+                            "text": {
+                              "type": "string"
+                            },
+                            "via": {
+                              "type": "string",
+                              "enum": [
+                                "text",
+                                "voice"
+                              ]
+                            },
+                            "deviceId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "files": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "mime": {
+                                    "type": "string"
+                                  },
+                                  "width": {
+                                    "anyOf": [
+                                      {
+                                        "type": "integer",
+                                        "minimum": -9007199254740991,
+                                        "maximum": 9007199254740991
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "height": {
+                                    "anyOf": [
+                                      {
+                                        "type": "integer",
+                                        "minimum": -9007199254740991,
+                                        "maximum": 9007199254740991
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "mime",
+                                  "width",
+                                  "height"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "threadId",
+                            "at",
+                            "type",
+                            "role",
+                            "text",
+                            "via",
+                            "deviceId",
+                            "files"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "threadId": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "type": {
+                              "type": "string",
+                              "const": "activity"
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "tool": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "detail": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "state": {
+                              "type": "string",
+                              "enum": [
+                                "running",
+                                "done",
+                                "failed"
+                              ]
+                            },
+                            "endedAt": {
+                              "anyOf": [
+                                {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 9007199254740991
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "threadId",
+                            "at",
+                            "type",
+                            "label",
+                            "tool",
+                            "detail",
+                            "state",
+                            "endedAt"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "threadId": {
+                              "type": "string"
+                            },
+                            "at": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "type": {
+                              "type": "string",
+                              "const": "request"
+                            },
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "approval",
+                                "question"
+                              ]
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "body": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "spoken": {
+                              "type": "string"
+                            },
+                            "risk": {
+                              "type": "string",
+                              "enum": [
+                                "low",
+                                "medium",
+                                "high"
+                              ]
+                            },
+                            "screenshot": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "mime": {
+                                      "type": "string"
+                                    },
+                                    "width": {
+                                      "anyOf": [
+                                        {
+                                          "type": "integer",
+                                          "minimum": -9007199254740991,
+                                          "maximum": 9007199254740991
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    },
+                                    "height": {
+                                      "anyOf": [
+                                        {
+                                          "type": "integer",
+                                          "minimum": -9007199254740991,
+                                          "maximum": 9007199254740991
+                                        },
+                                        {
+                                          "type": "null"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "mime",
+                                    "width",
+                                    "height"
+                                  ]
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "options": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "style": {
+                                    "type": "string",
+                                    "enum": [
+                                      "primary",
+                                      "danger",
+                                      "default"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "label",
+                                  "style"
+                                ]
+                              }
+                            },
+                            "allowText": {
+                              "type": "boolean"
+                            },
+                            "state": {
+                              "type": "string",
+                              "enum": [
+                                "pending",
+                                "resolved",
+                                "cancelled"
+                              ]
+                            },
+                            "resolution": {
+                              "anyOf": [
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "optionId": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "text": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "deviceId": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "at": {
+                                      "type": "integer",
+                                      "minimum": 0,
+                                      "maximum": 9007199254740991
+                                    }
+                                  },
+                                  "required": [
+                                    "optionId",
+                                    "text",
+                                    "deviceId",
+                                    "at"
+                                  ]
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "threadId",
+                            "at",
+                            "type",
+                            "kind",
+                            "title",
+                            "body",
+                            "spoken",
+                            "risk",
+                            "screenshot",
+                            "options",
+                            "allowText",
+                            "state",
+                            "resolution"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "item"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "message.delta"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "messageId": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "threadId",
+                    "messageId",
+                    "text"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "seq": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "at": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "type": {
+                      "type": "string",
+                      "const": "turn.completed"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "seq",
+                    "at",
+                    "type",
+                    "threadId",
+                    "ok",
+                    "text"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "event"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "pong"
+            }
+          },
+          "required": [
+            "type"
+          ]
+        }
+      ]
+    },
+    "Settings": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "engine": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "model": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "auth": {
+              "type": "string",
+              "enum": [
+                "api-key",
+                "environment",
+                "none"
+              ]
+            },
+            "hasWorkspaceId": {
+              "type": "boolean"
+            },
+            "ready": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "provider",
+            "model",
+            "auth",
+            "hasWorkspaceId",
+            "ready"
+          ]
+        },
+        "voice": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "voice": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "hasKey": {
+              "type": "boolean"
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "available": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "needsKey": {
+                    "type": "boolean"
+                  },
+                  "needsUrl": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "needsKey",
+                  "needsUrl"
+                ]
+              }
+            }
+          },
+          "required": [
+            "provider",
+            "voice",
+            "hasKey",
+            "url",
+            "available"
+          ]
+        },
+        "computer": {
+          "type": "object",
+          "properties": {
+            "permissions": {
+              "type": "object",
+              "properties": {
+                "accessibility": {
+                  "type": "boolean"
+                },
+                "screenRecording": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "accessibility",
+                "screenRecording"
+              ]
+            }
+          },
+          "required": [
+            "permissions"
+          ]
+        },
+        "network": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "urls": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "relayUrl": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "relayConnected": {
+              "type": "boolean"
+            },
+            "relayError": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "hasRelayToken": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "port",
+            "urls",
+            "relayUrl",
+            "relayConnected",
+            "relayError",
+            "hasRelayToken"
+          ]
+        }
+      },
+      "required": [
+        "engine",
+        "voice",
+        "computer",
+        "network"
+      ]
+    },
+    "SettingsPatch": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "engine": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "model": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "apiKey": {
+              "type": "string"
+            },
+            "workspaceId": {
+              "type": "string"
+            }
+          }
+        },
+        "voice": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "voice": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "apiKey": {
+              "type": "string"
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "network": {
+          "type": "object",
+          "properties": {
+            "relayUrl": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "relayToken": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "SpeakRequest": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "Thread": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "main",
+            "job"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cwd": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "idle",
+            "working",
+            "waiting",
+            "error"
+          ]
+        },
+        "preview": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "updatedAt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "parentId",
+        "cwd",
+        "state",
+        "preview",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ThreadState": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "idle",
+        "working",
+        "waiting",
+        "error"
+      ]
+    },
+    "ThreadsResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "threads": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "main",
+                  "job"
+                ]
+              },
+              "title": {
+                "type": "string"
+              },
+              "parentId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "cwd": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "idle",
+                  "working",
+                  "waiting",
+                  "error"
+                ]
+              },
+              "preview": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "createdAt": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "updatedAt": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "title",
+              "parentId",
+              "cwd",
+              "state",
+              "preview",
+              "createdAt",
+              "updatedAt"
+            ]
+          }
+        }
+      },
+      "required": [
+        "threads"
+      ]
+    },
+    "Timestamp": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "TranscribeResponse": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "VoiceCapabilities": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string"
+        },
+        "stt": {
+          "type": "string",
+          "enum": [
+            "device",
+            "server"
+          ]
+        },
+        "tts": {
+          "type": "string",
+          "enum": [
+            "device",
+            "server"
+          ]
+        },
+        "ttsMime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "provider",
+        "stt",
+        "tts",
+        "ttsMime"
+      ]
+    },
+    "VoiceSide": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "device",
+        "server"
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+/* The stage. The renderer gives it its size and adds a canvas a little
+   larger, so the glow reaches beyond it without taking room. */
+.presence {
+  position: relative;
+  flex: none;
+}
+
+/* The presence with its label. The stage is half empty by design: the name
+   and the line sit just inside its outer edge (`--stage` is its side). */
+.labelled-presence {
+  --inset: calc(var(--stage) * -0.05);
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+  text-align: center;
+}
+.labelled-presence > .presence + * {
+  margin-top: var(--inset);
+}
+.presence-name {
+  position: relative;
+  margin-bottom: var(--inset);
+  color: var(--text-dim);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+}
+.labelled-presence[data-large] .presence-name {
+  font: var(--type-name-large);
+}
+
+/* One sentence, balanced, at most 20 em wide. */
+.line {
+  display: grid;
+  justify-items: center;
+  max-width: 20em;
+  text-wrap: balance;
+}

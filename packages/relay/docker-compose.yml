@@ -1,0 +1,41 @@
+# The relay with HTTPS, on a server of your own.
+#
+#   0. Until an image is published, build it on the server from a clone of
+#      the repository, at its root, under the name this file uses:
+#        docker build -f packages/relay/Dockerfile -t ghcr.io/synapsr/agentos-relay .
+#      Compose then uses that local image and pulls nothing.
+#   1. Point a domain at the server (an A record), and open ports 80 and 443.
+#   2. Make the relay's token, and keep it: computers need it to use the relay.
+#        echo "RELAY_TOKEN=$(openssl rand -hex 32)" > .env && cat .env
+#   3. RELAY_DOMAIN=relay.example.com docker compose up -d
+#   4. On your computer, set the relay's address to https://relay.example.com
+#      and its token to the one in .env (Settings, or AGENTOS_RELAY_URL and
+#      AGENTOS_RELAY_TOKEN).
+#
+# Caddy gets and renews the certificate by itself. See README.md for what the
+# relay sees, and for a relay open to everyone (RELAY_OPEN=1 instead of a token).
+services:
+  relay:
+    image: ghcr.io/synapsr/agentos-relay
+    restart: unless-stopped
+    environment:
+      # Only computers that present this token may use the relay. There is no default: without it, the relay does not start.
+      RELAY_TOKEN: ${RELAY_TOKEN:?Make a token first, see step 2 at the top of this file}
+      # Caddy is in front: read client addresses from the header it sets.
+      RELAY_TRUST_PROXY: "1"
+    volumes:
+      - relay-data:/data
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    command: caddy reverse-proxy --from ${RELAY_DOMAIN:?Set RELAY_DOMAIN to the domain that points at this server} --to relay:8080
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy-data:/data
+
+volumes:
+  relay-data:
+  caddy-data:

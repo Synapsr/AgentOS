@@ -1,0 +1,75 @@
+/* OS mode: the agent's stage, always dark, on the main display. The
+   presence in the middle with its name above and its line below; while it
+   asks, it rises and the decision sheet comes up under it. */
+.os {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  padding: var(--space-32);
+  overflow: hidden;
+  background: var(--surface-stage);
+  cursor: none;
+}
+/* The pointer shows while it moves, and whenever there is something to click. */
+.os[data-awake],
+.os[data-asking] {
+  cursor: auto;
+}
+
+.os-figure {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+.os-figure > .stage-light {
+  top: calc(var(--space-24) + var(--stage) * 0.45);
+}
+.os-figure > .labelled-presence {
+  position: relative;
+}
+.os-line {
+  font: var(--type-display-xl);
+  letter-spacing: var(--tracking-display-xl);
+}
+
+.os .doing {
+  font: var(--type-body-l);
+  letter-spacing: var(--tracking-body-l);
+}
+
+.os-request {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-20);
+  width: min(calc(var(--size-measure) + var(--size-panel) + var(--space-20)), 100%);
+  margin-top: var(--space-8);
+}
+.os-request > .request {
+  width: 100%;
+}
+.os-hint {
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+}
+
+/* A way out, top right: there when the pointer moves, when the keyboard
+   finds it, and always while the agent asks. Glass, over the stage. */
+.os-back {
+  position: fixed;
+  top: max(var(--space-20), env(safe-area-inset-top));
+  right: var(--space-24);
+  opacity: 0;
+  transition-property: opacity, scale, background-color;
+  transition-duration: var(--duration-slow), var(--spring-press-duration), var(--duration-fast);
+  transition-timing-function: var(--ease-out), var(--spring-press), var(--ease-out);
+}
+.os[data-awake] .os-back,
+.os[data-asking] .os-back,
+.os-back:focus-visible {
+  opacity: 1;
+}

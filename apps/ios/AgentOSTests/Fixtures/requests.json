@@ -1,0 +1,36 @@
+{
+  "requests": [
+    {
+      "id": "req_92f33103beab2acf",
+      "threadId": "main",
+      "at": 1794266727525,
+      "type": "request",
+      "kind": "question",
+      "title": "Everything looks good. Deploy to production?",
+      "body": null,
+      "spoken": "Everything looks good. Deploy to production?",
+      "risk": "medium",
+      "screenshot": {
+        "id": "file_19dec4fd895112f6.jpg",
+        "mime": "image/jpeg",
+        "width": 1280,
+        "height": 829
+      },
+      "options": [
+        {
+          "id": "option_1",
+          "label": "Deploy",
+          "style": "primary"
+        },
+        {
+          "id": "option_2",
+          "label": "Not now",
+          "style": "default"
+        }
+      ],
+      "allowText": true,
+      "state": "pending",
+      "resolution": null
+    }
+  ]
+}

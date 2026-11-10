@@ -1,0 +1,176 @@
+---
+/**
+ * The bar at the top of every page: the logo, the story's sections, the
+ * developers' page, the other language and the code.
+ */
+import mark from "@agentos/design/brand/mark.svg?raw";
+import Icon from "./Icon.astro";
+import { copy, other, REPO, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+  /** Which page the bar sits on: the language switch keeps the visitor on it. */
+  page?: "home" | "developers";
+}
+
+const { lang, page = "home" } = Astro.props;
+const t = copy[lang];
+const alt = copy[other(lang)];
+const here = page === "developers" ? t.devPath : t.path;
+const there = page === "developers" ? alt.devPath : alt.path;
+---
+
+<header class="top">
+  <div class="wrap bar">
+    {/* The logo is the mark and the name set in Figtree SemiBold (docs/DESIGN.md, Brand): pearl on dark, ink on light. */}
+    <a class="brand" href={t.path} aria-label={t.nav.home} aria-current={here === t.path ? "page" : undefined}>
+      <span class="mark" aria-hidden="true" set:html={mark} />
+      <span aria-hidden="true">AgentOS</span>
+    </a>
+    <nav aria-label={t.nav.label}>
+      <ul>
+        {t.nav.links.map((link) => <li><a href={`${t.path}${link.href}`}>{link.label}</a></li>)}
+        <li>
+          <a href={t.devPath} aria-current={page === "developers" ? "page" : undefined}>{t.nav.developers}</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="end">
+      <a class="btn sm quiet language" href={there} hreflang={alt.lang} lang={alt.lang}>
+        <span aria-hidden="true">{t.nav.languageShort}</span>
+        <span class="visually-hidden">{t.nav.language}</span>
+      </a>
+      <a class="btn sm secondary has-icon" href={REPO}>
+        <Icon name="github" class="dense" />
+        {t.nav.github}
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface-stage);
+  }
+
+  /*
+   * Once the page scrolls, the bar floats over the content: it turns to glass
+   * with a hairline under it. At the very top it is the stage itself, since
+   * glass over an empty stage is only a grey band.
+   */
+  @supports (animation-timeline: scroll()) {
+    .top {
+      background: transparent;
+      animation: float linear both;
+      animation-timeline: scroll();
+      animation-range: 0 64px;
+    }
+
+    @keyframes float {
+      to {
+        background: var(--glass);
+        -webkit-backdrop-filter: var(--glass-filter);
+        backdrop-filter: var(--glass-filter);
+        box-shadow: 0 1px 0 var(--line);
+      }
+    }
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24);
+    height: 72px;
+  }
+
+  .brand {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-8);
+    min-height: var(--size-control);
+    margin-inline-start: calc(-1 * var(--space-4));
+    padding-inline: var(--space-4) var(--space-8);
+    border-radius: var(--radius-s);
+    font: var(--type-title);
+    font-size: 21px;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .mark {
+    display: flex;
+    width: 28px;
+    height: 28px;
+  }
+
+  .mark :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  nav {
+    margin-inline-start: auto;
+  }
+
+  nav ul {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    height: var(--size-control);
+    padding-inline: var(--space-12);
+    border-radius: var(--radius-full);
+    color: var(--text-dim);
+    font: var(--type-body);
+    text-decoration: none;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  nav a[aria-current="page"] {
+    color: var(--text);
+  }
+
+  @media (hover: hover) {
+    nav a:hover {
+      color: var(--text);
+      background-color: var(--fill);
+    }
+  }
+
+  .end {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .language {
+    min-width: var(--size-control);
+    padding-inline: var(--space-12);
+  }
+
+  /* A finger needs 44 points: the dense buttons grow on touch screens. */
+  @media (pointer: coarse) {
+    .end .btn {
+      --h: var(--size-control);
+    }
+  }
+
+  @media (max-width: 960px) {
+    nav {
+      display: none;
+    }
+
+    .end {
+      margin-inline-start: auto;
+    }
+  }
+</style>

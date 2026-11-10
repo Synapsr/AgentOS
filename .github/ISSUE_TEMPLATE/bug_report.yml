@@ -1,0 +1,106 @@
+name: Bug report
+description: Something in AgentOS does not work as it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time. Please search the [existing issues](https://github.com/Synapsr/AgentOS/issues) first.
+
+        **A security problem?** Do not post it here: report it privately, as [SECURITY.md](https://github.com/Synapsr/AgentOS/blob/main/SECURITY.md) says.
+        **Never paste an API key, a pairing link, or an address that contains `#token=`.**
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+      placeholder: |
+        I asked Nova to rename a folder from my phone. It said "I'm on it", then nothing: the presence kept juggling for ten minutes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The practice brain (`AGENTOS_ENGINE=mock`) needs no key. If the problem shows with it, say so, it makes it much easier to fix.
+      placeholder: |
+        1. Start with …
+        2. Say …
+        3. …
+    validations:
+      required: true
+
+  - type: dropdown
+    id: part
+    attributes:
+      label: Which part?
+      multiple: true
+      options:
+        - The core or the `agentos` command
+        - The desktop app
+        - The web client
+        - The iPhone app
+        - The Apple Watch app
+        - The relay
+        - The website or the docs
+        - Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: "`git rev-parse --short HEAD` in your clone."
+      placeholder: "0.1.0, a1b2c3d"
+    validations:
+      required: true
+
+  - type: input
+    id: system
+    attributes:
+      label: Your system
+      description: The computer, and the phone if it is involved.
+      placeholder: "macOS 26.1 on Apple Silicon, Node 22; iPhone 17 on iOS 26.1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: brain
+    attributes:
+      label: The brain
+      options:
+        - Claude, with an API key
+        - Claude, through Bedrock or Vertex
+        - The practice brain (mock)
+        - Not relevant
+    validations:
+      required: true
+
+  - type: dropdown
+    id: connection
+    attributes:
+      label: How the phone reaches the computer
+      description: Only if a phone is involved.
+      options:
+        - Same network
+        - Tailscale
+        - A relay
+        - Not relevant
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: |
+        Optional, and very helpful. `pnpm agentos status` prints where the log is. From a terminal, it is what `pnpm start` printed.
+        The log says what happened, never what was said, but read it for anything private before pasting.
+      render: text
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Pictures, a recording, or what you already tried.

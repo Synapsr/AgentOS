@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  What the app asks of the hardened runtime. The app itself needs nothing
+  special (its web views run in the system's own processes); these two are for
+  what it starts: macOS holds the app responsible for the agent's programs, and
+  with the hardened runtime it refuses them, without asking the owner, what
+  the app has not declared here.
+
+  Each goes with a sentence in Info.plist that macOS shows when it asks.
+-->
+<plist version="1.0">
+<dict>
+  <!-- The agent's hands drive System Events, and the agent may script other apps. -->
+  <key>com.apple.security.automation.apple-events</key>
+  <true/>
+  <!-- Talking to the agent out loud. -->
+  <key>com.apple.security.device.audio-input</key>
+  <true/>
+</dict>
+</plist>

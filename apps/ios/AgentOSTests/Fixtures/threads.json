@@ -1,0 +1,26 @@
+{
+  "threads": [
+    {
+      "parentId": null,
+      "cwd": null,
+      "id": "main",
+      "kind": "main",
+      "title": "Nova",
+      "state": "idle",
+      "preview": "Nova wants to delete files",
+      "createdAt": 1794266718783,
+      "updatedAt": 1794266750327
+    },
+    {
+      "parentId": "main",
+      "cwd": null,
+      "id": "thr_e8f7ff2646baeab8",
+      "kind": "job",
+      "title": "Practice run",
+      "state": "idle",
+      "preview": "All 3 steps are done.",
+      "createdAt": 1794266737363,
+      "updatedAt": 1794266740585
+    }
+  ]
+}

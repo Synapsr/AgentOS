@@ -1,0 +1,25 @@
+{
+  "name": "@agentos/relay",
+  "version": "0.1.0",
+  "description": "Reach an AgentOS computer from anywhere: a small relay it connects out to, and clients connect in to.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "agentos-relay": "./dist/cli.js" },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/cli.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p test/tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": { "ws": "^8.22.2" },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

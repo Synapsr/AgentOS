@@ -1,0 +1,183 @@
+/* Onboarding, "Add your phone" and "Add this device": on the presence's
+   stage, one question at a time. The presence stays where it is from one
+   question to the next; only the question changes. */
+.setup {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  justify-items: center;
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top) var(--space-24) var(--space-32);
+  overflow-x: hidden;
+  background: var(--surface-stage);
+}
+
+/* Back on the left, the six steps in the middle. */
+.setup-top {
+  display: grid;
+  grid-template-columns: var(--size-control) 1fr var(--size-control);
+  align-items: center;
+  width: 100%;
+  min-height: calc(var(--space-64) + var(--space-8));
+}
+.setup-back {
+  grid-column: 1;
+  margin-left: calc(-1 * var(--space-8));
+}
+.setup-progress {
+  grid-column: 2;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* A short capsule per step: done ones full, the current one a little less, the rest a fill. */
+.setup-progress li {
+  width: calc(var(--space-24) + var(--space-4));
+  height: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--fill-strong);
+  transition: background-color var(--spring-material-duration) var(--spring-material);
+}
+.setup-progress li[data-state="done"] {
+  background: var(--text);
+}
+.setup-progress li[data-state="current"] {
+  background: var(--text-dim);
+}
+
+/* The step is centred in the window, the progress pinned above it; the bottom padding balances the top bar. */
+.setup-main {
+  align-self: center;
+  width: min(var(--size-measure-narrow), 100%);
+  padding: var(--space-8) 0 calc(var(--space-64) + var(--space-8));
+}
+/* A short window keeps its height for the step. */
+@media (max-height: 860px) {
+  .setup-main {
+    padding-bottom: var(--space-16);
+  }
+}
+.setup-figure {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+.setup-figure > .stage-light {
+  top: calc(var(--space-24) + var(--stage) * 0.45);
+}
+.setup-figure > .labelled-presence {
+  position: relative;
+  width: 100%;
+}
+.setup-main .presence-name {
+  min-height: 1.3em;
+}
+/* A screen with no presence on it: its one thing sits in the middle. */
+.setup-alone {
+  align-self: center;
+  padding-top: 0;
+}
+
+.setup-stage {
+  width: 100%;
+}
+.setup-step {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-12);
+}
+.setup-title {
+  font: var(--type-display-m);
+  letter-spacing: var(--tracking-display-m);
+  text-wrap: balance;
+}
+/* The hello is the presence talking: its line, in the large Display. */
+.setup-title[data-large] {
+  font: var(--type-display-l);
+  letter-spacing: var(--tracking-display-l);
+}
+.setup-help {
+  max-width: 30em;
+  color: var(--text-dim);
+  text-wrap: balance;
+}
+.setup-body {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-16);
+  width: 100%;
+  margin-top: var(--space-20);
+}
+/* A single answer: one field, as wide as a name or a key needs. */
+.setup-body > :is(.field, .field-label) {
+  width: min(calc(3 * var(--space-96) + var(--space-64)), 100%);
+}
+.setup-name {
+  font: var(--type-body-l);
+  letter-spacing: var(--tracking-body-l);
+  text-align: center;
+}
+.setup-group {
+  width: 100%;
+  text-align: left;
+}
+.setup-note {
+  max-width: 30em;
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-wrap: balance;
+}
+
+/* One way forward, at least 280 wide; "Later" under it, quiet. */
+.setup-actions {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-8);
+  width: 100%;
+  margin-top: var(--space-20);
+}
+.setup-actions .button.primary {
+  width: min(calc(3 * var(--space-96) - var(--space-8)), 100%);
+}
+.setup-actions .field-error {
+  animation: arrive-fade var(--duration-base) var(--ease-out);
+}
+
+/* Getting a key: three numbered steps on one line, then the button that opens the page. */
+.get-key {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-16);
+}
+.key-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-8) var(--space-20);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+}
+.key-steps li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+.key-step-n {
+  display: grid;
+  place-items: center;
+  width: var(--space-20);
+  height: var(--space-20);
+  border-radius: var(--radius-full);
+  background: var(--fill-strong);
+  color: var(--text);
+  font: var(--type-caption);
+  letter-spacing: var(--tracking-caption);
+}

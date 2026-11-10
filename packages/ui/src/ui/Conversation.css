@@ -1,0 +1,330 @@
+/* `--gutter` is the room on each side, set by the view. */
+.conversation {
+  --fade: calc(var(--space-96) + var(--space-24));
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  /* What scrolls away fades out under whatever sits above, instead of being cut. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--fade));
+  mask-image: linear-gradient(to bottom, transparent, black var(--fade));
+}
+.conversation::-webkit-scrollbar {
+  display: none;
+}
+
+.conversation-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-16);
+  width: 100%;
+  max-width: calc(var(--size-measure) + 2 * var(--gutter));
+  min-height: 100%;
+  margin: 0 auto;
+  padding: var(--space-64) var(--gutter) var(--space-16);
+}
+
+.conversation-earlier {
+  align-self: center;
+}
+
+/* An invitation, not a void: what to ask, and three things to start with. */
+.conversation-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-16);
+  margin-top: auto;
+  padding: var(--space-24) var(--space-20);
+  border-radius: var(--radius-xl);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+  text-align: center;
+}
+.conversation-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+/* ───────────── Messages ───────────── */
+
+.message {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-12);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
+/* Nova's words: plain text, a little larger than the rest. */
+.message.agent {
+  align-self: flex-start;
+  padding-right: var(--space-24);
+  font: var(--type-body-l);
+  letter-spacing: var(--tracking-body-l);
+}
+/* What the owner said: a bubble, lifted off the page. */
+.message.user {
+  align-self: flex-end;
+  max-width: 84%;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-l);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+}
+.message-picture {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-m);
+  outline: 1px solid var(--outline);
+  outline-offset: -1px;
+}
+
+/* Said aloud, from a phone or a watch. */
+.message-voice {
+  display: inline-block;
+  margin-right: var(--space-8);
+  color: var(--text-dim);
+  vertical-align: calc(-1 * var(--space-2));
+}
+
+/* The light formatting of what the agent says (see Markdown.tsx). */
+.message strong {
+  font-weight: 600;
+}
+.message :is(ul, ol) {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding-left: var(--space-24);
+}
+.message a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: var(--space-2);
+}
+.message code {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--space-4);
+  background: var(--fill);
+  font: var(--type-code);
+  font-size: 0.875em;
+}
+.message pre {
+  overflow-x: auto;
+  margin: 0;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-m);
+  background: var(--fill);
+  font: var(--type-code);
+  white-space: pre;
+}
+.message pre code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+}
+
+/* ───────────── What the agent did ───────────── */
+
+.activities {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-8);
+}
+.activity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-align: left;
+}
+.activity[data-state="running"] {
+  color: var(--text);
+}
+.activity[data-state="done"] > .icon {
+  color: var(--go);
+}
+.activity[data-state="failed"] > .icon {
+  color: var(--careful);
+}
+.activity code {
+  overflow: hidden;
+  max-width: 28ch;
+  color: var(--text-faint);
+  font: var(--type-code);
+  font-size: 0.875em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* "✓ 3 steps": unfolds on the layout spring. */
+.activity.fold {
+  position: relative;
+  min-height: var(--size-control-sm);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+/* A comfortable place to press, larger than the line itself. */
+.activity.fold::after {
+  content: "";
+  position: absolute;
+  inset: calc((var(--size-control-sm) - var(--size-control)) / 2) calc(-1 * var(--space-8));
+}
+.activity.fold [data-icon="chevron"] {
+  transition: rotate var(--spring-snappy-duration) var(--spring-snappy);
+}
+.activity.fold[aria-expanded="true"] [data-icon="chevron"] {
+  rotate: 90deg;
+}
+@media (hover: hover) {
+  .activity.fold:hover {
+    color: var(--text);
+  }
+}
+.activities-open {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: calc(-1 * var(--space-8));
+  opacity: 0;
+  transition-property: grid-template-rows, opacity, margin-top;
+  transition-duration: var(--spring-layout-duration), var(--duration-base), var(--spring-layout-duration);
+  transition-timing-function: var(--spring-layout), var(--ease-out), var(--spring-layout);
+}
+.activities-open > div {
+  display: grid;
+  gap: var(--space-8);
+  min-height: 0;
+  overflow: hidden;
+  padding-left: var(--space-24);
+}
+.activities-open[data-open] {
+  grid-template-rows: 1fr;
+  margin-top: 0;
+  opacity: 1;
+}
+
+/* Happening now: a dot in the colour of work. It does not move: the presence does. */
+.activity-running {
+  display: grid;
+  place-items: center;
+  width: var(--size-icon-dense);
+  height: var(--size-icon-dense);
+}
+.activity-running::before {
+  content: "";
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-full);
+  background: var(--working);
+}
+
+/* ───────────── The composer ───────────── */
+
+.composer {
+  flex: none;
+  padding: 0 var(--gutter) calc(var(--space-16) + env(safe-area-inset-bottom));
+}
+/* A capsule while it holds one line; it keeps the same corners as it grows. */
+.composer-box {
+  --height: var(--size-control-big);
+  --button: calc(var(--space-32) + var(--space-8));
+  --inset: calc((var(--height) - var(--button)) / 2);
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-8);
+  max-width: var(--size-measure);
+  min-height: var(--height);
+  margin: 0 auto;
+  padding: var(--inset) var(--inset) var(--inset) var(--space-20);
+  border-radius: calc(var(--height) / 2);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+  cursor: text;
+  transition: box-shadow var(--duration-fast) var(--ease-out);
+}
+/* In the side panel: 52. */
+.composer-box[data-compact] {
+  --height: var(--size-control-lg);
+}
+.composer-box:focus-within {
+  box-shadow:
+    var(--shadow-raised),
+    0 0 0 var(--space-2) color-mix(in srgb, var(--focus) 60%, transparent);
+}
+.composer textarea {
+  flex: 1;
+  align-self: center;
+  min-width: 0;
+  /* Seven lines, then it scrolls. */
+  max-height: 10.5em;
+  padding: var(--space-4) 0;
+  resize: none;
+  scrollbar-width: none;
+}
+.composer textarea:focus {
+  outline: none;
+}
+.composer-failed {
+  max-width: var(--size-measure);
+  margin: var(--space-8) auto 0;
+  padding-left: var(--space-20);
+}
+.composer-retry {
+  color: inherit;
+  font: inherit;
+}
+
+/* One round button: it sends when there is something to send, and stops
+   the agent when it is working and the field is empty. Its icons swap. */
+.composer-action {
+  display: grid;
+  place-items: center;
+  flex: none;
+  position: relative;
+  width: var(--button);
+  height: var(--button);
+  border-radius: var(--radius-full);
+  background: var(--fill);
+  color: var(--text-faint);
+  transition-property: scale, background-color, color, box-shadow;
+  transition-duration: var(--spring-press-duration), var(--duration-fast), var(--duration-fast), var(--duration-fast);
+  transition-timing-function: var(--spring-press), var(--ease-out), var(--ease-out), var(--ease-out);
+}
+/* 40 to look at, 44 to press. */
+.composer-action::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--button) - var(--size-control)) / 2);
+  border-radius: inherit;
+}
+.composer-action[data-look="send"] {
+  background: var(--primary-gradient);
+  box-shadow: var(--shadow-button);
+  color: var(--on-primary);
+}
+.composer-action[data-look="stop"] {
+  background: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  color: var(--text);
+}
+.composer-action:active:not(:disabled) {
+  scale: var(--press);
+  transition-duration: var(--duration-instant);
+  transition-timing-function: var(--ease-out);
+}
+/* Stop Nova: the square, filled. */
+.composer-action [data-icon="stop"] {
+  fill: currentColor;
+}
+@media (hover: hover) {
+  .composer-action[data-look="stop"]:hover {
+    background: var(--fill-strong);
+  }
+}

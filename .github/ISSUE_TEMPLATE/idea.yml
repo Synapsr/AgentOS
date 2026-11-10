@@ -1,0 +1,39 @@
+name: Idea
+description: Something that would make AgentOS better.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        AgentOS aims to stay small and obvious, so the most useful ideas start from a problem rather than a solution. Before asking for a new setting, ask whether a better default would do.
+        Please search the [existing issues](https://github.com/Synapsr/AgentOS/issues) first.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The situation, and what gets in your way today.
+      placeholder: When Nova finishes a long job while I am driving, …
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: How you imagine AgentOS handling it. Rough is fine.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you do today
+      description: A workaround, or how something else handles it.
+
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contributing
+      options:
+        - label: I would like to work on this myself (see [CONTRIBUTING.md](https://github.com/Synapsr/AgentOS/blob/main/CONTRIBUTING.md)).

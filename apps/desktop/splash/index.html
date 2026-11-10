@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- What the main window shows until the core answers. The shell then loads
+     the real interface, which the core serves, in its place. It is the
+     interface's own first frame: the presence asleep (a still, flat dash) on
+     its stage, in the owner's appearance, so the hand-over shows no seam.
+     The values are the design tokens (packages/design/tokens.json): this page
+     has no access to tokens.css, so they are written out here. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>AgentOS</title>
+    <style>
+      /* Figtree when the shell ships it beside this page; the system font otherwise. */
+      @font-face {
+        font-family: Figtree;
+        src: url("figtree.woff2") format("woff2");
+        font-weight: 300 600;
+        font-display: swap;
+      }
+      :root {
+        /* surface-stage, text-dim, and the presence's offline colours. */
+        --stage: #0c0b0a;
+        --text-dim: rgba(247, 243, 238, 0.7);
+        --dash-from: #5f5953;
+        --dash-to: #4c4743;
+        /* The home's stage: 30 % of the height, 160 to 300 (stage.home). */
+        --size: clamp(160px, min(30vh, 100vw), 300px);
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --stage: #eeece8;
+          --text-dim: rgba(29, 26, 23, 0.68);
+          --dash-from: #bdb7b1;
+          --dash-to: #cbc6c0;
+        }
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        padding: 0 24px;
+        background: var(--stage);
+        color: var(--text-dim);
+        font: 400 15px/1.45 Figtree, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", sans-serif;
+        text-align: center;
+        -webkit-font-smoothing: antialiased;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
+      }
+      /* The stage, and the presence asleep in it: a flat dash, still. */
+      .stage {
+        display: grid;
+        place-items: center;
+        width: var(--size);
+        height: var(--size);
+      }
+      .stage::before {
+        content: "";
+        width: calc(var(--size) * 0.35);
+        height: calc(var(--size) * 0.05);
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--dash-from), var(--dash-to));
+      }
+      #line {
+        margin-top: calc(var(--size) * -0.05);
+      }
+      #why {
+        max-width: 46ch;
+        margin-top: 8px;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage" aria-hidden="true"></div>
+    <div id="line">Starting…</div>
+    <div id="why"></div>
+    <script>
+      const french = navigator.language.toLowerCase().startsWith("fr");
+      document.documentElement.lang = french ? "fr" : "en";
+      document.getElementById("line").textContent = french ? "Démarrage…" : "Starting…";
+
+      /** Called by the shell when the core does not start: a line for the owner, and why for whoever helps them. */
+      function tell(why) {
+        document.getElementById("line").textContent = french
+          ? "AgentOS n’arrive pas à démarrer. Nouvel essai…"
+          : "AgentOS can’t start yet. Trying again…";
+        document.getElementById("why").textContent = why;
+      }
+    </script>
+  </body>
+</html>

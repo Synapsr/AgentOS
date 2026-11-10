@@ -1,0 +1,68 @@
+/* The side panel (380 wide, at the screen's edge): the presence on a strip
+   of its stage, then the conversation on the page, then the composer. In a
+   browser it keeps to that width, at the edge. */
+.panel {
+  --gutter: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  max-width: var(--size-panel);
+  height: 100dvh;
+  margin-left: auto;
+  background: var(--surface);
+  box-shadow: -1px 0 0 var(--line);
+}
+.panel .conversation {
+  --fade: var(--space-96);
+}
+
+/* The presence beside its name and its line, on the stage's colour, with its light. */
+.panel-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  flex: none;
+  min-height: calc(var(--stage-panel) + 2 * var(--space-16));
+  padding: var(--space-16) var(--space-20) var(--space-16) var(--space-16);
+  overflow: hidden;
+  background: var(--surface-stage);
+  box-shadow: 0 1px 0 var(--line);
+  transition: min-height var(--spring-layout-duration) var(--spring-layout);
+}
+.panel[data-asking] .panel-head {
+  min-height: calc(var(--stage-panel-asking) + 2 * var(--space-16));
+}
+.panel-figure {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.panel-figure > .presence {
+  position: relative;
+}
+.panel-who {
+  position: relative;
+  min-width: 0;
+}
+.panel-name {
+  color: var(--text-dim);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+}
+/* In a 380 px column the line is a title: two short lines at most, beside the presence. */
+.panel-line {
+  justify-items: start;
+  font: var(--type-title);
+  letter-spacing: var(--tracking-title);
+  text-align: left;
+}
+.panel-who .doing {
+  justify-items: start;
+  min-height: 0;
+  margin-top: var(--space-2);
+  text-align: left;
+}
+.panel[data-asking] .panel-line {
+  font: var(--type-body-strong);
+  letter-spacing: var(--tracking-body-strong);
+}

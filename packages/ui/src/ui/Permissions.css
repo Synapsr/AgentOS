@@ -1,0 +1,21 @@
+/* What the computer must allow: a row each, the icon tile on the left, its one button (or "Allowed") on the right.
+   The rows themselves are Settings' rows (`.row`, `.tile`, `.row-title`). */
+.permissions {
+  display: contents;
+}
+.permission > .row-title {
+  flex: 1;
+}
+.permission-allowed {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: var(--size-control-sm);
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  animation: arrive-fade var(--duration-base) var(--ease-out);
+}
+.permission-allowed .icon {
+  color: var(--go);
+}

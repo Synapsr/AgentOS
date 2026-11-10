@@ -1,0 +1,106 @@
+---
+/**
+ * Every page: the head (titles, languages, link previews, icons) and the
+ * one script that brings the page to life. The page follows the visitor's
+ * light or dark appearance (data-appearance="system"), like every AgentOS
+ * surface.
+ */
+import { getImage } from "astro:assets";
+import socialCard from "@agentos/design/brand/social-card.png";
+import appIcon from "@agentos/design/brand/app-icon.png";
+import faviconSvg from "@agentos/design/brand/favicon.svg?url";
+import faviconPng from "@agentos/design/brand/favicon-32.png?url";
+// The same file tokens.css loads, so the preload and the stylesheet ask for one URL.
+import figtree from "@agentos/design/fonts/figtree.woff2?url";
+import { copy, other, type Lang } from "../i18n";
+import "../styles/global.css";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Pages that exist in both languages give both paths, for hreflang. */
+  paths?: Record<Lang, string>;
+  noindex?: boolean;
+}
+
+const { lang, title, description, paths, noindex = false } = Astro.props;
+const t = copy[lang];
+const site = Astro.site!;
+const canonical = new URL(paths?.[lang] ?? Astro.url.pathname, site).href;
+const card = new URL(socialCard.src, site).href;
+const touchIcon = await getImage({ src: appIcon, width: 180, height: 180, format: "png" });
+---
+
+<!doctype html>
+<html lang={lang} dir="ltr" data-appearance="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    {
+      paths && (
+        <>
+          <link rel="alternate" hreflang={lang} href={new URL(paths[lang], site).href} />
+          <link rel="alternate" hreflang={other(lang)} href={new URL(paths[other(lang)], site).href} />
+          <link rel="alternate" hreflang="x-default" href={new URL(paths.en, site).href} />
+        </>
+      )
+    }
+    <meta name="theme-color" content="#0C0B0A" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#EEECE8" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="preload" href={figtree} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href={faviconSvg} type="image/svg+xml" />
+    <link rel="icon" href={faviconPng} type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href={touchIcon.src} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AgentOS" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={t.locale} />
+    <meta property="og:locale:alternate" content={copy[other(lang)].locale} />
+    <meta property="og:image" content={card} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content={String(socialCard.width)} />
+    <meta property="og:image:height" content={String(socialCard.height)} />
+    <meta property="og:image:alt" content={t.meta.cardAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={card} />
+    <meta name="twitter:image:alt" content={t.meta.cardAlt} />
+  </head>
+  <body>
+    <a class="skip" href="#main">{t.nav.skip}</a>
+    <slot />
+    <script>
+      import "../scripts/main";
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: fixed;
+    top: var(--space-12);
+    left: var(--space-12);
+    z-index: 100;
+    padding: var(--space-12) var(--space-16);
+    border-radius: var(--radius-full);
+    background: var(--primary-gradient);
+    box-shadow: var(--shadow-button);
+    color: var(--on-primary);
+    font: var(--type-button);
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .skip:focus-visible {
+    transform: none;
+  }
+</style>

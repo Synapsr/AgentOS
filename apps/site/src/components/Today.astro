@@ -1,0 +1,205 @@
+---
+/** Where the project stands, said honestly, with a recording and real screens from today's build. */
+import { getImage, Picture } from "astro:assets";
+import Icon from "./Icon.astro";
+import { copy, type Lang } from "../i18n";
+import { gallery, recording } from "../screenshots";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang].today;
+const poster = await getImage({ src: recording.poster, width: 1280, format: "webp" });
+---
+
+<section class="section" id="today" aria-labelledby="today-title">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h2 class="heading" id="today-title">{t.title}</h2>
+        <p class="lead">{t.lead}</p>
+      </div>
+      <div class="lists">
+        <div>
+          <h3 class="list-title">{t.now.title}</h3>
+          <ul>
+            {
+              t.now.items.map((item) => (
+                <li>
+                  <Icon name="check" />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div>
+          <h3 class="list-title">{t.next.title}</h3>
+          <ul class="planned">
+            {
+              t.next.items.map((item) => (
+                <li>
+                  <Icon name="planned" class="planned" />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <figure class="gallery">
+      <div class="shots">
+        <video
+          class="recording"
+          src={recording.video}
+          data-poster={poster.src}
+          width={recording.width}
+          height={recording.height}
+          aria-label={t.video}
+          controls
+          muted
+          playsinline
+          preload="none"
+        ></video>
+        {
+          gallery.map((shot) => (
+            <Picture
+              src={shot.image}
+              alt={shot.alt[lang]}
+              formats={["avif"]}
+              fallbackFormat="webp"
+              widths={[320, 480, 700]}
+              sizes="(max-width: 700px) 44vw, 190px"
+              class="tall"
+              loading="lazy"
+              decoding="async"
+            />
+          ))
+        }
+      </div>
+      <figcaption>{t.gallery}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-44) var(--space-96);
+    align-items: start;
+  }
+
+  .lists {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+    gap: var(--space-32);
+    padding-top: var(--space-8);
+  }
+
+  .list-title {
+    margin-bottom: var(--space-8);
+    font: var(--type-body-strong);
+  }
+
+  .lists li {
+    display: flex;
+    gap: var(--space-12);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--line);
+    font: var(--type-small);
+  }
+
+  .lists li :global(svg) {
+    margin-top: 1px;
+  }
+
+  /* Done is a check in go; planned is an empty circle, quieter. */
+  .lists li :global(.icon:not(.planned)) {
+    color: var(--go);
+  }
+
+  .planned li {
+    color: var(--text-dim);
+  }
+
+  .gallery {
+    margin-top: var(--space-96);
+  }
+
+  .shots {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: var(--space-20);
+    height: clamp(240px, 28vw, 400px);
+  }
+
+  /* A picture is a box of its own: as tall as the row, as wide as its image. */
+  .shots :global(picture) {
+    display: block;
+    height: 100%;
+  }
+
+  .shots :global(img),
+  .recording {
+    display: block;
+    height: 100%;
+    width: auto;
+    min-width: 0;
+    border-radius: var(--radius-l);
+    outline: 1px solid var(--outline);
+    outline-offset: -1px;
+    background: var(--surface);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .recording {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: var(--black);
+  }
+
+  figcaption {
+    margin-top: var(--space-16);
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-align: center;
+  }
+
+  @media (max-width: 960px) {
+    .top {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .lists {
+      grid-template-columns: 1fr;
+    }
+
+    .shots {
+      flex-wrap: wrap;
+      height: auto;
+    }
+
+    .recording {
+      width: 100%;
+      height: auto;
+    }
+
+    .shots :global(picture) {
+      width: calc(50% - var(--space-20) / 2);
+      height: auto;
+    }
+
+    .shots :global(img.tall) {
+      width: 100%;
+      height: auto;
+    }
+  }
+</style>

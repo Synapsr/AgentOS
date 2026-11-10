@@ -1,0 +1,320 @@
+---
+/**
+ * How it works: you, one protocol, your computer, and the three parts
+ * that plug into it. A diagram made of text, so it reads without the
+ * picture.
+ */
+import Icon from "./Icon.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const t = copy[Astro.props.lang].how;
+const clientIcons = ["phone", "earbuds", "browser"] as const;
+---
+
+<section class="section" id="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="heading" id="how-title">{t.title}</h2>
+      <p class="lead">{t.lead}</p>
+    </div>
+
+    <div class="diagram">
+      <div class="you">
+        <p class="label">{t.you.title}</p>
+        <ul class="clients" aria-label={t.you.body}>
+          {
+            t.clients.map((client, i) => (
+              <li>
+                <Icon name={clientIcons[i]!} />
+                {client}
+              </li>
+            ))
+          }
+          <li class="soon">
+            <Icon name="watch" />
+            {t.soon}
+          </li>
+        </ul>
+      </div>
+
+      <p class="wire"><span>{t.wire}</span></p>
+
+      <div class="computer">
+        <div class="core">
+          <div class="core-presence" data-presence="idle"></div>
+          <div>
+            <h3 class="title">{t.core.title}</h3>
+            <p class="dim">{t.core.body}</p>
+          </div>
+        </div>
+        <ul class="parts">
+          {
+            t.parts.map((part) => (
+              <li class="part">
+                <h4>{part.title}</h4>
+                <p>{part.body}</p>
+                <ul class="options">
+                  {part.options.map((option, i) => (
+                    <li class:list={{ chosen: i === 0 }}>{option}</li>
+                  ))}
+                  {part.open && <li class="open">{part.open}</li>}
+                </ul>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .head .heading,
+  .head .lead {
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+
+  .diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: var(--space-64);
+  }
+
+  .you {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .label {
+    color: var(--text-dim);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .head .lead {
+    margin-top: var(--space-16);
+  }
+
+  .clients {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-8);
+  }
+
+  .clients li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    height: var(--size-control);
+    padding-inline: var(--space-16) var(--space-20);
+    border-radius: var(--radius-full);
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-raised);
+    font: var(--type-label);
+  }
+
+  .clients :global(svg) {
+    color: var(--text-dim);
+  }
+
+  /* Being built: an outline, not a fill, like an open slot. */
+  .clients .soon {
+    background: none;
+    box-shadow: none;
+    outline: 1px dashed color-mix(in srgb, var(--text) 30%, transparent);
+    outline-offset: -1px;
+    color: var(--text-dim);
+  }
+
+  /* The wire: a hairline down, with what travels on it written across. */
+  .wire {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-block: var(--space-32);
+  }
+
+  .wire::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--line-strong);
+    opacity: 0.35;
+  }
+
+  .wire span {
+    position: relative;
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-full);
+    background: var(--surface-stage);
+    box-shadow: inset 0 0 0 1px var(--ring);
+    color: var(--text-dim);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  /* Your computer, drawn as an outline around the core and the parts that plug into it. */
+  .computer {
+    width: 100%;
+    padding: var(--space-32);
+    border-radius: var(--radius-xxl);
+    box-shadow: inset 0 0 0 1px var(--ring);
+  }
+
+  .core {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-16);
+    text-align: left;
+  }
+
+  .core-presence {
+    width: 44px;
+    height: 44px;
+    flex: none;
+  }
+
+  .core .dim {
+    font: var(--type-small);
+    margin-top: var(--space-2);
+  }
+
+  /* The three parts hang from the core on a bus of hairlines. */
+  .parts {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-20);
+    margin-top: var(--space-44);
+    padding-top: var(--space-24);
+  }
+
+  .parts::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc((100% - 2 * var(--space-20)) / 6);
+    right: calc((100% - 2 * var(--space-20)) / 6);
+    height: 1px;
+    background: var(--line-strong);
+    opacity: 0.35;
+  }
+
+  .parts::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: calc(-1 * var(--space-24));
+    height: var(--space-24);
+    width: 1px;
+    background: var(--line-strong);
+    opacity: 0.35;
+  }
+
+  .part {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-24);
+    border-radius: var(--radius-xl);
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .part::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: calc(-1 * var(--space-24));
+    height: var(--space-24);
+    width: 1px;
+    background: var(--line-strong);
+    opacity: 0.35;
+  }
+
+  h4 {
+    font: var(--type-title);
+    letter-spacing: var(--tracking-title);
+  }
+
+  .part p {
+    margin-top: var(--space-8);
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-wrap: pretty;
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: auto;
+    padding-top: var(--space-20);
+  }
+
+  .options li {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-full);
+    background: var(--fill);
+    color: var(--text-dim);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .core .title {
+    font: var(--type-title);
+  }
+
+  .options li.chosen {
+    color: var(--text);
+    box-shadow: inset 0 0 0 1.5px var(--line-strong);
+    background: none;
+  }
+
+  .options li.open {
+    background: none;
+    box-shadow: inset 0 0 0 1px var(--line);
+    outline: 1px dashed color-mix(in srgb, var(--text) 30%, transparent);
+    outline-offset: -1px;
+  }
+
+  @media (max-width: 860px) {
+    .computer {
+      padding: var(--space-16);
+    }
+
+    .core {
+      padding: var(--space-8);
+    }
+
+    .parts {
+      grid-template-columns: 1fr;
+      gap: var(--space-24);
+    }
+
+    .parts::before {
+      display: none;
+    }
+  }
+</style>

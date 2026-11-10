@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/Synapsr/AgentOS/security/advisories/new
+    about: Please do not open a public issue. Report it privately; SECURITY.md says what to include.
+  - name: Getting started, and what to do when a step fails
+    url: https://github.com/Synapsr/AgentOS/blob/main/docs/getting-started.md
+    about: The guide answers the common questions about building and running AgentOS.

@@ -1,0 +1,892 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ can't hear you right now" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ne vous entend pas pour l'instant"
+          }
+        }
+      }
+    },
+    "%@ doesn't know this phone any more. Add it again from your computer." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ne connaît plus ce téléphone. Ajoutez-le à nouveau depuis votre ordinateur."
+          }
+        }
+      }
+    },
+    "%@ is asking" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vous demande"
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ : %2$@"
+          }
+        }
+      }
+    },
+    "%lld steps" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld étapes"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter"
+          }
+        }
+      }
+    },
+    "Add %@?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter %@ ?"
+          }
+        }
+      }
+    },
+    "Add a computer" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un ordinateur"
+          }
+        }
+      }
+    },
+    "Add this computer?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter cet ordinateur ?"
+          }
+        }
+      }
+    },
+    "Adding %@…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajout de %@…"
+          }
+        }
+      }
+    },
+    "Answer in your own words" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répondre avec vos mots"
+          }
+        }
+      }
+    },
+    "Answer in your own words…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répondre avec vos mots…"
+          }
+        }
+      }
+    },
+    "Asking" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous attend"
+          }
+        }
+      }
+    },
+    "Back up my photos" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sauvegarder mes photos"
+          }
+        }
+      }
+    },
+    "Can't reach it" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Injoignable"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        }
+      }
+    },
+    "Copy" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier"
+          }
+        }
+      }
+    },
+    "Couldn't reach your computer. Try again." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre ordinateur ne répond pas. Réessayez."
+          }
+        }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Détails"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Earbuds" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Écouteurs"
+          }
+        }
+      }
+    },
+    "Go ahead" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allez-y"
+          }
+        }
+      }
+    },
+    "Go ahead: %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allez-y : %@"
+          }
+        }
+      }
+    },
+    "Good afternoon, %@." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonjour, %@."
+          }
+        }
+      }
+    },
+    "Good afternoon." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonjour."
+          }
+        }
+      }
+    },
+    "Good evening, %@." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonsoir, %@."
+          }
+        }
+      }
+    },
+    "Good evening." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonsoir."
+          }
+        }
+      }
+    },
+    "Good morning, %@." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonjour, %@."
+          }
+        }
+      }
+    },
+    "Good morning." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bonjour."
+          }
+        }
+      }
+    },
+    "I can't hear anything: no microphone is available." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n'entends rien : aucun micro n'est disponible."
+          }
+        }
+      }
+    },
+    "I can't listen in this language on this iPhone yet." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne peux pas encore écouter dans cette langue sur cet iPhone."
+          }
+        }
+      }
+    },
+    "I can't reach %@ safely any more. Add it again from your computer." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne peux plus joindre %@ en sécurité. Ajoutez-le à nouveau depuis votre ordinateur."
+          }
+        }
+      }
+    },
+    "I can't reach %@ safely from this network. Update AgentOS on your computer, then show a new code." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne peux pas joindre %@ en sécurité sur ce réseau. Mettez à jour AgentOS sur votre ordinateur, puis affichez un nouveau code."
+          }
+        }
+      }
+    },
+    "I can't reach %@ safely: its relay address starts with http. Give the relay an https address, then show a new code." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je ne peux pas joindre %@ en sécurité : l'adresse de son relais commence par http. Donnez au relais une adresse en https, puis affichez un nouveau code."
+          }
+        }
+      }
+    },
+    "I can't reach %@. Check that it's awake." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n'arrive pas à joindre %@. Vérifiez qu'il est allumé."
+          }
+        }
+      }
+    },
+    "I can't reach %@. Check that your phone is on the same network as your computer." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n'arrive pas à joindre %@. Vérifiez que votre téléphone est sur le même réseau que votre ordinateur."
+          }
+        }
+      }
+    },
+    "I couldn't send your answer to %@. Open AgentOS to try again." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n'ai pas pu envoyer votre réponse à %@. Ouvrez AgentOS pour réessayer."
+          }
+        }
+      }
+    },
+    "I didn't catch a clear answer. It's still waiting for you." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n'ai pas saisi de réponse claire. La demande vous attend toujours."
+          }
+        }
+      }
+    },
+    "I need the microphone to hear you. You can allow it in Settings." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J'ai besoin du micro pour vous entendre. Vous pouvez l'autoriser dans Réglages."
+          }
+        }
+      }
+    },
+    "I'm listening." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je vous écoute."
+          }
+        }
+      }
+    },
+    "I'm on it." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je m'en occupe."
+          }
+        }
+      }
+    },
+    "Later" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus tard"
+          }
+        }
+      }
+    },
+    "Look closer" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir de plus près"
+          }
+        }
+      }
+    },
+    "Looking for %@…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je cherche %@…"
+          }
+        }
+      }
+    },
+    "No longer needed" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus nécessaire"
+          }
+        }
+      }
+    },
+    "Off" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé"
+          }
+        }
+      }
+    },
+    "Okay, I won't." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D'accord, je n'y touche pas."
+          }
+        }
+      }
+    },
+    "On" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activé"
+          }
+        }
+      }
+    },
+    "On your computer, open AgentOS and choose “Add your phone”." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur votre ordinateur, ouvrez AgentOS et choisissez « Ajouter votre téléphone »."
+          }
+        }
+      }
+    },
+    "Opens the conversation" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre la conversation"
+          }
+        }
+      }
+    },
+    "Paused" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En pause"
+          }
+        }
+      }
+    },
+    "Pay this week's bills" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Payer les factures de la semaine"
+          }
+        }
+      }
+    },
+    "Remove" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer"
+          }
+        }
+      }
+    },
+    "Reply" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répondre"
+          }
+        }
+      }
+    },
+    "Said aloud" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit à voix haute"
+          }
+        }
+      }
+    },
+    "Scan the code on your computer" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scannez le code affiché sur votre ordinateur"
+          }
+        }
+      }
+    },
+    "Selected" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionné"
+          }
+        }
+      }
+    },
+    "Send" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer"
+          }
+        }
+      }
+    },
+    "Sending to your computer…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoi à votre ordinateur…"
+          }
+        }
+      }
+    },
+    "Show earlier" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir plus haut"
+          }
+        }
+      }
+    },
+    "Something went wrong on your computer. Try again." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quelque chose s'est mal passé sur votre ordinateur. Réessayez."
+          }
+        }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
+    "Stop %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter %@"
+          }
+        }
+      }
+    },
+    "Stop: %@" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop : %@"
+          }
+        }
+      }
+    },
+    "Stopped" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêté"
+          }
+        }
+      }
+    },
+    "Talk through your earbuds" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parler dans vos écouteurs"
+          }
+        }
+      }
+    },
+    "Talk to %@…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parler à %@…"
+          }
+        }
+      }
+    },
+    "Tap to send" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez pour envoyer"
+          }
+        }
+      }
+    },
+    "Tap to talk" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez pour parler"
+          }
+        }
+      }
+    },
+    "That didn't go through. Try again." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ça n'est pas passé. Réessayez."
+          }
+        }
+      }
+    },
+    "That didn't work" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ça n'a pas marché"
+          }
+        }
+      }
+    },
+    "That isn't the code of an AgentOS computer." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce n'est pas le code d'un ordinateur AgentOS."
+          }
+        }
+      }
+    },
+    "The conversation in your earbuds has paused. Open AgentOS to carry on." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La conversation dans vos écouteurs est en pause. Ouvrez AgentOS pour reprendre."
+          }
+        }
+      }
+    },
+    "This code is no longer valid. Show a new one on your computer." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce code n'est plus valable. Affichez-en un nouveau sur votre ordinateur."
+          }
+        }
+      }
+    },
+    "This is not the computer that showed the code. Nothing was sent to it." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce n'est pas l'ordinateur qui a affiché le code. Rien ne lui a été envoyé."
+          }
+        }
+      }
+    },
+    "Tidy my Downloads folder" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ranger mon dossier Téléchargements"
+          }
+        }
+      }
+    },
+    "Try again" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réessayer"
+          }
+        }
+      }
+    },
+    "What %@ sees. Tap to look closer." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce que voit %@. Touchez pour regarder de plus près."
+          }
+        }
+      }
+    },
+    "What answers at %@'s address is not the computer you added." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce qui répond à l'adresse de %@ n'est pas l'ordinateur que vous avez ajouté."
+          }
+        }
+      }
+    },
+    "What can %@ do for you?" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Que peut faire %@ pour vous ?"
+          }
+        }
+      }
+    },
+    "Working" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En cours"
+          }
+        }
+      }
+    },
+    "Worth a careful look" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À regarder de près"
+          }
+        }
+      }
+    },
+    "You already added this computer. Adding it again replaces how this phone reaches it." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez déjà ajouté cet ordinateur. L'ajouter à nouveau remplace la façon dont ce téléphone le joint."
+          }
+        }
+      }
+    },
+    "You answered “%@”" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez répondu « %@ »"
+          }
+        }
+      }
+    },
+    "You said “%@”" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez dit « %@ »"
+          }
+        }
+      }
+    },
+    "Your computers" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos ordinateurs"
+          }
+        }
+      }
+    },
+    "job.done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminé"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

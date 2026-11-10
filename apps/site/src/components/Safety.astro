@@ -1,0 +1,292 @@
+---
+/**
+ * You stay in charge: a high-risk request to try, next to the one setting
+ * that decides how much Nova asks (a real radio group). Then privacy, said
+ * plainly.
+ */
+import Icon from "./Icon.astro";
+import Request from "./Request.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang];
+const c = t.charge;
+const a = c.autonomy;
+const optionIcons = ["hand", "shield", "bolt"] as const;
+const pointIcons = ["phone", "key", "shield"] as const;
+---
+
+<section class="section" id="charge" aria-labelledby="charge-title">
+  <div class="wrap">
+    <h2 class="heading" id="charge-title">{c.title}</h2>
+    <p class="lead">{c.lead}</p>
+
+    <div class="grid">
+      <div class="try">
+        <Request lang={lang} id="pay" question={c.question} risk shot raw={c.raw} size="title-l" />
+        <p class="hint">{c.try}</p>
+      </div>
+
+      <div class="settings">
+        <fieldset class="autonomy">
+          <legend class="title">{a.title}</legend>
+          <p class="help">{a.help}</p>
+          <div class="options">
+            {
+              a.options.map((option, i) => (
+                <label class="option">
+                  <input type="radio" name="autonomy" value={option.value} checked={option.value === "balanced"} />
+                  <span class="tile big" aria-hidden="true">
+                    <Icon name={optionIcons[i]!} />
+                  </span>
+                  <span class="words">
+                    <span class="label">
+                      {option.label}
+                      {option.value === "balanced" && <span class="tag">{a.recommended}</span>}
+                    </span>
+                    <span class="sub">{option.help}</span>
+                  </span>
+                  <span class="radio" aria-hidden="true" />
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+        <p class="caution"><Icon name="alert" /><span><strong>{c.caution.lead}</strong> {c.caution.body}</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="privacy" aria-labelledby="privacy-title">
+  <div class="wrap private">
+    <div>
+      <h2 class="heading" id="privacy-title">{t.privacy.title}</h2>
+      <p class="lead">{t.privacy.lead}</p>
+    </div>
+    <ul class="group">
+      {
+        t.privacy.points.map((point, i) => (
+          <li>
+            <span class="tile" aria-hidden="true">
+              <Icon name={pointIcons[i]!} />
+            </span>
+            <span class="point">
+              <h3>{point.title}</h3>
+              <p>{point.body}</p>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-44) var(--space-64);
+    align-items: start;
+    margin-top: var(--space-64);
+  }
+
+  .try {
+    max-width: 500px;
+  }
+
+  .hint {
+    margin-top: var(--space-16);
+    padding-inline: var(--space-20);
+    color: var(--text-dim);
+    font: var(--type-small);
+  }
+
+  /* ───── How much should Nova ask? Option cards ───── */
+
+  .autonomy {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+  }
+
+  .help {
+    margin-top: var(--space-4);
+    color: var(--text-dim);
+    font: var(--type-small);
+  }
+
+  .options {
+    display: grid;
+    gap: var(--space-12);
+    margin-top: var(--space-20);
+  }
+
+  .option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    padding: var(--space-16) var(--space-20) var(--space-16) var(--space-16);
+    border-radius: var(--radius-l);
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-raised);
+    cursor: pointer;
+    transition: box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  /* Selected: a ring and a filled radio, never colour alone. */
+  .option:has(:checked) {
+    box-shadow:
+      var(--shadow-raised),
+      inset 0 0 0 1.5px var(--line-strong);
+  }
+
+  .option:has(:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .tile.big {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-s);
+  }
+
+  .words {
+    display: grid;
+    flex: 1;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-8);
+    font: var(--type-body-strong);
+  }
+
+  .tag {
+    padding: 2px var(--space-8);
+    border-radius: var(--radius-full);
+    background: var(--fill);
+    color: var(--text-dim);
+    font: var(--type-caption);
+    letter-spacing: var(--tracking-caption);
+  }
+
+  .sub {
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-wrap: pretty;
+  }
+
+  .radio {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1.5px var(--text-faint);
+    transition: box-shadow var(--spring-snappy-duration) var(--spring-snappy);
+  }
+
+  .option:has(:checked) .radio {
+    box-shadow:
+      inset 0 0 0 1.5px var(--text),
+      inset 0 0 0 5px var(--surface-raised),
+      inset 0 0 0 11px var(--text);
+  }
+
+  /* The one thing a careful reader should know before choosing. */
+  .caution {
+    display: flex;
+    gap: var(--space-12);
+    margin-top: var(--space-20);
+    padding: var(--space-16) var(--space-20) var(--space-16) var(--space-16);
+    border-radius: var(--radius-l);
+    background: var(--fill);
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-wrap: pretty;
+  }
+
+  .caution :global(svg) {
+    margin-top: 1px;
+    color: var(--text);
+  }
+
+  .caution strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* ───── Privacy ───── */
+
+  .private {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-44) var(--space-64);
+    align-items: start;
+  }
+
+  .group {
+    margin-top: var(--space-8);
+  }
+
+  .group .tile {
+    margin-top: 2px;
+  }
+
+  .point {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  h3 {
+    font: var(--type-body-strong);
+  }
+
+  .point p {
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 960px) {
+    .grid,
+    .private {
+      grid-template-columns: 1fr;
+    }
+
+    .try {
+      max-width: 560px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .option {
+      align-items: flex-start;
+    }
+
+    .tile.big {
+      display: none;
+    }
+  }
+</style>

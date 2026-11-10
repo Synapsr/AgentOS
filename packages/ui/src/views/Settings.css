@@ -1,0 +1,203 @@
+/* Settings (docs/DESIGN.md, "Settings rows"): one short page of groups,
+   each row with an icon tile, a title, maybe a subtitle, and one thing on
+   the right. Everything technical is one row away, in Advanced. */
+.settings {
+  max-width: calc(var(--size-measure-narrow) + 2 * var(--space-20));
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: calc(var(--space-24) + env(safe-area-inset-top)) var(--space-20) var(--space-96);
+}
+
+.settings-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--size-control);
+}
+.settings-head .icon-button {
+  margin-left: calc(-1 * var(--space-12));
+}
+
+.settings-page {
+  display: grid;
+  gap: var(--space-24);
+  margin-top: var(--space-24);
+}
+.settings-group-title {
+  margin: 0 var(--space-16) var(--space-8);
+  color: var(--text-dim);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+}
+.settings-group-note {
+  margin: var(--space-8) var(--space-16) 0;
+  color: var(--text-dim);
+  font: var(--type-small);
+  letter-spacing: var(--tracking-small);
+  text-wrap: pretty;
+}
+/* A row that opens a page: the whole row is the button. Pressed: fill. */
+a.row-link {
+  color: inherit;
+  text-decoration: none;
+}
+.row-link {
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.row-link > .icon {
+  margin-left: auto;
+  color: var(--text-faint);
+}
+.row-link:active {
+  background: var(--fill);
+}
+.row-link:focus-visible,
+.row.pick:has(input:focus-visible),
+.row:has(> .row-input:focus-visible) {
+  outline: var(--space-2) solid var(--focus);
+  outline-offset: calc(-1 * var(--space-2));
+  border-radius: var(--radius-l);
+}
+@media (hover: hover) {
+  .row-link:hover {
+    background: color-mix(in srgb, var(--fill) 60%, transparent);
+  }
+}
+
+/* A value edited in place: it reads as the row's value until it is touched. */
+.row-input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--size-control-sm);
+  margin-right: calc(-1 * var(--space-8));
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-s);
+  color: var(--text-dim);
+  text-align: right;
+  text-overflow: ellipsis;
+  transition-property: background-color, color;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+}
+.row-input[data-code] {
+  font: var(--type-code);
+}
+.row-input:focus {
+  outline: none;
+  background: var(--fill);
+  color: var(--text);
+}
+@media (hover: hover) {
+  .row-input:hover {
+    background: var(--fill);
+  }
+}
+
+/* A choice in a list (the language): the system's own menu, dressed as the row's value. */
+.row-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.row-select select {
+  appearance: none;
+  padding: var(--space-4) var(--space-24) var(--space-4) var(--space-8);
+  margin-right: calc(-1 * var(--space-24));
+  border-radius: var(--radius-s);
+  color: var(--text-dim);
+  text-align: right;
+  cursor: pointer;
+}
+.row-select select:focus-visible {
+  outline: var(--space-2) solid var(--focus);
+  outline-offset: 0;
+}
+.row-select .icon {
+  pointer-events: none;
+}
+
+/* One of several: the chosen one carries a check. */
+.row.pick {
+  cursor: pointer;
+}
+.row.pick input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.row-check {
+  margin-left: auto;
+  color: var(--go);
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(var(--arrive-blur));
+  transition-property: opacity, scale, filter;
+  transition-duration: var(--spring-snappy-duration);
+  transition-timing-function: var(--spring-snappy);
+}
+.row.pick:has(input:checked) .row-check {
+  opacity: 1;
+  scale: 1;
+  filter: none;
+}
+
+/* A key: what is known about it on the left, a place to paste another on the right. */
+.row-write {
+  flex-wrap: wrap;
+}
+.row-write .row-text {
+  flex: 1 1 10em;
+}
+/* Under the title when the row is too narrow for both, aligned with the text. */
+.row-edit {
+  display: flex;
+  flex: 1 1 14em;
+  margin-left: auto;
+  align-items: center;
+  gap: var(--space-8);
+  min-width: 0;
+}
+.row-edit .field {
+  min-height: var(--size-control);
+  padding-block: var(--space-8);
+}
+.row-confirm {
+  display: flex;
+  gap: var(--space-8);
+  animation: fade var(--duration-base) var(--ease-out);
+}
+
+.addresses {
+  display: grid;
+  justify-items: end;
+  min-width: 0;
+  margin-left: auto;
+}
+.address {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  max-width: 100%;
+  min-height: var(--size-control-sm);
+  margin-right: calc(-1 * var(--space-8));
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-s);
+  color: var(--text-dim);
+  font: var(--type-code);
+  white-space: nowrap;
+  transition-property: background-color, color;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+}
+@media (hover: hover) {
+  .address:hover {
+    background: var(--fill);
+    color: var(--text);
+  }
+}
+
+/* A sentence in a group of rows with icons: it starts where their text starts. */
+.row-indented {
+  padding-left: calc(var(--space-12) + var(--size-icon-tile) + var(--space-12));
+}

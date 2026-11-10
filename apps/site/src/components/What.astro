@@ -1,0 +1,46 @@
+---
+/** What it is, in plain words, beside a short scene that shows it at work. */
+import Scene from "./Scene.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang].see;
+---
+
+<section class="section" id="see" aria-labelledby="see-title">
+  <div class="wrap grid">
+    <div class="text">
+      <h2 class="heading" id="see-title">{t.title}</h2>
+      <p class="lead">{t.body}</p>
+    </div>
+    <Scene lang={lang} />
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-64);
+  }
+
+  .text {
+    max-width: 30em;
+  }
+
+  .lead {
+    margin-top: var(--space-24);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-44);
+    }
+  }
+</style>

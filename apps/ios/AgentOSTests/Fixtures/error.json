@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "This code is not valid any more. Show a new one."
+  }
+}

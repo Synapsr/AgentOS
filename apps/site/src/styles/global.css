@@ -1,0 +1,790 @@
+/*
+ * The site's foundation: the shared design tokens (which bring the Figtree
+ * font with them) and the components every page shares, written as in the
+ * reference implementation of docs/DESIGN.md so that the site shows the
+ * product's own buttons, request and receipt. Sections style themselves in
+ * their own components. Every value is a token.
+ */
+@import "@agentos/design/tokens.css";
+
+/* The stage light follows the presence's state: a registered colour can travel on the material spring. */
+@property --light {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+:root {
+  /* Site-level layout: the column, its gutter, and the room between sections. */
+  --page: 1180px;
+  --gutter: clamp(var(--space-16), 4vw, var(--space-44));
+  --section: clamp(var(--space-64), 7vw, calc(var(--space-96) + var(--space-16)));
+  scroll-padding-top: 88px;
+  background: var(--surface-stage);
+  /* Lets <details> and other auto heights move instead of jumping, where the browser can. */
+  interpolate-size: allow-keywords;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--surface-stage);
+  color: var(--text);
+  font: var(--type-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+figure,
+pre,
+dl,
+dd {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg,
+canvas,
+video {
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+  font-variant-numeric: normal;
+}
+
+::selection {
+  background: var(--working-fill);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--page) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ───── Text ───── */
+
+/* A section's heading is the agent's voice: Display, one sentence. */
+.heading {
+  font: var(--type-display-m);
+  letter-spacing: var(--tracking-display-m);
+  text-wrap: balance;
+  max-width: 20em;
+}
+
+.lead {
+  margin-top: var(--space-16);
+  max-width: 34em;
+  color: var(--text-dim);
+  font: var(--type-body-l);
+  letter-spacing: var(--tracking-body-l);
+  text-wrap: pretty;
+}
+
+.title-l {
+  font: var(--type-title-l);
+  letter-spacing: var(--tracking-title-l);
+  text-wrap: balance;
+}
+
+.title {
+  font: var(--type-title);
+  letter-spacing: var(--tracking-title);
+  text-wrap: balance;
+}
+
+.small {
+  font: var(--type-small);
+  text-wrap: pretty;
+}
+
+.dim {
+  color: var(--text-dim);
+}
+
+/* ───── Icons ───── */
+
+/* Line icons: 24-unit grid, stroke 1.75, round caps, in the text colour. */
+.icon {
+  width: var(--size-icon);
+  height: var(--size-icon);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon.dense {
+  width: var(--size-icon-dense);
+  height: var(--size-icon-dense);
+}
+
+/* Two icons in one place: the one that is not shown waits small and blurred (Icon swap). */
+.swap {
+  display: inline-grid;
+  flex: none;
+}
+
+.swap > * {
+  grid-area: 1 / 1;
+  transition-property: opacity, scale, filter;
+  transition-duration: var(--spring-snappy-duration);
+  transition-timing-function: var(--spring-snappy);
+}
+
+.swap > .off,
+.swap.on > .first {
+  opacity: 0;
+  scale: 0.25;
+  filter: blur(4px);
+}
+
+.swap.on > .off {
+  opacity: 1;
+  scale: 1;
+  filter: none;
+}
+
+/* ───── Surfaces ───── */
+
+.card {
+  background: var(--surface-raised);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-raised);
+}
+
+.glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--surface-overlay);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/*
+ * The presence's light, dithered: a 10 % tint spread over hundreds of pixels
+ * has only a few 8-bit steps and shows rings, mostly in the light appearance.
+ * A faint grey grain, blended so that it averages to nothing, hides them.
+ * The lit element must not be transformed: its grain would then blend with
+ * the light alone, not with the surface under it, and grey it.
+ */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.14;
+  -webkit-mask-image: radial-gradient(closest-side, #000 20%, transparent);
+  mask-image: radial-gradient(closest-side, #000 20%, transparent);
+  pointer-events: none;
+}
+
+/* A group of rows: a 32 px icon tile, a title, a line under it. */
+.group {
+  overflow: hidden;
+  background: var(--surface-raised);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-raised);
+}
+
+.group > li,
+.group > .row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  min-height: var(--size-row);
+  padding: var(--space-16) var(--space-20) var(--space-16) var(--space-16);
+}
+
+/* The line between two rows starts where the text starts. */
+.group > li + li::before,
+.group > .row + .row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--space-16) + var(--size-icon-tile) + var(--space-12));
+  height: 1px;
+  background: var(--line);
+}
+
+.tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--size-icon-tile);
+  height: var(--size-icon-tile);
+  border-radius: var(--radius-s);
+  background: var(--fill);
+  color: var(--text);
+}
+
+/* ───── Buttons: a capsule, one line, a verb ───── */
+
+.btn {
+  --h: var(--size-control);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  height: var(--h);
+  padding-inline: var(--space-20);
+  border-radius: var(--radius-full);
+  font: var(--type-button);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition-property: scale, background-color, box-shadow, color, opacity;
+  transition-duration: var(--spring-press-duration), var(--duration-fast), var(--duration-fast), var(--duration-fast), var(--duration-base);
+  transition-timing-function: var(--spring-press), var(--ease-out), var(--ease-out), var(--ease-out), var(--ease-out);
+}
+
+/* Hover and press are an overlay of the label's own colour, so that every variant answers the same way. */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+/* The icon side gets 2 px less, for optical balance. */
+.btn.has-icon {
+  padding-inline-start: calc(var(--space-20) - var(--space-2));
+}
+
+.btn.sm {
+  --h: var(--size-control-sm);
+  padding-inline: var(--space-16);
+}
+
+.btn.sm.has-icon {
+  padding-inline-start: calc(var(--space-16) - var(--space-2));
+}
+
+/* A dense button keeps a 44 px hit area. */
+.btn.sm::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--size-control-sm) - var(--size-control)) / 2) 0;
+}
+
+.btn.lg {
+  --h: var(--size-control-lg);
+  font: var(--type-button-big);
+}
+
+.btn.big {
+  --h: var(--size-control-big);
+  padding-inline: var(--space-24);
+  font: var(--type-button-big);
+}
+
+.btn.big.has-icon {
+  padding-inline-start: calc(var(--space-24) - var(--space-2));
+}
+
+.btn.block {
+  width: 100%;
+}
+
+/* Inside a card a button is concentric with it: card 28 = button 16 + inset 12. */
+.btn.in-card {
+  border-radius: var(--radius-m);
+}
+
+.btn.primary {
+  color: var(--on-primary);
+  background: var(--primary-gradient);
+  box-shadow: var(--shadow-button);
+}
+
+.btn.primary .check {
+  color: var(--primary-check);
+}
+
+.btn.secondary {
+  color: var(--text);
+  background-color: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.btn.quiet {
+  color: var(--text-dim);
+}
+
+.btn.careful {
+  color: var(--careful);
+  background-color: var(--careful-fill);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--careful) 24%, transparent);
+}
+
+@media (hover: hover) {
+  .btn:hover::after {
+    opacity: var(--hover-overlay);
+  }
+
+  .btn.secondary:hover {
+    background-color: var(--fill-strong);
+  }
+
+  .btn.quiet:hover {
+    color: var(--text);
+    background-color: var(--fill);
+  }
+
+  .btn.quiet:hover::after {
+    opacity: 0;
+  }
+}
+
+/* Pressed: smaller at once, a darker overlay while held; released on the press spring. */
+.btn:active:not(:disabled) {
+  scale: var(--press);
+  transition-duration: var(--duration-instant), var(--duration-fast), var(--duration-fast), var(--duration-fast), var(--duration-base);
+  transition-timing-function: var(--ease-out);
+}
+
+.btn:active:not(:disabled)::after {
+  background: var(--black);
+  opacity: var(--press-overlay);
+}
+
+.btn:disabled {
+  cursor: default;
+}
+
+.btn .icon {
+  flex: none;
+}
+
+/* A round button with only an icon: it has an accessible name instead of a word. */
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--size-control);
+  height: var(--size-control);
+  border-radius: var(--radius-full);
+  color: var(--text);
+  background-color: var(--fill);
+  box-shadow: inset 0 0 0 1px var(--ring);
+  transition-property: scale, background-color;
+  transition-duration: var(--spring-press-duration), var(--duration-fast);
+  transition-timing-function: var(--spring-press), var(--ease-out);
+}
+
+@media (hover: hover) {
+  .icon-btn:hover {
+    background-color: var(--fill-strong);
+  }
+}
+
+.icon-btn:active {
+  scale: var(--press);
+  transition-duration: var(--duration-instant);
+}
+
+/* ───── The request: "Nova is asking" ───── */
+
+.asking {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--waiting);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+}
+
+/* The waiting glyph: the presence's waiting silhouette, still, at the label's size. */
+.glyph {
+  display: inline-flex;
+  flex: none;
+  width: var(--stage-label);
+  height: var(--stage-label);
+}
+
+.glyph svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Lit by the presence, not outlined as a warning: a light along the top edge, a warm wash in the corner. */
+.request {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-raised);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-raised);
+}
+
+.request::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--asking-wash);
+  pointer-events: none;
+}
+
+.request::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: var(--asking-edge);
+  pointer-events: none;
+}
+
+.request > * {
+  position: relative;
+}
+
+.request .head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-20) var(--space-20) 0;
+}
+
+/* The time is read beside something larger; dim rather than faint, so that it still reads. */
+.request .when {
+  margin-inline-start: auto;
+  color: var(--text-dim);
+  font: var(--type-caption);
+  letter-spacing: var(--tracking-caption);
+}
+
+.request .question {
+  padding: var(--space-12) var(--space-20) 0;
+}
+
+.request .detail {
+  padding: var(--space-8) var(--space-20) 0;
+  color: var(--text-dim);
+  font: var(--type-small);
+  text-wrap: pretty;
+}
+
+.careful-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  margin: var(--space-16) var(--space-12) 0;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-m);
+  background: var(--careful-fill);
+  color: var(--careful);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+}
+
+/* What Nova sees: inset 12, concentric with the card, outlined like any picture. */
+.request .shot {
+  position: relative;
+  margin: var(--space-16) var(--space-12) 0;
+  overflow: hidden;
+  border-radius: var(--radius-m);
+  outline: 1px solid var(--outline);
+  outline-offset: -1px;
+}
+
+.request .shot > [role="img"] svg {
+  width: 100%;
+  height: auto;
+}
+
+.closer {
+  position: absolute;
+  left: var(--space-12);
+  bottom: var(--space-12);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  height: var(--size-control-sm);
+  padding-inline: var(--space-12) var(--space-16);
+  border-radius: var(--radius-full);
+  color: var(--text);
+  font: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  white-space: nowrap;
+  transition: scale var(--spring-press-duration) var(--spring-press);
+}
+
+.closer::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+}
+
+.closer:active {
+  scale: var(--press);
+  transition-duration: var(--duration-instant);
+}
+
+/* Details: the raw input, for those who want it, one tap away. */
+.request details {
+  margin: var(--space-4) var(--space-12) 0;
+}
+
+.request summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  height: var(--size-control);
+  padding-inline: var(--space-8);
+  border-radius: var(--radius-full);
+  color: var(--text-dim);
+  font: var(--type-small);
+  list-style: none;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.request summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (hover: hover) {
+  .request summary:hover {
+    color: var(--text);
+    background-color: var(--fill);
+  }
+}
+
+.request summary .icon {
+  transition: rotate var(--spring-snappy-duration) var(--spring-snappy);
+}
+
+.request details[open] summary .icon {
+  rotate: 180deg;
+}
+
+.request details::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size var(--spring-layout-duration) var(--spring-layout),
+    content-visibility var(--spring-layout-duration) allow-discrete;
+}
+
+.request details[open]::details-content {
+  block-size: auto;
+}
+
+.raw {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  margin-top: var(--space-4);
+  padding: var(--space-8) var(--space-8) var(--space-8) var(--space-16);
+  border-radius: var(--radius-m);
+  background: var(--fill);
+}
+
+.raw pre {
+  flex: 1;
+  min-width: 0;
+  padding-block: var(--space-8);
+  font: var(--type-code);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tray {
+  display: flex;
+  gap: var(--space-12);
+  padding: var(--space-12);
+}
+
+.tray .btn {
+  flex: 1;
+  min-width: 0;
+}
+
+/* In a stack, Go ahead is on top and Stop below: the order of the markup. */
+.tray.stack {
+  flex-direction: column;
+}
+
+.tray.stack .btn {
+  flex: none;
+  width: 100%;
+}
+
+/* Answering: the chosen button keeps its look, the other one fades and stops answering. */
+.tray[data-chosen] .btn {
+  pointer-events: none;
+}
+
+.tray[data-chosen="go"] [data-answer="stop"],
+.tray[data-chosen="stop"] [data-answer="go"] {
+  opacity: var(--disabled);
+  /* Resolve: the chosen button answers at once, the other one fades 120 ms later. */
+  transition-delay: 0s, 0s, 0s, 0s, var(--duration-fast);
+}
+
+/* The receipt a request leaves once answered. */
+.receipt {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-l);
+  background: var(--fill);
+}
+
+.receipt .mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--fill-strong);
+  color: var(--text);
+}
+
+.receipt .mark .icon {
+  width: var(--size-icon-dense);
+  height: var(--size-icon-dense);
+}
+
+.receipt[data-answer="go"] .mark {
+  background: var(--go-fill);
+  color: var(--go);
+}
+
+.receipt .said {
+  font: var(--type-body-strong);
+}
+
+.receipt .what {
+  color: var(--text-dim);
+  font: var(--type-small);
+  text-wrap: pretty;
+}
+
+.receipt .meta {
+  margin-inline-start: auto;
+  padding-top: 3px;
+  color: var(--text-dim);
+  font: var(--type-caption);
+  letter-spacing: var(--tracking-caption);
+  white-space: nowrap;
+}
+
+/* ───── Reduced motion: every movement becomes a short fade ───── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+
+  .btn:active:not(:disabled),
+  .icon-btn:active,
+  .closer:active {
+    scale: none;
+  }
+
+  .swap > * {
+    scale: none !important;
+  }
+}

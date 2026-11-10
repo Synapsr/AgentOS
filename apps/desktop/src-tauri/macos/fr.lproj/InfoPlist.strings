@@ -1,0 +1,7 @@
+/* Ce que macOS affiche la première fois que l'agent a besoin de quelque chose. */
+"NSAppleEventsUsageDescription" = "Votre agent s'en sert pour travailler dans vos apps à votre place.";
+"NSDesktopFolderUsageDescription" = "Votre agent travaille avec les fichiers de votre bureau quand vous le lui demandez.";
+"NSDocumentsFolderUsageDescription" = "Votre agent travaille avec les fichiers de vos documents quand vous le lui demandez.";
+"NSDownloadsFolderUsageDescription" = "Votre agent travaille avec les fichiers de vos téléchargements quand vous le lui demandez.";
+"NSLocalNetworkUsageDescription" = "Votre agent utilise votre réseau pour joindre votre téléphone et les appareils sur lesquels vous lui demandez de travailler.";
+"NSMicrophoneUsageDescription" = "Pour que vous puissiez parler à votre agent de vive voix.";

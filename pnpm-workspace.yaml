@@ -1,0 +1,12 @@
+packages:
+  - "packages/*"
+  - "apps/desktop"
+  - "apps/site"
+onlyBuiltDependencies:
+  - esbuild
+# Install scripts we know about and do without: agent-desktop ships its
+# programs in the package itself (packages/computer finds them there), and
+# sharp comes with a ready-made build for each platform.
+ignoredBuiltDependencies:
+  - agent-desktop
+  - sharp

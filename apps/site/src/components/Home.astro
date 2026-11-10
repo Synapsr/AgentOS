@@ -1,0 +1,36 @@
+---
+/**
+ * The home page, in either language: one story for anyone, one screen at a
+ * time. Commands, relays and diagrams are on the developers' page.
+ */
+import Base from "../layouts/Base.astro";
+import Header from "./Header.astro";
+import Hero from "./Hero.astro";
+import What from "./What.astro";
+import Feel from "./Feel.astro";
+import Safety from "./Safety.astro";
+import Today from "./Today.astro";
+import End from "./End.astro";
+import Footer from "./Footer.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang];
+---
+
+<Base lang={lang} title={t.meta.title} description={t.meta.description} paths={{ en: copy.en.path, fr: copy.fr.path }}>
+  <Header lang={lang} />
+  <main id="main">
+    <Hero lang={lang} />
+    <What lang={lang} />
+    <Feel lang={lang} />
+    <Safety lang={lang} />
+    <Today lang={lang} />
+    <End lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Base>

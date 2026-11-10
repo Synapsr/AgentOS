@@ -1,0 +1,37 @@
+{
+  "token": "example-token-shown-only-once",
+  "device": {
+    "id": "dev_dd1d657b3f91e86d",
+    "name": "iPhone",
+    "platform": "ios",
+    "createdAt": 1794266752025,
+    "lastSeenAt": null
+  },
+  "node": {
+    "id": "node_edf38b5bcc8dbd71",
+    "name": "Mac mini",
+    "platform": "macos",
+    "version": "0.1.0",
+    "protocol": 1,
+    "agent": {
+      "name": "Nova"
+    },
+    "owner": {
+      "name": "Alex"
+    },
+    "language": "en",
+    "autonomy": "balanced",
+    "onboarded": true,
+    "capabilities": {
+      "computer": true,
+      "engine": "mock",
+      "engineReady": true,
+      "voice": {
+        "provider": "device",
+        "stt": "device",
+        "tts": "device",
+        "ttsMime": null
+      }
+    }
+  }
+}

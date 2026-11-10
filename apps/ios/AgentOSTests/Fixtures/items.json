@@ -1,0 +1,321 @@
+{
+  "thread": {
+    "parentId": null,
+    "cwd": null,
+    "id": "main",
+    "kind": "main",
+    "title": "Nova",
+    "state": "idle",
+    "preview": "Nova wants to delete files",
+    "createdAt": 1794266718783,
+    "updatedAt": 1794266750327
+  },
+  "items": [
+    {
+      "id": "msg_5e770f9487d52dc1",
+      "threadId": "main",
+      "at": 1794266722157,
+      "type": "message",
+      "role": "user",
+      "text": "Hello there",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "act_a1dad080c978859a",
+      "threadId": "main",
+      "at": 1794266722159,
+      "type": "activity",
+      "label": "Thinking",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266722560
+    },
+    {
+      "id": "msg_7b4cdf282bd5acfc",
+      "threadId": "main",
+      "at": 1794266723318,
+      "type": "message",
+      "role": "agent",
+      "text": "You said “Hello there”. I'm the practice brain: say deploy, delete, quit, job or error to see more.",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "msg_5b799e034d6683f0",
+      "threadId": "main",
+      "at": 1794266725179,
+      "type": "message",
+      "role": "user",
+      "text": "Please deploy the site",
+      "via": "voice",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "act_f160cb0a23d8b6c9",
+      "threadId": "main",
+      "at": 1794266725180,
+      "type": "activity",
+      "label": "Running the tests",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266726082
+    },
+    {
+      "id": "act_b012bff6ca9922ce",
+      "threadId": "main",
+      "at": 1794266726083,
+      "type": "activity",
+      "label": "Building the project",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266726985
+    },
+    {
+      "id": "req_92f33103beab2acf",
+      "threadId": "main",
+      "at": 1794266727525,
+      "type": "request",
+      "kind": "question",
+      "title": "Everything looks good. Deploy to production?",
+      "body": null,
+      "spoken": "Everything looks good. Deploy to production?",
+      "risk": "medium",
+      "screenshot": {
+        "id": "file_19dec4fd895112f6.jpg",
+        "mime": "image/jpeg",
+        "width": 1280,
+        "height": 829
+      },
+      "options": [
+        {
+          "id": "option_1",
+          "label": "Deploy",
+          "style": "primary"
+        },
+        {
+          "id": "option_2",
+          "label": "Not now",
+          "style": "default"
+        }
+      ],
+      "allowText": true,
+      "state": "resolved",
+      "resolution": {
+        "optionId": "option_1",
+        "text": null,
+        "deviceId": null,
+        "at": 1794266729254
+      }
+    },
+    {
+      "id": "act_5926979a08d3d202",
+      "threadId": "main",
+      "at": 1794266729256,
+      "type": "activity",
+      "label": "Deploying to production",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266730158
+    },
+    {
+      "id": "msg_241abe04979dbb5c",
+      "threadId": "main",
+      "at": 1794266730284,
+      "type": "message",
+      "role": "agent",
+      "text": "Done, it's live.",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "msg_5b68dcc09ecdc370",
+      "threadId": "main",
+      "at": 1794266732772,
+      "type": "message",
+      "role": "user",
+      "text": "delete the build folder",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "req_026dd27b9680ef2a",
+      "threadId": "main",
+      "at": 1794266732774,
+      "type": "request",
+      "kind": "approval",
+      "title": "Nova wants to delete files",
+      "spoken": "I'd like to delete some files. Can I go ahead?",
+      "body": "rm -rf ./build",
+      "risk": "high",
+      "screenshot": null,
+      "options": [
+        {
+          "id": "approve",
+          "label": "Go ahead",
+          "style": "primary"
+        },
+        {
+          "id": "deny",
+          "label": "Stop",
+          "style": "danger"
+        }
+      ],
+      "allowText": false,
+      "state": "resolved",
+      "resolution": {
+        "optionId": "deny",
+        "text": "not now",
+        "deviceId": null,
+        "at": 1794266734825
+      }
+    },
+    {
+      "id": "msg_6f704c20d7f151c0",
+      "threadId": "main",
+      "at": 1794266735039,
+      "type": "message",
+      "role": "agent",
+      "text": "Okay, I left it alone.",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "msg_7e1649e52d0f3f00",
+      "threadId": "main",
+      "at": 1794266737361,
+      "type": "message",
+      "role": "user",
+      "text": "start a job please",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "act_cba68257cb2c8ba7",
+      "threadId": "main",
+      "at": 1794266737363,
+      "type": "activity",
+      "label": "Starting in the background: Practice run",
+      "tool": "start_job",
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266737366
+    },
+    {
+      "id": "msg_f01131521b7636e5",
+      "threadId": "main",
+      "at": 1794266737864,
+      "type": "message",
+      "role": "agent",
+      "text": "I've started that in the background. I'll tell you when it's done.",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "act_52043b18405e535e",
+      "threadId": "main",
+      "at": 1794266740585,
+      "type": "activity",
+      "label": "Finished: Practice run",
+      "tool": "job",
+      "detail": "All 3 steps are done.",
+      "state": "done",
+      "endedAt": 1794266740585
+    },
+    {
+      "id": "msg_2b2fdf3ed5d25239",
+      "threadId": "main",
+      "at": 1794266740795,
+      "type": "message",
+      "role": "agent",
+      "text": "The background work is finished.",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "msg_d997fd566d66459a",
+      "threadId": "main",
+      "at": 1794266746279,
+      "type": "message",
+      "role": "user",
+      "text": "error",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "act_20611cc76f7bf0fd",
+      "threadId": "main",
+      "at": 1794266746281,
+      "type": "activity",
+      "label": "Thinking",
+      "tool": null,
+      "detail": null,
+      "state": "done",
+      "endedAt": 1794266746683
+    },
+    {
+      "id": "msg_191ad56969dbc959",
+      "threadId": "main",
+      "at": 1794266746684,
+      "type": "message",
+      "role": "agent",
+      "text": "Something went wrong on my side. Shall we try again?",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "msg_ecc3402129fd78c1",
+      "threadId": "main",
+      "at": 1794266748801,
+      "type": "message",
+      "role": "user",
+      "text": "delete again",
+      "via": "text",
+      "deviceId": null,
+      "files": []
+    },
+    {
+      "id": "req_1f8f943d634625a6",
+      "threadId": "main",
+      "at": 1794266748802,
+      "type": "request",
+      "kind": "approval",
+      "title": "Nova wants to delete files",
+      "spoken": "I'd like to delete some files. Can I go ahead?",
+      "body": "rm -rf ./build",
+      "risk": "high",
+      "screenshot": null,
+      "options": [
+        {
+          "id": "approve",
+          "label": "Go ahead",
+          "style": "primary"
+        },
+        {
+          "id": "deny",
+          "label": "Stop",
+          "style": "danger"
+        }
+      ],
+      "allowText": false,
+      "state": "cancelled",
+      "resolution": null
+    }
+  ],
+  "hasMore": false
+}

@@ -1,0 +1,289 @@
+---
+/**
+ * The last screen, and where "Get AgentOS" leads: the presence, one
+ * sentence, the Mac app to download (building from source is for the
+ * developers' page), what it costs to run, then what the first run asks,
+ * drawn as four small screens of the app.
+ */
+import Icon from "./Icon.astro";
+import { copy, DOWNLOAD, REPO, type Lang } from "../i18n";
+import { qrSvg } from "../lib/qr";
+
+interface Props {
+  lang: Lang;
+}
+
+const t = copy[Astro.props.lang];
+const g = t.get;
+const options = t.charge.autonomy.options;
+const qr = qrSvg(REPO, g.qrLabel);
+---
+
+<section class="section" id="get" aria-labelledby="get-title">
+  <div class="wrap">
+    <div class="ask">
+      <div class="stage" data-presence="idle"></div>
+      <h2 class="heading" id="get-title">{g.title}</h2>
+      <p class="lead">{g.body}</p>
+      <div class="actions">
+        <a class="btn lg primary" href={DOWNLOAD}>{g.primary}</a>
+        <a class="btn lg secondary" href={`${t.devPath}#start`}>{g.secondary}</a>
+      </div>
+      <p class="key"><Icon name="key" />{g.key}</p>
+    </div>
+
+    <h3 class="title setup">{g.setup}</h3>
+    <ol class="steps">
+      {
+        g.steps.map((step, i) => (
+          <li>
+            <div class="mini">
+              <p class="question">{step.question}</p>
+              {i === 0 && (
+                <p class="field" aria-hidden="true">
+                  {step.value}
+                  <span class="caret" />
+                </p>
+              )}
+              {i === 2 && (
+                <p class="field secret" aria-hidden="true">
+                  ••••••••••••
+                  <span class="caret" />
+                </p>
+              )}
+              {i === 1 && (
+                <ul class="choices" aria-hidden="true">
+                  {options.map((option) => (
+                    <li class:list={{ on: option.value === "balanced" }}>
+                      <span class="choice">{option.label}</span>
+                      <span class="radio" />
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {i === 3 && (
+                <>
+                  <p class="hint">{step.value}</p>
+                  <div class="qr" data-appearance="light" set:html={qr} />
+                </>
+              )}
+            </div>
+            <p class="caption">{step.caption}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ask {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .stage {
+    width: 176px;
+    height: 176px;
+    margin-bottom: var(--space-32);
+  }
+
+  .heading,
+  .lead {
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-12);
+    margin-top: var(--space-32);
+  }
+
+  /* What Nova needs to think, said before anyone downloads. */
+  .key {
+    display: flex;
+    gap: var(--space-12);
+    max-width: 34em;
+    margin-top: var(--space-24);
+    padding: var(--space-12) var(--space-20) var(--space-12) var(--space-16);
+    border-radius: var(--radius-l);
+    background: var(--fill);
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-align: start;
+    text-wrap: pretty;
+  }
+
+  .key :global(svg) {
+    margin-top: 1px;
+    color: var(--text);
+  }
+
+  .setup {
+    margin-top: var(--section);
+    margin-bottom: var(--space-24);
+  }
+
+  /* ───── The first run, as four small screens: a sequence, so numbered by the order of the list ───── */
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-20);
+  }
+
+  /* The container is the list item, so that each screen's text scales with it. */
+  .steps > li {
+    display: flex;
+    flex-direction: column;
+    container-type: inline-size;
+  }
+
+  .mini {
+    flex: 1;
+    min-height: 82cqi;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6cqi;
+    padding: 8cqi;
+    border-radius: var(--radius-xl);
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-raised);
+    text-align: center;
+  }
+
+  /* The onboarding question is display-m, scaled to the little screen. */
+  .question {
+    font-weight: 400;
+    font-size: 8.4cqi;
+    line-height: 1.14;
+    letter-spacing: var(--tracking-display-m);
+    text-wrap: balance;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 17cqi;
+    padding-inline: 5cqi;
+    border-radius: 5cqi;
+    background: var(--fill);
+    box-shadow: inset 0 0 0 2px var(--focus);
+    font-size: 6cqi;
+  }
+
+  .field.secret {
+    letter-spacing: 0.1em;
+  }
+
+  .caret {
+    width: 1.5px;
+    height: 7cqi;
+    margin-left: 1px;
+    background: var(--text);
+  }
+
+  .choices {
+    display: grid;
+    /* One column that never grows past the screen, so that long choices end in an ellipsis. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4cqi;
+    width: 100%;
+    font-size: 4.8cqi;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .choices li {
+    display: flex;
+    align-items: center;
+    gap: 3cqi;
+    padding: 3cqi 4cqi;
+    border-radius: 4cqi;
+    background: var(--fill);
+    color: var(--text-dim);
+  }
+
+  .choice {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .choices li.on {
+    color: var(--text);
+    box-shadow: inset 0 0 0 1.5px var(--line-strong);
+  }
+
+  .radio {
+    width: 5cqi;
+    height: 5cqi;
+    flex: none;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1.5px var(--text-faint);
+  }
+
+  .on .radio {
+    box-shadow:
+      inset 0 0 0 1.5px var(--text),
+      inset 0 0 0 1.3cqi var(--fill),
+      inset 0 0 0 4cqi var(--text);
+  }
+
+  .hint {
+    margin-top: -3cqi;
+    color: var(--text-dim);
+    font-size: 4.6cqi;
+    text-wrap: balance;
+  }
+
+  /* The QR code sits on a white card in either appearance, as in the app. */
+  .qr {
+    width: 38cqi;
+    padding: 2.6cqi;
+    border-radius: 5cqi;
+    background: var(--surface-raised);
+    color: var(--text);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .qr :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  .caption {
+    margin-top: var(--space-16);
+    padding-inline: var(--space-8);
+    color: var(--text-dim);
+    font: var(--type-small);
+  }
+
+  @media (max-width: 960px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-24) var(--space-16);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .actions .btn {
+      width: 100%;
+    }
+  }
+</style>

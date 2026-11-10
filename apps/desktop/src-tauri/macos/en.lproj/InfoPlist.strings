@@ -1,0 +1,7 @@
+/* What macOS shows when the agent first needs something. Same sentences as Info.plist. */
+"NSAppleEventsUsageDescription" = "Your agent uses this to work in your apps for you.";
+"NSDesktopFolderUsageDescription" = "Your agent works with the files on your Desktop when you ask it to.";
+"NSDocumentsFolderUsageDescription" = "Your agent works with the files in your Documents when you ask it to.";
+"NSDownloadsFolderUsageDescription" = "Your agent works with the files in your Downloads when you ask it to.";
+"NSLocalNetworkUsageDescription" = "Your agent uses your network to reach your phone and the devices you ask it to work with.";
+"NSMicrophoneUsageDescription" = "So that you can talk to your agent out loud.";

@@ -1,0 +1,1 @@
+{"version":"2.6","ok":false,"command":"snapshot","error":{"code":"WINDOW_NOT_FOUND","message":"Application 'Calculator' is running but has no matching window","suggestion":"Wait for the app to present a window, or run 'list-windows --app'.","disposition":{"delivery":"not_delivered","retry":"safe"}}}

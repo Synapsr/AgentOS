@@ -1,0 +1,10 @@
+{
+  "build": {
+    "beforeBuildCommand": "node scripts/assemble-runtime.mjs"
+  },
+  "bundle": {
+    "resources": {
+      "binaries/runtime/": "runtime/"
+    }
+  }
+}

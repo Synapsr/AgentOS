@@ -1,0 +1,126 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ is asking" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vous demande"
+          }
+        }
+      }
+    },
+    "Couldn't reach your computer. Try again." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre ordinateur ne répond pas. Réessayez."
+          }
+        }
+      }
+    },
+    "Go ahead" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allez-y"
+          }
+        }
+      }
+    },
+    "I can't reach your iPhone." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je n'arrive pas à joindre votre iPhone."
+          }
+        }
+      }
+    },
+    "Just to be sure" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour être sûr"
+          }
+        }
+      }
+    },
+    "Open AgentOS on your iPhone to add your computer." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrez AgentOS sur votre iPhone pour ajouter votre ordinateur."
+          }
+        }
+      }
+    },
+    "Picture on your iPhone" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image sur votre iPhone"
+          }
+        }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
+    "Talk" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parler"
+          }
+        }
+      }
+    },
+    "Talk to %@…" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parler à %@…"
+          }
+        }
+      }
+    },
+    "Worth a careful look" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À regarder de près"
+          }
+        }
+      }
+    },
+    "You said “%@”" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez dit « %@ »"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

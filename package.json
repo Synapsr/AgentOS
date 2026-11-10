@@ -1,0 +1,47 @@
+{
+  "name": "agentos",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Give an AI agent your computer. Talk to it from anywhere: your phone or your earbuds. Open source, self-hosted.",
+  "keywords": [
+    "ai-agent",
+    "computer-use",
+    "claude",
+    "claude-agent-sdk",
+    "voice",
+    "accessibility",
+    "self-hosted",
+    "tauri",
+    "macos",
+    "ios",
+    "apple-watch",
+    "typescript"
+  ],
+  "homepage": "https://os.synapsr.io",
+  "bugs": {
+    "url": "https://github.com/Synapsr/AgentOS/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Synapsr/AgentOS.git"
+  },
+  "license": "MIT",
+  "author": "Synapsr",
+  "packageManager": "pnpm@10.27.0",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter './packages/*' build",
+    "typecheck": "pnpm -r --filter './packages/*' typecheck",
+    "test": "pnpm -r --filter './packages/*' test",
+    "check": "pnpm build && pnpm typecheck && pnpm test",
+    "start": "node packages/core/dist/cli.js start",
+    "agentos": "node packages/core/dist/cli.js",
+    "dev": "pnpm --filter @agentos/core dev",
+    "desktop": "pnpm --filter @agentos/desktop tauri dev",
+    "desktop:bundle": "pnpm --filter @agentos/desktop bundle",
+    "site": "pnpm --filter @agentos/site dev",
+    "site:build": "pnpm --filter @agentos/site build"
+  }
+}

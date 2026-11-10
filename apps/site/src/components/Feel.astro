@@ -1,0 +1,410 @@
+---
+/**
+ * How it feels: OS mode on a laptop, and a request on the wrist. Both are
+ * always dark, as in the product (docs/DESIGN.md, Colour), and drawn live
+ * with the presence and the tokens.
+ */
+import { glyph, toSVG } from "@agentos/presence";
+import Icon from "./Icon.astro";
+import { copy, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const t = copy[Astro.props.lang];
+const { os, watch: w } = t.feel;
+const asking = toSVG(glyph("waiting", 36), { fill: "currentColor", glow: false });
+---
+
+<section class="section" id="feel" aria-labelledby="feel-title">
+  <div class="wrap">
+    <h2 class="heading" id="feel-title">{t.feel.title}</h2>
+
+    <div class="rows">
+      <article class="row">
+        <div class="visual">
+          <div class="laptop">
+            <div class="lid">
+              <div class="os" data-os data-appearance="dark" role="img" aria-label={os.label}>
+                <div class="os-light grain" aria-hidden="true"></div>
+                <p class="os-name">{os.name}</p>
+                <div class="os-stage" data-presence="working"></div>
+                <p class="os-line">{os.line}</p>
+                <p class="os-hint glass"><Icon name="back" />{os.hint}<kbd>esc</kbd></p>
+              </div>
+            </div>
+            <div class="base"></div>
+          </div>
+        </div>
+        <div class="text">
+          <h3 class="title-l">{os.title}</h3>
+          <p class="body">{os.body}</p>
+          <p class="aside"><Icon name="screen" />{os.aside}</p>
+        </div>
+      </article>
+
+      <article class="row flip">
+        <div class="visual">
+          <div class="watch" role="img" aria-label={w.label}>
+            <span class="progress" aria-hidden="true">{w.progress}</span>
+            <span class="band top"></span>
+            <div class="case">
+              <div class="face" data-appearance="dark" aria-hidden="true">
+                <p class="who"><span class="watch-glyph" set:html={asking} />{t.request.asking}</p>
+                <p class="watch-question">{w.question}</p>
+                <span class="watch-btn primary"><span class="check"><Icon name="check" /></span>{t.request.go}</span>
+                <span class="watch-btn secondary"><Icon name="hand" />{t.request.stop}</span>
+              </div>
+              <span class="crown"></span>
+            </div>
+            <span class="band bottom"></span>
+          </div>
+        </div>
+        <div class="text">
+          <h3 class="title-l">{w.title}</h3>
+          <p class="body">{w.body}</p>
+          <p class="aside"><Icon name="earbuds" />{w.note}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rows {
+    display: grid;
+    gap: var(--section);
+    margin-top: var(--space-64);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-44) var(--space-64);
+  }
+
+  .row.flip {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  }
+
+  .row.flip .visual {
+    order: 2;
+  }
+
+  .visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .text {
+    max-width: 30em;
+  }
+
+  .body {
+    margin-top: var(--space-12);
+    color: var(--text-dim);
+    font: var(--type-body-l);
+    letter-spacing: var(--tracking-body-l);
+    text-wrap: pretty;
+  }
+
+  .aside {
+    display: flex;
+    gap: var(--space-12);
+    margin-top: var(--space-24);
+    padding-top: var(--space-20);
+    border-top: 1px solid var(--line);
+    color: var(--text-dim);
+    font: var(--type-small);
+    text-wrap: pretty;
+  }
+
+  .aside :global(svg) {
+    margin-top: 1px;
+  }
+
+  /* ───── OS mode, on a laptop ───── */
+
+  .laptop {
+    width: 100%;
+    max-width: 660px;
+    padding-inline: 4%;
+  }
+
+  .lid {
+    padding: 2.2%;
+    border-radius: var(--radius-l) var(--radius-l) var(--radius-s) var(--radius-s);
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .base {
+    position: relative;
+    height: 14px;
+    /* The base is wider than the lid, as on a real laptop. */
+    margin-inline: -4.35%;
+    border-radius: 2px 2px 14px 14px;
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .base::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 14%;
+    height: 5px;
+    translate: -50% 0;
+    border-radius: 0 0 6px 6px;
+    background: var(--fill-strong);
+  }
+
+  .os {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-s);
+    background: var(--surface-stage);
+    color: var(--text);
+    overflow: hidden;
+    container-type: size;
+    cursor: default;
+  }
+
+  .os-light {
+    position: absolute;
+    left: calc(50% - 55cqh);
+    top: -11cqh;
+    width: 110cqh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--presence-working) calc(var(--stage-light) * 100%), transparent), transparent);
+  }
+
+  .os-stage {
+    position: absolute;
+    left: 50%;
+    top: 44cqh;
+    width: 50cqh;
+    height: 50cqh;
+    translate: -50% -50%;
+  }
+
+  .os-name,
+  .os-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .os-name {
+    bottom: calc(100cqh - 44cqh + 24cqh);
+    color: var(--text-dim);
+    font-size: 3.4cqh;
+    font-weight: 500;
+  }
+
+  /* The line in OS mode is display-xl, scaled to the picture. */
+  .os-line {
+    top: calc(44cqh + 25cqh);
+    font-weight: 360;
+    font-size: 6.4cqh;
+    line-height: 1.04;
+    letter-spacing: var(--tracking-display-xl);
+  }
+
+  .os-hint {
+    position: absolute;
+    top: 4cqh;
+    right: 4cqh;
+    display: flex;
+    align-items: center;
+    gap: 1.2cqh;
+    height: 6.4cqh;
+    padding-inline: 1.6cqh 1.2cqh;
+    border-radius: var(--radius-full);
+    font-size: 2.6cqh;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .os-hint :global(svg) {
+    width: 3cqh;
+    height: 3cqh;
+  }
+
+  .os-hint kbd {
+    padding: 0.2cqh 0.9cqh;
+    border-radius: 0.9cqh;
+    box-shadow: inset 0 0 0 1px var(--ring);
+    color: var(--text-dim);
+    font: inherit;
+    font-weight: 500;
+  }
+
+  .os[data-pointer] .os-hint {
+    opacity: 1;
+  }
+
+  /* ───── The watch: always dark, on black ───── */
+
+  .watch {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 232px;
+  }
+
+  /* Not shipped yet, and said so on the picture itself. */
+  .progress {
+    position: absolute;
+    top: 14px;
+    right: -72px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    height: var(--size-control-sm);
+    padding-inline: var(--space-16);
+    border-radius: var(--radius-full);
+    background: var(--surface-overlay);
+    box-shadow: var(--shadow-overlay);
+    color: var(--text-dim);
+    font: var(--type-label);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .band {
+    width: 66%;
+    height: 56px;
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .band.top {
+    border-radius: 20px 20px 4px 4px;
+    margin-bottom: -6px;
+  }
+
+  .band.bottom {
+    border-radius: 4px 4px 20px 20px;
+    margin-top: -6px;
+  }
+
+  .case {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 41 / 49;
+    padding: 9px;
+    border-radius: 58px;
+    background: var(--surface-raised);
+    container-type: inline-size;
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .crown {
+    position: absolute;
+    right: -7px;
+    top: 26%;
+    width: 9px;
+    height: 44px;
+    border-radius: 4px;
+    background: var(--surface-raised);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .face {
+    display: flex;
+    flex-direction: column;
+    gap: 3cqi;
+    height: 100%;
+    padding: 8cqi 7cqi 7cqi;
+    border-radius: 49px;
+    background: var(--black);
+    color: var(--text);
+  }
+
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 2.4cqi;
+    color: var(--waiting);
+    font-size: 6.6cqi;
+    font-weight: 600;
+  }
+
+  .watch-glyph {
+    display: flex;
+    width: 9cqi;
+    height: 9cqi;
+  }
+
+  .watch-glyph :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .watch-question {
+    margin-bottom: auto;
+    font-size: 9.2cqi;
+    font-weight: 600;
+    line-height: 1.18;
+    text-wrap: balance;
+  }
+
+  /* The watch's buttons, full width and stacked: Go ahead on top, then Stop. */
+  .watch-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.4cqi;
+    flex: none;
+    height: 19cqi;
+    border-radius: var(--radius-full);
+    font-size: 6.6cqi;
+    font-weight: 600;
+  }
+
+  .watch-btn :global(svg) {
+    width: 7cqi;
+    height: 7cqi;
+  }
+
+  .watch-btn.primary {
+    color: var(--on-primary);
+    background: var(--primary-gradient);
+    box-shadow: var(--shadow-button);
+  }
+
+  .watch-btn .check {
+    display: flex;
+    color: var(--primary-check);
+  }
+
+  .watch-btn.secondary {
+    background: var(--fill);
+    box-shadow: inset 0 0 0 1px var(--ring);
+  }
+
+  @media (max-width: 900px) {
+    .row,
+    .row.flip {
+      grid-template-columns: 1fr;
+    }
+
+    .row .visual,
+    .row.flip .visual {
+      order: 2;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .progress {
+      right: -40px;
+    }
+  }
+</style>
