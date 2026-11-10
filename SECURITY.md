@@ -1,11 +1,3 @@
-<!--
-  OWNER, before the first public commit:
-  1. Turn on "Private vulnerability reporting" for the repository
-     (Settings → Code security). The link below only works once it is on.
-  2. If you also want reports by email, add the address under "Reporting a
-     problem". None is given here on purpose: it must be a mailbox that exists.
--->
-
 # Security
 
 AgentOS gives an AI agent your computer: your files, a shell, the screen,
